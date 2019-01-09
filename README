@@ -32,3 +32,4 @@ dynamic_cast<> testing for multipurpose objects, usually keys;
 scrutinize the translation's use of key / value pairs as KeyContainer / integer
 scrutinize use of pointers to avoid copying; scrutinize use of references to / values of, vectors
 Monitor initial code paths for blank variables
+check for class name duplication / ambiguity

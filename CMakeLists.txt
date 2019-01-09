@@ -423,7 +423,7 @@ set(SOURCE_FILES
         src/mdp/stochasticgames/SG_domain.cpp
         src/shell/command/env/add_state_object_command.cpp
         src/shell/command/env/episode_recording_commands.cpp
-        src/shell/command/env/execute_action_command.cpp
+        src/shell/command/env/execute_action_command.hpp
         src/shell/command/env/is_terminal_command.cpp
         src/shell/command/env/list_actions_command.cpp
         src/shell/command/env/list_prop_functions.cpp
@@ -432,11 +432,11 @@ set(SOURCE_FILES
         src/shell/command/env/reset_env_command.cpp
         src/shell/command/env/reward_command.cpp
         src/shell/command/env/set_var_command.cpp
-        src/shell/command/reserved/alias_command.cpp
-        src/shell/command/reserved/aliases_command.cpp
-        src/shell/command/reserved/commands_command.cpp
-        src/shell/command/reserved/help_command.cpp
-        src/shell/command/reserved/quit_command.cpp
+        src/shell/command/reserved/alias_command.hpp
+        src/shell/command/reserved/aliases_command.hpp
+        src/shell/command/reserved/commands_command.hpp
+        src/shell/command/reserved/help_command.hpp
+        src/shell/command/reserved/quit_command.hpp
         src/shell/command/world/add_state_object_SG_command.cpp
         src/shell/command/world/game_command.cpp
         src/shell/command/world/generate_state_command.cpp
@@ -448,14 +448,13 @@ set(SOURCE_FILES
         src/shell/command/world/rewards_command.cpp
         src/shell/command/world/set_var_SG_command.cpp
         src/shell/command/world/world_observation_command.cpp
-        src/shell/command/shell_command.cpp
         src/shell/visual/SG_visual_explorer.cpp
         src/shell/visual/text_area_streams.cpp
         src/shell/visual/visual_explorer.cpp
         src/shell/fastrl_shell.cpp
-        src/shell/environment_shell.cpp
+        src/shell/environment_shell.hpp
         src/shell/SG_world_shell.cpp
-        src/shell/shell_observer.cpp
+        src/shell/shell_observer.hpp
         src/statehashing/discretized/disc_config.cpp
         src/statehashing/discretized/discretizing_hashable_state_factory.cpp
         src/statehashing/discretized/ID_disc_hashable_state.cpp
@@ -498,7 +497,7 @@ set(SOURCE_FILES
         src/mdp/singleagent/model/statemodel/full_state_model.cpp
         src/mdp/singleagent/SA_domain.h
         src/mdp/core/oo/OO_domain.cpp
-        src/domain/singleagent/gridworld/state/grid_world_state.h src/mdp/singleagent/environment/simulated_environment.h src/behavior/singleagent/learning/tdmethods/Q_learning.h src/behavior/valuefunction/Q_provider.h src/behavior/singleagent/episode.h src/mdp/core/action/action_utils.h src/behavior/policy/greedy_Q_policy.h src/behavior/policy/policy_utils.h src/behavior/singleagent/options/option.h src/behavior/policy/epsilon_greedy.h src/mdp/core/oo/state/key_container.hpp)
+        src/domain/singleagent/gridworld/state/grid_world_state.h src/mdp/singleagent/environment/simulated_environment.h src/behavior/singleagent/learning/tdmethods/Q_learning.h src/behavior/valuefunction/Q_provider.h src/behavior/singleagent/episode.h src/mdp/core/action/action_utils.h src/behavior/policy/greedy_Q_policy.h src/behavior/policy/policy_utils.h src/behavior/singleagent/options/option.h src/behavior/policy/epsilon_greedy.h src/mdp/core/oo/state/key_container.hpp src/shell/fastrl_shell.h)
 
 add_executable(fastrl ${SOURCE_FILES})
 

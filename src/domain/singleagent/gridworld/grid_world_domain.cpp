@@ -12,6 +12,7 @@
 #include "state/grid_world_state.h"
 #include "grid_world_terminal_function.hpp"
 #include "../../../mdp/singleagent/environment/environment.hpp"
+#include "../../../shell/environment_shell.hpp"
 #include "../../../mdp/singleagent/environment/simulated_environment.h"
 #include "../../../behavior/singleagent/learning/tdmethods/Q_learning.h"
 
@@ -562,7 +563,7 @@ void GridWorldDomain::main1(vector<string> args) {
     GridWorldState * s = new GridWorldState(
             new GridAgent(0, 0), vector<GridLocation *>({new GridLocation(10, 10, -1, "loc0")}));
 
-    int expMode = 1;
+    int expMode = 0;
     if (!args.empty()) {
         if (args[0] == "v") { // TODO adjust indices
             expMode = 1;
@@ -572,8 +573,10 @@ void GridWorldDomain::main1(vector<string> args) {
         }
     }
     if (expMode == 0) {
-//        EnvironmentShell shell = new EnvironmentShell(d, s);
-//        shell.start();
+        cout << "making shell" << endl;
+        EnvironmentShell * shell = new EnvironmentShell(*d, *(static_cast<State *>(s)));
+        cout << "shell made" << endl;
+        shell->start();
     }
     else if (expMode == 1) {
 

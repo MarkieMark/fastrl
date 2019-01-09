@@ -5,14 +5,14 @@
 #include "simulated_environment.h"
 #include "../../auxiliary/common/constant_state_generator.hpp"
 
-SimulatedEnvironment::SimulatedEnvironment(SADomain *domain) {
+SimulatedEnvironment::SimulatedEnvironment(SADomain * domain) {
     if (domain->getModel() == nullptr) {
         throw runtime_error("SimulatedEnvironment needs a Domain with a Model");
     }
     model = domain->getModel();
 }
 
-SimulatedEnvironment::SimulatedEnvironment(SADomain *domain, State * initialState) {
+SimulatedEnvironment::SimulatedEnvironment(SADomain * domain, State * initialState) {
     stateGenerator = new ConstantStateGenerator(initialState);
     currentState = initialState;
     if (domain->getModel() == nullptr) {
@@ -22,7 +22,7 @@ SimulatedEnvironment::SimulatedEnvironment(SADomain *domain, State * initialStat
 }
 
 SimulatedEnvironment::SimulatedEnvironment(
-        SADomain *domain, StateGenerator * state_generator) {
+        SADomain * domain, StateGenerator * state_generator) {
     stateGenerator = state_generator;
     currentState = stateGenerator->generateState();
     if (domain->getModel() == nullptr) {

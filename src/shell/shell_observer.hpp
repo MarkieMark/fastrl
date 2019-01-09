@@ -1,0 +1,10 @@
+/*
+ * Mark Benjamin 9th January 2019.
+ */
+
+#ifndef FASTRL_FASTRL_SHELL_SHELL_OBSERVER_HPP
+#define FASTRL_FASTRL_SHELL_SHELL_OBSERVER_HPP
+
+class ShellObserver {};
+
+#endif // FASTRL_FASTRL_SHELL_SHELL_OBSERVER_HPP
