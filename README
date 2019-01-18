@@ -23,7 +23,7 @@ TODO list
    possibly a translation of keras-rl https://github.com/matthiasplappert/keras-rl
 10 Transfer / adjust more documentation comments
 11 Make the c++ more idiomatic
-12 More 'native' handling of copy() / toString() bearing in mind the need for
+12 More 'native' handling of copy() / to_string() bearing in mind the need for
    some Q_OBJECT functionality while Q_OBJECT 'deletes' copy()
 
 Debugging Task List

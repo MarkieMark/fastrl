@@ -10,7 +10,7 @@
 
 class FullModel : virtual public SampleModel {
 public:
-    virtual vector<TransitionProb *> transitions(State * s, Action * a) { throw runtime_error("Not Implemented"); }
+    virtual vector<TransitionProb *> transitions(State * s, Action * a) { throw runtime_error("FullModel::transitions() Not Implemented"); }
 };
 
 class FullModelHelper {

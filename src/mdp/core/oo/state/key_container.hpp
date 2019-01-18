@@ -18,6 +18,13 @@ public:
     OOVariableKey vk;
     explicit KeyContainer(string s_) : isString(true), s(move(s_)) { }
     explicit KeyContainer(OOVariableKey vk_) : isString(false), vk(move(vk_)) { }
+    string to_string() {
+        if (isString) {
+            return s;
+        } else {
+            return vk.to_string();
+        }
+    }
 };
 
 #endif // FASTRL_MDP_CORE_OO_STATE_KEY_CONTAINER_HPP

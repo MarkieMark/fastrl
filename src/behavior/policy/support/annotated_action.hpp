@@ -27,8 +27,8 @@ public:
         return (srcAction == comp.srcAction) && (annotation == comp.annotation);
     }
 
-    string toString() override {
-        return "*" + annotation + "--" + srcAction->toString();
+    string to_string() override {
+        return "*" + annotation + "--" + srcAction->to_string();
     }
 };
 

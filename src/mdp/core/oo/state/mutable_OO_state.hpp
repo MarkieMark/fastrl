@@ -10,9 +10,9 @@
 
 class MutableOOState : virtual public OOState, virtual public MutableState {
 public:
-    virtual MutableOOState * addObject(ObjectInstance * o) { throw runtime_error("Not Implemented"); }
-    virtual MutableOOState * removeObject(string objectName) { throw runtime_error("Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
-    virtual MutableOOState * renameObject(string objectName, string newName) { throw runtime_error("Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
+    virtual MutableOOState * addObject(ObjectInstance * o) { throw runtime_error("MutableOOState::addObject() Not Implemented"); }
+    virtual MutableOOState * removeObject(string objectName) { throw runtime_error("MutableOOState::removeObject() Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
+    virtual MutableOOState * renameObject(string objectName, string newName) { throw runtime_error("MutableOOState::renameObject() Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
 };
 
 

@@ -35,7 +35,7 @@ public:
     int get(KeyContainer * variableKey);
     State * makeCopy() override;
     long locationInd(string objectName);
-    string toString();
+    string to_string() override;
 //    GridAgent * touchAgent();
 //    vector<GridLocation *> touchLocations();
 //    vector<GridLocation *> deepTouchLocations();

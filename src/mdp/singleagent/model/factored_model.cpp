@@ -1,15 +1,17 @@
+/**
+ * Mark Benjamin 31st May 2017
+ */
 #include "factored_model.h"
 #include "../../core/state_transition_prob.hpp"
 #include "statemodel/full_state_model.h"
 
-/**
- * Mark Benjamin 31st May 2017
- */
 
 FactoredModel::FactoredModel() = default;
 
 FactoredModel::FactoredModel(FullStateModel * state_model, RewardFunction * rf_, TerminalFunction * tf_)
-    : stateModel(state_model), rf(rf_), tf(tf_) { }
+    : stateModel(state_model), rf(rf_), tf(tf_) {
+//    cout << "stateModel " << stateModel << ", rf " << rf << " should be " << rf_ << ", tf " << tf << " should be " << tf_ << endl;
+}
 
 void FactoredModel::useRewardFunction(RewardFunction * rf_) {
     rf = rf_;

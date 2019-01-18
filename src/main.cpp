@@ -30,9 +30,9 @@ int main (int argc, char ** argv) {
     for (int i = 0; i < argc; i++) {
 //        cout << i << " \"" << argv[i] <<"\"" << endl;
         args.emplace_back(string(argv[i]));
-        cout << "arg" << i << " " << args[i] << endl;
+//        cout << "arg" << i << " " << args[i] << endl;
     }
-    cout << "args " << args.size() << endl;
+//    cout << "args " << args.size() << endl;
     if (argc > 1) {
         char *mainName = getCmdOption(argv, argv + argc, "-main");
         if (string(mainName) == "GridWorldDomain") {

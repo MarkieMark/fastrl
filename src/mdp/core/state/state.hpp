@@ -14,9 +14,9 @@ using namespace std;
 
 class State {
 public:
-    virtual vector<KeyContainer *> variableKeys() { throw runtime_error("Not Implemented"); }
-    virtual int getIntValue(KeyContainer *variableKey) { throw runtime_error("Not Implemented"); }
-    virtual State* makeCopy() { throw runtime_error("Not Implemented"); }
+    virtual vector<KeyContainer *> variableKeys() { throw runtime_error("State::variableKeys() Not Implemented"); }
+    virtual int getIntValue(KeyContainer *variableKey) { throw runtime_error("State::getIntValue() Not Implemented"); }
+    virtual State* makeCopy() { throw runtime_error("State::makeCopy() Not Implemented"); }
     bool operator==(State &comp) {
         vector<KeyContainer *>myKeys = variableKeys();
         vector<KeyContainer *>compKeys = comp.variableKeys();
@@ -31,6 +31,7 @@ public:
         }
         return true;
     }
+    virtual string to_string() { return "State base class"; }
 };
 
 #endif // FASTRL_MDP_CORE_STATE_STATE_HPP

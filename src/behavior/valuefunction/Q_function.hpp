@@ -12,7 +12,7 @@
 
 class QFunction : public ValueFunction {
 public:
-    virtual double qValue(State *s, Action *a) { throw runtime_error("Not Implemented"); }
+    virtual double qValue(State *s, Action *a) { throw runtime_error("QFunction::qValue() Not Implemented"); }
 };
 
 #endif // FASTRL_BEHAVIOR_VALUEFUNCTION_Q_FUNCTION_HPP

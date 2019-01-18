@@ -8,7 +8,7 @@
 #include "../environment.hpp"
 
 class StateSettableEnvironment : virtual public Environment {
-    virtual void setCurrentStateTo(State *s) { throw runtime_error("Not Implemented"); }
+    virtual void setCurrentStateTo(State *s) { throw runtime_error("StateSettableEnvironment::setCurrentStateTo() Not Implemented"); }
 };
 
 #endif // FASTRL_MDP_SINGLEAGENT_ENVIRONMENT_EXTENSIONS_STATE_SETTABLE_ENVIRONMENT_HPP

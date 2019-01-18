@@ -11,7 +11,7 @@
 
 using namespace std;
 
-FastRLShell::FastRLShell(Domain domain_, istream * is_, ostream * os_) : is(is_), os(os_), domain(domain_)
+FastRLShell::FastRLShell(Domain * domain_, istream * is_, ostream * os_) : is(is_), os(os_), domain(domain_)
 {
 //    this.scanner = new Scanner(is);
     vector<ShellCommand *> res = generateReserved();
@@ -20,11 +20,6 @@ FastRLShell::FastRLShell(Domain domain_, istream * is_, ostream * os_) : is(is_)
     for (ShellCommand * c : res) {
         addCommand(c);
         reserved.insert(c->commandName());
-    }
-
-    vector<ShellCommand *> std = generateStandard();
-    for(ShellCommand * c : std){
-        addCommand(c);
     }
 }
 
@@ -147,11 +142,11 @@ set<pair<string, string>> FastRLShell::getAliases() {
     return ret;
 }
 
-Domain FastRLShell::getDomain() {
+Domain * FastRLShell::getDomain() {
     return domain;
 }
 
-void FastRLShell::setDomain(Domain domain_) {
+void FastRLShell::setDomain(Domain * domain_) {
     domain = domain_;
 }
 
@@ -180,8 +175,9 @@ void FastRLShell::start(){
             while(!shutting){
                 *os << "> ";
                 string input = string();
-                *is >> input;
-                executeCommand(input);
+                getline(*is, input);
+//                cout << "you wrote <" << input << ">" << endl;
+                actionCommand(input);
             }
 //        }
 //    });
@@ -189,14 +185,14 @@ void FastRLShell::start(){
 //    thread.start();
 }
 
-void FastRLShell::executeCommand(string input) {
-    cout << "FastRLShell::executeCommand " << input << endl;
+void FastRLShell::actionCommand(string input) {
+//    cout << "FastRLShell::actionCommand " << input << endl;
     unsigned long first_space = input.find(' ');
     string command_word = input;
     if (first_space != -1) {
         command_word = input.substr(0, first_space);
     }
-    cout << "command_word " << command_word << endl;
+//    cout << "command_word " << command_word << endl;
     ShellCommand * command = resolveCommand(command_word);
     if(command == nullptr) {
         *os << "Unknown command: " << command_word << endl;
@@ -219,10 +215,6 @@ void FastRLShell::executeCommand(string input) {
         } catch (exception &e){
             *os << "Exception in command completion:\n" << e.what() << endl;
         }
-
-
-
-
 }
 
 

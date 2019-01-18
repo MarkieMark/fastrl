@@ -1,4 +1,5 @@
 #include "OO_state_utilities.h"
+#include "../../state/state_utilities.hpp"
 
 using namespace std;
 
@@ -120,15 +121,15 @@ set<string> OOStateUtilities::objectClassesPresent(OOState s) {
 
 /**
  * A common approach for turning an {@link OOState} into a string representation. Useful for implementing
- * {@link Object#tostring()} methods.
+ * {@link Object#to_string()} methods.
  * @param s the input {@link OOState}
  * @return the string representation
  */
-string OOStateUtilities::ooStateTostring(OOState s) {
+string OOStateUtilities::ooStateTostring(OOState * s) {
     stringstream buf;
     buf << ("{\n");
-    for(ObjectInstance *o : s.objects()){
-        buf << objectInstanceToString(*o);
+    for(ObjectInstance * o : s->objects()){
+        buf << objectInstanceToString(o);
         buf << "\n";
     }
     buf << "}";
@@ -138,13 +139,13 @@ string OOStateUtilities::ooStateTostring(OOState s) {
 
 /**
  * A common approach for turning an {@link ObjectInstance} into a string representation. Useful for implementing the
- * {@link Object#tostring()} method.
+ * {@link Object#to_string()} method.
  * @param o the input {@link ObjectInstance}
  * @return the string representation
  */
-string OOStateUtilities::objectInstanceToString(ObjectInstance o) {
+string OOStateUtilities::objectInstanceToString(ObjectInstance * o) {
     stringstream buf;
-//    buf << o.name() << " (" << o.className() << "): " << StateUtilities.stateTostring(o);
+    buf << o->name() << " (" << o->className() << "): " << StateUtilities::stateToString(o);
     return buf.str();
 }
 

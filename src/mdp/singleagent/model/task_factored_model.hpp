@@ -10,10 +10,10 @@
 #include "../../core/terminal_function.hpp"
 
 class TaskFactoredModel : virtual public SampleModel {
-    virtual void useRewardFunction(RewardFunction * rf) { throw runtime_error("Not Implemented"); }
-    virtual void useTerminalFunction(TerminalFunction * tf) { throw runtime_error("Not Implemented"); }
-    virtual RewardFunction * rewardFunction() { throw runtime_error("Not Implemented"); }
-    virtual TerminalFunction * terminalFunction() { throw runtime_error("Not Implemented"); }
+    virtual void useRewardFunction(RewardFunction * rf) { throw runtime_error("TaskFactoredModel::useRewardFunction() Not Implemented"); }
+    virtual void useTerminalFunction(TerminalFunction * tf) { throw runtime_error("TaskFactoredModel::useTerminalFunction() Not Implemented"); }
+    virtual RewardFunction * rewardFunction() { throw runtime_error("TaskFactoredModel::rewardFunction() Not Implemented"); }
+    virtual TerminalFunction * terminalFunction() { throw runtime_error("TaskFactoredModel::terminalFunction() Not Implemented"); }
 };
 
 #endif // FASTRL_MDP_SINGLEAGENT_MODEL_TASK_FACTORED_MODEL_HPP

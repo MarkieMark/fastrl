@@ -21,14 +21,14 @@ string GridAgent::name() {
     return _name;
 }
 
-ObjectInstance* GridAgent::copyWithName(string objectName) {
-    auto *nAgent = dynamic_cast<GridAgent *> (((*this).makeCopy()));
+ObjectInstance * GridAgent::copyWithName(string objectName) {
+    auto * nAgent = makeCopy();
     nAgent->_name = objectName;
     return dynamic_cast<ObjectInstance *>(nAgent);
 }
 
-State* GridAgent::makeCopy() {
-    return dynamic_cast<State *>(new GridAgent(x, y, _name));
+GridAgent * GridAgent::makeCopy() {
+    return new GridAgent(x, y, _name);
 }
 
 vector<KeyContainer *> GridAgent::variableKeys() {
@@ -63,7 +63,7 @@ void GridAgent::setLoc(int x_, int y_) {
     y = y_;
 }
 
-string GridAgent::toString() {
-    ObjectInstance* oi = this;
-    return OOStateUtilities::objectInstanceToString(*oi);
+string GridAgent::to_string() {
+    ObjectInstance * oi = this;
+    return OOStateUtilities::objectInstanceToString(oi);
 }

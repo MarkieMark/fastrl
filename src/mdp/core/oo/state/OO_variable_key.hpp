@@ -26,7 +26,7 @@ public:
         objVarKey = strVersion.substr(ind + 1);
     }
 
-    string toString() {
+    string to_string() {
         stringstream s;
         s << objName << ":" << objVarKey;
         return s.str();

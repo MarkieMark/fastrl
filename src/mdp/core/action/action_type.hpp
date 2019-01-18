@@ -12,9 +12,9 @@
 
 class ActionType {
 public:
-    virtual string typeName() { throw runtime_error("Not Implemented"); }
-    virtual Action * associatedAction(string stringRepresentation) { throw runtime_error("Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
-    virtual vector<Action *> allApplicableActions(State * s) { throw runtime_error("Not Implemented"); }
+    virtual string typeName() { throw runtime_error("ActionType::typeName() Not Implemented"); }
+    virtual Action * associatedAction(string stringRepresentation) { throw runtime_error("ActionType::associatedAction() Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
+    virtual vector<Action *> allApplicableActions(State * s) { throw runtime_error("ActionType::allApplicableActions() Not Implemented"); }
 };
 
 #endif

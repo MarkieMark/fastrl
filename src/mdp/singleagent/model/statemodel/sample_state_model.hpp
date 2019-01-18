@@ -10,7 +10,7 @@
 
 class SampleStateModel {
 public:
-    virtual State * sample(State * s, Action * a) { throw runtime_error("Not Implemented"); }
+    virtual State * sample(State * s, Action * a) { throw runtime_error("SampleStateModel::sample() Not Implemented"); }
 };
 
 #endif // FASTRL_MDP_SINGLEAGENT_MODEL_STATEMODEL_SAMPLE_STATE_MODEL_HPP

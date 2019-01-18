@@ -48,4 +48,8 @@ public:
                 pair<string, PropositionalFunction *>(prop->getName(), prop));
         return this;
     }
+
+    string to_string() override {
+        return "OOSA_domain";
+    }
 };

@@ -113,7 +113,7 @@ string Episode::actionString(string delimiter) {
         if (!first) {
             s << delimiter;
         }
-        s << a/*.toString()*/; // TODO Action.toString()
+        s << a/*.to_string()*/; // TODO Action.to_string()
         first = false;
     }
     return s.str();
@@ -183,7 +183,7 @@ void Episode::main(string *args) {
 //    Here test serialization functionality
 
 //    cout << e.actionString() << endl;
-//    cout << e.state(0)/*.toString()*/ << endl;
+//    cout << e.state(0)/*.to_string()*/ << endl;
 //    cout << e.actionSequence.size() << endl;
 //    cout << e.stateSequence.size() << endl;
 }

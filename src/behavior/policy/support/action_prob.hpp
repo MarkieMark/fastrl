@@ -16,9 +16,9 @@ public:
         pa = a_;
         pSelection = p;
     }
-    string toString() {
+    string to_string() {
         stringstream s;
-        s << pSelection << ": " << pa/*->toString()*/; // TODO Action may need toString() method
+        s << pSelection << ": " << pa/*->to_string()*/; // TODO Action may need to_string() method
         return s.str();
     }
 };

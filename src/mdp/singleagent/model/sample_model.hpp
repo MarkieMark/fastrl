@@ -9,8 +9,8 @@
 
 class SampleModel {
 public:
-    virtual EnvironmentOutcome * sample(State * s, Action * a) { throw runtime_error("Not Implemented"); }
-    virtual bool terminal(State * s) { throw runtime_error("Not Implemented"); }
+    virtual EnvironmentOutcome * sample(State * s, Action * a) { throw runtime_error("SampleModel::sample() Not Implemented"); }
+    virtual bool terminal(State * s) { throw runtime_error("SampleModel::terminal() Not Implemented"); }
 };
 
 #endif // FASTRL_MDP_SINGLEAGENT_MODEL_SAMPLE_MODEL_HPP

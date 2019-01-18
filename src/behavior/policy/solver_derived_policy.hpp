@@ -10,7 +10,7 @@
 
 class SolverDerivedPolicy : virtual public Policy {
 public:
-    virtual void setSolver(MDPSolverInterface * solver) { throw runtime_error("Not Implemented"); }
+    virtual void setSolver(MDPSolverInterface * solver) { throw runtime_error("SolverDerivedPolicy::setSolver() Not Implemented"); }
 };
 
 #endif

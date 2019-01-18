@@ -10,7 +10,7 @@
 
 class NullTermination : public TerminalFunction {
 public:
-    NullTermination();
-    bool isTerminal(State s);
+    NullTermination() = default;
+    bool isTerminal(State * s) override { return false; }
 };
 #endif // FASTRL_MDP_AUXILIARY_COMMON_NULL_TERMINATION_H

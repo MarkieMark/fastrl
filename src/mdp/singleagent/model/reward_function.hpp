@@ -10,7 +10,7 @@
 
 class RewardFunction {
 public:
-    virtual double reward(State * s, Action * a, State * s_prime) { throw runtime_error("Not Implemented"); }
+    virtual double reward(State * s, Action * a, State * s_prime) { throw runtime_error("RewardFunction::reward() Not Implemented"); }
 };
 
 #endif // FASTRL_MDP_SINGLEAGENT_MODEL_REWARD_FUNCTION_HPP

@@ -18,7 +18,7 @@ public:
     int debugCode;
     bool usingOptionModel = false;
 
-    void resetSolver() override { throw runtime_error("Not Implemented"); }
+    void resetSolver() override { throw runtime_error("MDPSolver::resetSolver() Not Implemented"); }
     void solverInit(SADomain * domain_, double gamma_/*, HashableStateFactory * factory*/) override {
         gamma = gamma_;
 //        hashingFactory = factory;

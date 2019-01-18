@@ -6,13 +6,13 @@
 #include "state/grid_agent.h"
 #include "state/grid_location.h"
 #include "../../../mdp/singleagent/common/uniform_cost_RF.h"
-#include "../../../mdp/auxiliary/common/null_termination.h"
+#include "../../../mdp/auxiliary/common/null_termination.hpp"
 #include "../../../mdp/singleagent/model/factored_model.h"
 #include "../../../mdp/core/action/universal_action_type.hpp"
 #include "state/grid_world_state.h"
 #include "grid_world_terminal_function.hpp"
 #include "../../../mdp/singleagent/environment/environment.hpp"
-#include "../../../shell/environment_shell.hpp"
+#include "../../../shell/environment_shell.h"
 #include "../../../mdp/singleagent/environment/simulated_environment.h"
 #include "../../../behavior/singleagent/learning/tdmethods/Q_learning.h"
 
@@ -46,7 +46,7 @@ void GridWorldDomain::setDeterministicTransitionDynamics() {
     for (int i = 0; i < n_actions; i++) {
         transitionDynamics[i] = vector<double>(n_actions);
         for (int j = 0; j < n_actions; j++) {
-            if (1 != j) {
+            if (i != j) {
                 transitionDynamics[i][j] = 0.;
             } else {
                 transitionDynamics[i][j] = 1.;
@@ -62,7 +62,7 @@ void GridWorldDomain::setProbSucceedTransitionDynamics(double prob_succeed) {
     for (int i = 0; i < n_actions; i++) {
         transitionDynamics[i] = vector<double>(n_actions);
         for (int j = 0; j < n_actions; j++) {
-            if (1 != j) {
+            if (i != j) {
                 transitionDynamics[i][j] = pAlternative;
             } else {
                 transitionDynamics[i][j] = prob_succeed;
@@ -251,10 +251,15 @@ void GridWorldDomain::setCellWallState(int x, int y, unsigned int wallType){
 }
 
 vector<vector<unsigned int>> GridWorldDomain::getMap() {
-    vector<vector<unsigned int>> ret = vector<vector<unsigned int>>(map.size());
-    for (int i = 0; i < transitionDynamics.size(); i++) {
-        ret[i] = map[i];
+    vector<vector<unsigned int>> ret = vector<vector<unsigned int>>();
+    for (const vector<unsigned int> &map_element : map) {
+        auto ret_element = vector<unsigned int>();
+        for (const unsigned int map_el : map_element) {
+            ret_element.push_back(map_el);
+        }
+        ret.push_back(ret_element);
     }
+//    cout << &ret << endl;
     return ret;
 }
 
@@ -299,13 +304,13 @@ OOSADomain * GridWorldDomain::generateDomain() {
     domain->addStateClass(CLASS_AGENT(), GridAgent::staticMetaObject);
     domain->addStateClass(CLASS_LOCATION(), GridLocation::staticMetaObject);
     GridWorldModel * smodel = new GridWorldModel(this, cmap, getTransitionDynamics());
-    RewardFunction* rf_ = rf;
-    TerminalFunction* tf_ = tf;
-    if(rf_ == nullptr){
-        rf_ = new UniformCostRF();
+//    RewardFunction* rf_ = rf;
+//    TerminalFunction* tf_ = tf;
+    if(rf == nullptr){
+        rf = new UniformCostRF();
     }
-    if(tf_ == nullptr){
-        tf_ = new NullTermination();
+    if(tf == nullptr){
+        tf = new NullTermination();
     }
     auto * model = new FactoredModel(smodel, rf, tf);
     domain->setModel(model);
@@ -371,9 +376,52 @@ vector<int> GridWorldDomain::movementDirectionFromIndex(int i) {
     return result;
 }
 
+string GridWorldDomain::stringMap(vector<vector<int>> specials) { // vector of values {x, y, code[, reward]}, code < 0 for an agent
+    stringstream ret;
+    for (int v_ind = height - 1; v_ind >= 0; v_ind--) {
+        for (int h_ind = 0; h_ind < width; h_ind++) {
+            int code = 0;
+            stringstream repr;
+            for (const vector<int> &special : specials) {
+                if (special[0] == h_ind && special[1] == v_ind) {
+                    code = special[2];
+                    if (code > 0) {
+                        repr << special[3];
+                    }
+                }
+            }
+            if (code == 0) {
+                ret << map[h_ind][v_ind] << " ";
+            } else {
+                string r = (code < 0) ? "*" : repr.str();
+            }
+        }
+        ret << endl;
+    }
+    return ret.str();
+}
+
+string GridWorldDomain::stringMap() {
+    stringstream ret;
+    for (int v_ind = height - 1; v_ind >= 0; v_ind--) {
+        for (int h_ind = 0; h_ind < width; h_ind++) {
+            ret << map[h_ind][v_ind] << " ";
+        }
+        ret << endl;
+    }
+    return ret.str();
+}
+
+void GridWorldDomain::printMap() {
+    cout << stringMap();
+}
+
 GridWorldModel::GridWorldModel(GridWorldDomain * parent_, vector<vector<unsigned int>> map_,
                vector<vector<double>> transition_dynamics)
-   : parent(parent_), map(std::move(map_)), transitionDynamics(std::move(transition_dynamics)) { }
+   : parent(parent_), map(std::move(map_)), transitionDynamics(std::move(transition_dynamics)) {
+//    cout << &map << endl;
+//    cout << "GridWorldModel()" << endl;
+}
 
 vector<StateTransitionProb *> GridWorldModel::stateTransitions(State * s, Action * a) {
 
@@ -443,13 +491,27 @@ State * GridWorldModel::move(State * s, int xd, int yd){
     int ax = gws->agent->x;
     int ay = gws->agent->y;
 
-    int nx = ax+xd;
-    int ny = ay+yd;
+    int nx = ax + xd;
+    int ny = ay + yd;
 
 //    hit wall, so do not change position
-    if(nx < 0 || nx >= map.size() || ny < 0 || ny >= map[0].size() || map[nx][ny] == 1 ||
-       (xd > 0 && (map[ax][ay] == 3 || map[ax][ay] == 4)) || (xd < 0 && (map[nx][ny] == 3 || map[nx][ny] == 4)) ||
-       (yd > 0 && (map[ax][ay] == 2 || map[ax][ay] == 4)) || (yd < 0 && (map[nx][ny] == 2 || map[nx][ny] == 4)) ){
+    unsigned long map_width = map[0].size();
+    unsigned long map_height = map.size();
+    bool solid_wall = false;
+    bool thin_wall = false;
+    for (const vector<unsigned int> &row : map) {
+        if (row.empty() || row.size() < map[0].size()) {
+            cout << "map row wonky" << endl;
+        }
+    }
+    if (nx < 0 || nx >= map_width || ny < 0 || ny >= map_height || map[nx][ny] == 1) {
+        solid_wall = true;
+    }
+    if ((xd > 0 && (map[ax][ay] == 3 || map[ax][ay] == 4)) || (xd < 0 && (map[nx][ny] == 3 || map[nx][ny] == 4)) ||
+       (yd > 0 && (map[ax][ay] == 2 || map[ax][ay] == 4)) || (yd < 0 && (map[nx][ny] == 2 || map[nx][ny] == 4))) {
+        thin_wall = true;
+    }
+    if (solid_wall || thin_wall) {
         nx = ax;
         ny = ay;
     }
@@ -544,8 +606,8 @@ bool WallToPF::isTrue(OOState * st, vector<string> params) {
  * @param args command line args
  */
 void GridWorldDomain::main(vector<string> args) {
-    cout << "GridWorldDomain::main()" << endl;
-    cout << "option " << args[args.size() - 1] << endl;
+//    cout << "GridWorldDomain::main()" << endl;
+//    cout << "option " << args[args.size() - 1] << endl;
     if (args[args.size() - 1] == string("2")) {
         GridWorldDomain::main2(args);
     } else {
@@ -558,8 +620,9 @@ void GridWorldDomain::main1(vector<string> args) {
     auto * gwdg = new GridWorldDomain(11, 11);
     gwdg->setMapToFourRooms();
     gwdg->setProbSucceedTransitionDynamics(0.75);
+    gwdg->printMap();
 
-    SADomain * d = gwdg->generateDomain();
+    OOSADomain * d = gwdg->generateDomain();
     GridWorldState * s = new GridWorldState(
             new GridAgent(0, 0), vector<GridLocation *>({new GridLocation(10, 10, -1, "loc0")}));
 
@@ -573,9 +636,9 @@ void GridWorldDomain::main1(vector<string> args) {
         }
     }
     if (expMode == 0) {
-        cout << "making shell" << endl;
-        EnvironmentShell * shell = new EnvironmentShell(*d, *(static_cast<State *>(s)));
-        cout << "shell made" << endl;
+//        cout << "making shell" << endl;
+        auto * shell = new EnvironmentShell(d, static_cast<State *>(s));
+//        cout << "shell made" << endl;
         shell->start();
     }
     else if (expMode == 1) {

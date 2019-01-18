@@ -27,7 +27,6 @@ public:
     ActionType * getAction(string name);
     SampleModel * getModel();
     void setModel(SampleModel * model_);
-
 };
 
 #endif // FASTRL_MDP_SINGLEAGENT_SA_DOMAIN_H

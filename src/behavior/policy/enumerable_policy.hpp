@@ -10,7 +10,7 @@
 
 class EnumerablePolicy : virtual public Policy {
 public:
-    virtual vector<ActionProb *> policyDistribution(State *s) { throw runtime_error("Not Implemented"); }
+    virtual vector<ActionProb *> policyDistribution(State *s) { throw runtime_error("EnumerablePolicy::policyDistribution() Not Implemented"); }
 };
 
 #endif

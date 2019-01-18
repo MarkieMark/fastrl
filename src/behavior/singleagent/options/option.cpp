@@ -26,7 +26,7 @@ EnvironmentOptionOutcome * OptionHelper::control(Option *o, Environment *env, do
         cDiscount *= discountFactor;
         history->transition(a, eo->o_prime, eo->reward);
         stringstream s;
-        s << o->toString() << "(" << nIterations << ")";
+        s << o->to_string() << "(" << nIterations << ")";
         AnnotatedAction * annotatedAction = new AnnotatedAction(a, s.str());
         episode->transition(annotatedAction, eo->o_prime, reward);
         pTransition = o->probabilityOfTermination(eo->o_prime, history);

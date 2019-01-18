@@ -27,7 +27,7 @@ public:
     string getName();
     vector<string> getParameterClasses();
     vector<string> getParameterOrderGroups();
-    virtual bool isTrue(OOState s, vector<string> params) { throw runtime_error("Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
+    virtual bool isTrue(OOState s, vector<string> params) { throw runtime_error("PropositionalFunction::isTrue() Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
     vector<GroundedProp> allGroundings(OOState s);
     bool someGroundingIsTrue(OOState s);
     static vector<GroundedProp> allGroundingsFromList(vector<PropositionalFunction> pfs, OOState s);
@@ -35,7 +35,7 @@ public:
     bool operator==(const PropositionalFunction &comp) {
         return name == comp.name;
     }
-    string toString() { return name; }
+    string to_string() { return name; }
 };
 
 #endif // FASTRL_MDP_CORE_OO_PROPOSITIONAL_PROPOSITIONAL_FUNCTION_H

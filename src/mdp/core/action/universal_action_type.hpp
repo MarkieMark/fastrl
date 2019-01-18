@@ -1,7 +1,3 @@
-#include <utility>
-
-#include <utility>
-
 /**
  * Mark Benjamin 31st May 2017
  */
@@ -9,7 +5,9 @@
 #ifndef FASTRL_MDP_CORE_ACTION_UNIVERSAL_ACTION_TYPE_HPP
 #define FASTRL_MDP_CORE_ACTION_UNIVERSAL_ACTION_TYPE_HPP
 
+#include <utility>
 #include "action_type.hpp"
+#include "simple_action.hpp"
 
 class UniversalActionType : public ActionType {
 public:
@@ -17,7 +15,7 @@ public:
     Action * action = nullptr;
     vector<Action *> allActions;
 
-    explicit UniversalActionType(string type_name) : _typeName(move(type_name)) { }
+    explicit UniversalActionType(string type_name) : UniversalActionType(new SimpleAction(move(type_name))) { }
 
     explicit UniversalActionType(Action * action) : UniversalActionType(action->actionName(), action) { }
 

@@ -11,7 +11,7 @@
 
 class FullStateModel : public SampleStateModel {
 public:
-    virtual vector<StateTransitionProb *> stateTransitions(State * s, Action * a) { throw runtime_error("Not Implemented"); }
+    virtual vector<StateTransitionProb *> stateTransitions(State * s, Action * a) { throw runtime_error("FullStateModel::stateTransitions() Not Implemented"); }
 };
 
 class FullStateModelHelper {

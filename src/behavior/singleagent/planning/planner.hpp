@@ -9,7 +9,7 @@
 #include "../../policy/policy.hpp"
 
 class Planner {
-    virtual Policy * planFromState(State * initialState) { throw runtime_error("Not Implemented"); }
+    virtual Policy * planFromState(State * initialState) { throw runtime_error("Planner::planFromState() Not Implemented"); }
 };
 
 #endif // FASTRL_BEHAVIOR_SINGLEAGENT_PLANNING_PLANNER_HPP

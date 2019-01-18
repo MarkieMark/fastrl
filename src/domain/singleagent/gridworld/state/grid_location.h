@@ -30,7 +30,7 @@ public:
     // TODO check assumption that all values are integers
     int getIntValue(KeyContainer *variableKey) override;
     State* makeCopy() override;
-    string toString();
+    string to_string() override;
     string getName();
     void setName(string name_);
     void setLoc(int x_, int y_);

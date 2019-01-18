@@ -9,7 +9,7 @@
 
 class StateGenerator {
 public:
-    virtual State * generateState() { throw runtime_error("Not Implemented"); }
+    virtual State * generateState() { throw runtime_error("StateGenerator::generateState() Not Implemented"); }
 };
 
 #endif // FASTRL_MDP_AUXILIARY_STATE_GENERATOR_HPP

@@ -5,7 +5,7 @@
 
 class TerminalFunction {
 public:
-    virtual bool isTerminal(State * s) { throw runtime_error("Not Implemented"); }
+    virtual bool isTerminal(State * s) { throw runtime_error("TerminalFunction::isTerminal() Not Implemented"); }
 };
 
 #endif // FASTRL_MDP_CORE_TERMINAL_FUNCTION_HPP

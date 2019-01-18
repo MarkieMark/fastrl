@@ -12,7 +12,7 @@
 
 class QProvider : public QFunction {
 public:
-    virtual vector<QValue *> qValues(State *s) { throw runtime_error("Not Implemented"); }
+    virtual vector<QValue *> qValues(State *s) { throw runtime_error("QProvider::qValues() Not Implemented"); }
 };
 
 class QProviderHelper {

@@ -44,7 +44,8 @@ vector<ActionType *> SADomain::getActionTypes() {
 }
 
 ActionType * SADomain::getAction(string name) {
-    return actionMap.find(name)->second;
+    auto p = actionMap.find(name);
+    return p->second;
 }
 
 SampleModel * SADomain::getModel() {

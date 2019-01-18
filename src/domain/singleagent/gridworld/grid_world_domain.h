@@ -157,6 +157,9 @@ public:
     vector<PropositionalFunction *> generatePfs();
     OOSADomain * generateDomain();
     static vector<int> movementDirectionFromIndex(int i);
+    string stringMap();
+    string stringMap(vector<vector<int>> specials);
+    void printMap();
 
     static void main(vector<string> args);
     static void main1(vector<string> args);

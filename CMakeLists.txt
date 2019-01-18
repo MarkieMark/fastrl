@@ -319,7 +319,6 @@ set(SOURCE_FILES
         src/mdp/auxiliary/common/constant_state_generator.hpp
         src/mdp/auxiliary/common/goal_condition_TF.cpp
         src/mdp/auxiliary/common/identity_state_mapping.cpp
-        src/mdp/auxiliary/common/null_termination.cpp
         src/mdp/auxiliary/common/random_start_state_generator.cpp
         src/mdp/auxiliary/common/shallow_identity_state_mapping.cpp
         src/mdp/auxiliary/common/single_PFTF.cpp
@@ -333,7 +332,7 @@ set(SOURCE_FILES
         src/mdp/core/action/action.hpp
         src/mdp/core/action/action_type.hpp
         src/mdp/core/action/action_utils.cpp
-        src/mdp/core/action/simple_action.cpp
+        src/mdp/core/action/simple_action.hpp
         src/mdp/core/action/universal_action_type.hpp
         src/mdp/core/oo/propositional/grounded_prop.cpp
         src/mdp/core/oo/propositional/propositional_function.cpp
@@ -355,7 +354,7 @@ set(SOURCE_FILES
         src/mdp/core/state/mutable_state.hpp
         src/mdp/core/state/null_state.cpp
         src/mdp/core/state/state.hpp
-        src/mdp/core/state/state_utilities.cpp
+        src/mdp/core/state/state_utilities.hpp
         src/mdp/core/state/unknown_key_exception.cpp
         src/mdp/core/domain.hpp
         src/mdp/core/state_transition_prob.hpp
@@ -423,11 +422,11 @@ set(SOURCE_FILES
         src/mdp/stochasticgames/SG_domain.cpp
         src/shell/command/env/add_state_object_command.cpp
         src/shell/command/env/episode_recording_commands.cpp
-        src/shell/command/env/execute_action_command.hpp
+        src/shell/command/env/action_command.cpp
         src/shell/command/env/is_terminal_command.cpp
         src/shell/command/env/list_actions_command.cpp
         src/shell/command/env/list_prop_functions.cpp
-        src/shell/command/env/observation_command.cpp
+        src/shell/command/env/observation_command.h
         src/shell/command/env/remove_state_object_command.cpp
         src/shell/command/env/reset_env_command.cpp
         src/shell/command/env/reward_command.cpp
@@ -452,7 +451,7 @@ set(SOURCE_FILES
         src/shell/visual/text_area_streams.cpp
         src/shell/visual/visual_explorer.cpp
         src/shell/fastrl_shell.cpp
-        src/shell/environment_shell.hpp
+        src/shell/environment_shell.h
         src/shell/SG_world_shell.cpp
         src/shell/shell_observer.hpp
         src/statehashing/discretized/disc_config.cpp
@@ -491,13 +490,13 @@ set(SOURCE_FILES
         src/domain/singleagent/gridworld/state/grid_agent.h
         src/domain/singleagent/gridworld/state/grid_location.h
         src/mdp/singleagent/common/uniform_cost_RF.h
-        src/mdp/auxiliary/common/null_termination.h
+        src/mdp/auxiliary/common/null_termination.hpp
         src/mdp/singleagent/model/full_model.cpp
         src/mdp/singleagent/model/factored_model.h
         src/mdp/singleagent/model/statemodel/full_state_model.cpp
         src/mdp/singleagent/SA_domain.h
         src/mdp/core/oo/OO_domain.cpp
-        src/domain/singleagent/gridworld/state/grid_world_state.h src/mdp/singleagent/environment/simulated_environment.h src/behavior/singleagent/learning/tdmethods/Q_learning.h src/behavior/valuefunction/Q_provider.h src/behavior/singleagent/episode.h src/mdp/core/action/action_utils.h src/behavior/policy/greedy_Q_policy.h src/behavior/policy/policy_utils.h src/behavior/singleagent/options/option.h src/behavior/policy/epsilon_greedy.h src/mdp/core/oo/state/key_container.hpp src/shell/fastrl_shell.h)
+        src/domain/singleagent/gridworld/state/grid_world_state.h src/mdp/singleagent/environment/simulated_environment.h src/behavior/singleagent/learning/tdmethods/Q_learning.h src/behavior/valuefunction/Q_provider.h src/behavior/singleagent/episode.h src/mdp/core/action/action_utils.h src/behavior/policy/greedy_Q_policy.h src/behavior/policy/policy_utils.h src/behavior/singleagent/options/option.h src/behavior/policy/epsilon_greedy.h src/mdp/core/oo/state/key_container.hpp src/shell/fastrl_shell.h src/shell/command/env/observation_command.cpp src/shell/environment_shell.cpp src/shell/command/env/action_command.h)
 
 add_executable(fastrl ${SOURCE_FILES})
 

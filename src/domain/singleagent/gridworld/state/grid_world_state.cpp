@@ -140,7 +140,7 @@ int GridWorldState::get(KeyContainer * variableKey) {
 }
 
 State * GridWorldState::makeCopy() {
-    return dynamic_cast<State *>( new GridWorldState(agent, locations));
+    return dynamic_cast<State *>( new GridWorldState(agent->makeCopy(), locations)); // todo possibly copy locations
 }
 
 long GridWorldState::locationInd(string objName) {
@@ -154,8 +154,8 @@ long GridWorldState::locationInd(string objName) {
     return ind;
 }
 
-string GridWorldState::toString() {
+string GridWorldState::to_string() {
     OOState *oos = this;
-    return OOStateUtilities::ooStateTostring(*oos);
+    return OOStateUtilities::ooStateTostring(oos);
 }
 

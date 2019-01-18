@@ -14,11 +14,11 @@ using namespace std;
 
 class OODomain : public Domain {
 public:
-    virtual vector<QMetaObject> stateClasses() { throw runtime_error("Not Implemented"); }
-    virtual QMetaObject stateClass(string className) { throw runtime_error("Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
-    virtual OODomain * addStateClass(string className, QObject stateClass) { throw runtime_error("Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
-    virtual vector<PropositionalFunction *> propFunctions()  { throw runtime_error("Not Implemented"); }
-    virtual OODomain * addPropFunction(PropositionalFunction * prop) { throw runtime_error("Not Implemented"); }
+    virtual vector<QMetaObject> stateClasses() { throw runtime_error("OODomain::stateClasses() Not Implemented"); }
+    virtual QMetaObject stateClass(string className) { throw runtime_error("OODomain::stateClass() Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
+    virtual OODomain * addStateClass(string className, QObject stateClass) { throw runtime_error("OODomain::addStateClass() Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
+    virtual vector<PropositionalFunction *> propFunctions()  { throw runtime_error("OODomain::propFunctions() Not Implemented"); }
+    virtual OODomain * addPropFunction(PropositionalFunction * prop) { throw runtime_error("OODomain::addPropFunction() Not Implemented"); }
 };
 
 class OODomainHelper {

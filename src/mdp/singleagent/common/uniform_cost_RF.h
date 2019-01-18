@@ -11,7 +11,7 @@
 class UniformCostRF : public RewardFunction {
 public:
     UniformCostRF();
-    double reward(State s, Action a, State s_prime);
+    double reward(State * s, Action * a, State * s_prime) override;
 };
 
 #endif // FASTRL_MDP_SINGLEAGENT_COMMON_UNIFORM_COST_RF_H

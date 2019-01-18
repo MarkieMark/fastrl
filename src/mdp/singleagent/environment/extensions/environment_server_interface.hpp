@@ -10,10 +10,10 @@
 
 class EnvironmentServerInterface : virtual public Environment {
 public:
-    virtual void addObservers(vector<EnvironmentObserver *> observers) { throw runtime_error("Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
-    virtual void clearAllObservers() { throw runtime_error("Not Implemented"); }
-    virtual void removeObservers(vector<EnvironmentObserver *> observers) { throw runtime_error("Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
-    vector<EnvironmentObserver *> observers() { throw runtime_error("Not Implemented"); }
+    virtual void addObservers(vector<EnvironmentObserver *> observers) { throw runtime_error("EnvironmentServerInterface::addObservers() Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
+    virtual void clearAllObservers() { throw runtime_error("EnvironmentServerInterface::clearAllObservers() Not Implemented"); }
+    virtual void removeObservers(vector<EnvironmentObserver *> observers) { throw runtime_error("EnvironmentServerInterface::removeObservers() Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
+    vector<EnvironmentObserver *> observers() { throw runtime_error("EnvironmentServerInterface::observers() Not Implemented"); }
 };
 
 #endif // FASTRL_MDP_SINGLEAGENT_ENVIRONMENT_EXTENSIONS_ENVIRONMENT_SERVER_INTERFACE_HPP

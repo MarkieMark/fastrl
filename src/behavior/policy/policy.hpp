@@ -10,9 +10,9 @@
 
 class Policy {
 public:
-    virtual Action * action(State *s) { throw runtime_error("Not Implemented"); }
-    virtual double actionProb(State *s, Action *a) { throw runtime_error("Not Implemented"); }
-    virtual bool definedFor(State *s) { throw runtime_error("Not Implemented"); }
+    virtual Action * action(State *s) { throw runtime_error("Policy::action() Not Implemented"); }
+    virtual double actionProb(State *s, Action *a) { throw runtime_error("Policy::actionProb() Not Implemented"); }
+    virtual bool definedFor(State *s) { throw runtime_error("Policy::definedFor() Not Implemented"); }
 };
 
 

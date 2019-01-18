@@ -6,6 +6,7 @@
 #ifndef FASTRL_MDP_SINGLEAGENT_MODEL_FACTORED_MODEL_H
 #define FASTRL_MDP_SINGLEAGENT_MODEL_FACTORED_MODEL_H
 
+#include <iostream>
 #include "task_factored_model.hpp"
 #include "full_model.h"
 #include "../model/statemodel/sample_state_model.hpp"

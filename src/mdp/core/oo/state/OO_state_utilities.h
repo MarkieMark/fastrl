@@ -28,8 +28,8 @@ public:
     static KeyContainer * generateOOVariableKey(KeyContainer *key);
     static map<string, vector<ObjectInstance *>> objectsByClass(OOState s);
     static set<string> objectClassesPresent(OOState s);
-    static string ooStateTostring(OOState s);
-    static string objectInstanceToString(ObjectInstance o);
+    static string ooStateTostring(OOState * s);
+    static string objectInstanceToString(ObjectInstance * o);
     static vector<vector<string>> getPossibleBindingsGivenParamOrderGroups(
             OOState s, vector<string> paramClasses, vector<string> paramOrderGroups);
     static vector<string> identifyUniqueClassesInParameters(vector<string> paramClasses);

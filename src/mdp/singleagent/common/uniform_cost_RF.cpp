@@ -6,6 +6,6 @@
  */
 
 UniformCostRF::UniformCostRF() = default;
-double UniformCostRF::reward(State s, Action a, State s_prime) {
+double UniformCostRF::reward(State * s, Action * a, State * s_prime) {
     return -1.;
 }

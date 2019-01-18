@@ -8,7 +8,7 @@
 #include "../../mdp/core/state/state.hpp"
 
 class ValueFunction {
-    virtual double value(State *s) { throw runtime_error("Not Implemented"); }
+    virtual double value(State *s) { throw runtime_error("ValueFunction::value() Not Implemented"); }
 };
 
 #endif // FASTRL_BEHAVIOR_VALUEFUNCTION_VALUE_FUNCTION_HPP

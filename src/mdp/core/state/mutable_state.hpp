@@ -9,7 +9,7 @@
 
 class MutableState : virtual public State {
 public:
-    virtual MutableState * set(KeyContainer * variableKey, void *value) { throw runtime_error("Not Implemented"); }
+    virtual MutableState * set(KeyContainer * variableKey, void *value) { throw runtime_error("MutableState::set() Not Implemented"); }
 };
 
 #endif // FASTRL_MDP_CORE_STATE_MUTABLE_STATE_HPP

@@ -33,10 +33,10 @@ public:
     vector<KeyContainer *> variableKeys() override;
     // TODO check assumption that all values are integers
     int getIntValue(KeyContainer *variableKey) override;
-    State* makeCopy() override;
+    GridAgent * makeCopy() override;
     string getName();
     void setName(string name_);
     void setLoc(int x, int y);
-    string toString();
+    string to_string() override;
 };
 #endif // FASTRL_DOMAIN_SINGLEAGENT_GRIDWORLD_STATE_GRID_AGENT_H

@@ -49,9 +49,9 @@ State* GridLocation::makeCopy() {
     return dynamic_cast<State *>(new GridLocation(x, y, type, _name));
 }
 
-string GridLocation::toString() {
-    ObjectInstance *oi = this;
-    return OOStateUtilities::objectInstanceToString(*oi);
+string GridLocation::to_string() {
+    ObjectInstance * oi = this;
+    return OOStateUtilities::objectInstanceToString(oi);
 }
 
 string GridLocation::getName() {
