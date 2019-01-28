@@ -94,11 +94,11 @@ KeyContainer * OOStateUtilities::generateOOVariableKey(KeyContainer *key) {
  * @param s the input {@link OOState}
  * @return the {@link ObjectInstance}s organized by their class
  */
-map<string, vector<ObjectInstance *>> OOStateUtilities::objectsByClass(OOState s) {
+map<string, vector<ObjectInstance *>> OOStateUtilities::objectsByClass(OOState * s) {
     set<string> classes = objectClassesPresent(s);
     map<string, vector<ObjectInstance *>> obsByClass;
     for(string className : classes){
-        vector<ObjectInstance *> obs = vector<ObjectInstance *>(s.objectsOfClass(className));
+        vector<ObjectInstance *> obs = vector<ObjectInstance *>(s->objectsOfClass(className));
         obsByClass.insert(pair<string, vector<ObjectInstance *>>(className, obs));
     }
     return obsByClass;
@@ -109,8 +109,8 @@ map<string, vector<ObjectInstance *>> OOStateUtilities::objectsByClass(OOState s
  * @param s the input state
  * @return the set of object classes that have instantiated {@link ObjectInstance}s in the input state.
  */
-set<string> OOStateUtilities::objectClassesPresent(OOState s) {
-    vector<ObjectInstance *> obs = s.objects();
+set<string> OOStateUtilities::objectClassesPresent(OOState * s) {
+    vector<ObjectInstance *> obs = s->objects();
     set<string> classes = set<string>();
     for(ObjectInstance *ob : obs){
         classes.insert(ob->className());
@@ -162,7 +162,7 @@ string OOStateUtilities::objectInstanceToString(ObjectInstance * o) {
  * to the input parameters.
  */
 vector<vector<string>> OOStateUtilities::getPossibleBindingsGivenParamOrderGroups(
-        OOState s, vector<string> paramClasses, vector<string> paramOrderGroups) {
+        OOState * s, vector<string> paramClasses, vector<string> paramOrderGroups) {
 
     vector<vector<string>> res = vector<vector<string>>();
     vector<vector<string>> currentBindingSets = vector<vector<string>>();
@@ -179,7 +179,7 @@ vector<vector<string>> OOStateUtilities::getPossibleBindingsGivenParamOrderGroup
             return res;
         }
     }
-    getPossibleRenameBindingsHelper(res, currentBindingSets, 0, s.objects(), uniqueRenames, paramClasses, paramOrderGroups);
+    getPossibleRenameBindingsHelper(res, currentBindingSets, 0, s->objects(), uniqueRenames, paramClasses, paramOrderGroups);
     return res;
 }
 
@@ -218,7 +218,7 @@ void OOStateUtilities::getPossibleRenameBindingsHelper(
     vector<vector<string>> combs = getAllCombinationsOfObjects(objects, k);
     for(const vector<string> &cb : combs){
 
-        vector<vector<string>> nextBinding = vector<vector<string>>(currentBindingSets.size());
+        vector<vector<string>> nextBinding = vector<vector<string>>();
         for(const vector<string> &prevBind : currentBindingSets){
             nextBinding.push_back(prevBind);
         }
@@ -305,7 +305,7 @@ unsigned long OOStateUtilities::numOccurrencesOfOrderGroup(
 
 vector<ObjectInstance *> OOStateUtilities::objectsMatchingClass(
         vector<ObjectInstance *> objects, string className) {
-    vector<ObjectInstance *> filtered = vector<ObjectInstance *>(objects.size());
+    vector<ObjectInstance *> filtered = vector<ObjectInstance *>();
     for(ObjectInstance *ob : objects){
         if(ob->className() == className) {
             filtered.push_back(ob);
@@ -344,7 +344,7 @@ vector<string> OOStateUtilities::getVectorOfBindingsFromCombination(
 
 vector <ObjectInstance *> OOStateUtilities::objectVectorDifference(
         vector <ObjectInstance *> objects, vector <string> toRemove) {
-    vector <ObjectInstance *> remaining = vector<ObjectInstance *>(objects.size());
+    vector <ObjectInstance *> remaining = vector<ObjectInstance *>();
     for(ObjectInstance *oi : objects){
         string oName = oi->name();
         if(find(toRemove.begin(), toRemove.end(), oName) == toRemove.end()){

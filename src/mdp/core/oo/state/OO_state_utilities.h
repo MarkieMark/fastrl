@@ -26,12 +26,12 @@ public:
     // TODO check assumption that all values are integers
     static int get(OOState s, KeyContainer * variableKey);
     static KeyContainer * generateOOVariableKey(KeyContainer *key);
-    static map<string, vector<ObjectInstance *>> objectsByClass(OOState s);
-    static set<string> objectClassesPresent(OOState s);
+    static map<string, vector<ObjectInstance *>> objectsByClass(OOState * s);
+    static set<string> objectClassesPresent(OOState * s);
     static string ooStateTostring(OOState * s);
     static string objectInstanceToString(ObjectInstance * o);
     static vector<vector<string>> getPossibleBindingsGivenParamOrderGroups(
-            OOState s, vector<string> paramClasses, vector<string> paramOrderGroups);
+            OOState * s, vector<string> paramClasses, vector<string> paramOrderGroups);
     static vector<string> identifyUniqueClassesInParameters(vector<string> paramClasses);
     static void getPossibleRenameBindingsHelper(
             vector<vector<string>> res, vector<vector<string>> currentBindingSets,

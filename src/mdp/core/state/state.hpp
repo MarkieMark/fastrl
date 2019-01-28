@@ -15,11 +15,11 @@ using namespace std;
 class State {
 public:
     virtual vector<KeyContainer *> variableKeys() { throw runtime_error("State::variableKeys() Not Implemented"); }
-    virtual int getIntValue(KeyContainer *variableKey) { throw runtime_error("State::getIntValue() Not Implemented"); }
-    virtual State* makeCopy() { throw runtime_error("State::makeCopy() Not Implemented"); }
-    bool operator==(State &comp) {
-        vector<KeyContainer *>myKeys = variableKeys();
-        vector<KeyContainer *>compKeys = comp.variableKeys();
+    virtual int getIntValue(KeyContainer * variableKey) { throw runtime_error("State::getIntValue() Not Implemented"); }
+    virtual State * makeCopy() { throw runtime_error("State::makeCopy() Not Implemented"); }
+    virtual bool operator==(State &comp) {
+        vector<KeyContainer *> myKeys = variableKeys();
+        vector<KeyContainer *> compKeys = comp.variableKeys();
         if (myKeys.size() != compKeys.size()) return false;
         for (int i = 0; i < myKeys.size(); i++) {
             // TODO check assumption that all values are integers

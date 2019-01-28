@@ -6,11 +6,9 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-#include "domain/singleagent/gridworld/grid_world_domain.h"
-
-using namespace std;
-
 #include <algorithm>
+#include "domain/singleagent/gridworld/grid_world_domain.h"
+#include "main.h"
 
 char* getCmdOption(char ** begin, char ** end, const string & option) {
     char ** itr = find(begin, end, option);
@@ -24,21 +22,21 @@ bool cmdOptionExists(char** begin, char** end, const string& option) {
     return find(begin, end, option) != end;
 }
 
-int main (int argc, char ** argv) {
-//    cout << argc << endl;
-    vector<string> args = vector<string>();
+void printMainArgs(int argc, char * argv[]) {
     for (int i = 0; i < argc; i++) {
-//        cout << i << " \"" << argv[i] <<"\"" << endl;
-        args.emplace_back(string(argv[i]));
-//        cout << "arg" << i << " " << args[i] << endl;
+        cout << i << " \"" << argv[i] <<"\"" << endl;
     }
-//    cout << "args " << args.size() << endl;
+    cout << "args " << argc << endl;
+}
+
+int main (int argc, char * argv[]) {
+    printMainArgs(argc, argv);
     if (argc > 1) {
         char *mainName = getCmdOption(argv, argv + argc, "-main");
         if (string(mainName) == "GridWorldDomain") {
             // TODO replace with QMetaType / QMetaObject reflection
             try {
-                GridWorldDomain::main(args);
+                return GridWorldDomain::main(argc, argv);
             } catch (string &e) {
                 cout << "error " << e << endl;
             }
@@ -46,7 +44,7 @@ int main (int argc, char ** argv) {
             cout << "Unrecognized class name" << endl;
         }
     } else {
-        cout << endl << "usage:" << endl << "$ " << args[0] << " -main <MainClassName> [<option_number>]" << endl << endl;
-        cout << "For instance" << endl << "$ " << args[0] << " -main GridWorldDomain 2" << endl << endl;
+        cout << endl << "usage:" << endl << "$ " << *(argv[0]) << " -main <MainClassName> [<option_number>]" << endl << endl;
+        cout << "For instance" << endl << "$ " << *(argv[0]) << " -main GridWorldDomain 2" << endl << endl;
     }
 }

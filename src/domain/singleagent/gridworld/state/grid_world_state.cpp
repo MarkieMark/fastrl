@@ -2,6 +2,7 @@
 #include "../../../../mdp/core/state/mutable_state.hpp"
 #include "../../../../mdp/core/oo/state/OO_variable_key.hpp"
 #include "../../../../mdp/core/oo/state/OO_state_utilities.h"
+#include "../grid_world_domain.h"
 
 /**
  * Mark Benjamin 31st May 2017

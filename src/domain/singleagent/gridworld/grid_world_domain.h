@@ -8,12 +8,27 @@
 
 #include <string>
 #include <vector>
+#include <thread>
 #include "../../../mdp/singleagent/model/reward_function.hpp"
 #include "../../../mdp/core/terminal_function.hpp"
 #include "../../../mdp/core/oo/propositional/propositional_function.h"
 #include "../../../mdp/core/oo/state/OO_state.hpp"
 #include "../../../mdp/singleagent/oo/OOSA_domain.hpp"
 #include "../../../mdp/singleagent/model/statemodel/full_state_model.h"
+#include "../../../mdp/singleagent/common/uniform_cost_RF.h"
+#include "../../../mdp/auxiliary/common/null_termination.hpp"
+#include "../../../mdp/singleagent/model/factored_model.h"
+#include "../../../mdp/core/action/universal_action_type.hpp"
+#include "../../../mdp/singleagent/environment/environment.hpp"
+#include "../../../shell/environment_shell.h"
+#include "../../../mdp/singleagent/environment/simulated_environment.h"
+#include "../../../behavior/singleagent/learning/tdmethods/Q_learning.h"
+#include "../../../visualizer/visualizer.h"
+#include "state/grid_agent.h"
+#include "state/grid_location.h"
+#include "state/grid_world_state.h"
+#include "grid_world_terminal_function.h"
+#include "grid_world_visualizer.h"
 
 class GridWorldModel;
 class WallToPF;
@@ -161,9 +176,9 @@ public:
     string stringMap(vector<vector<int>> specials);
     void printMap();
 
-    static void main(vector<string> args);
-    static void main1(vector<string> args);
-    static void main2(vector<string> args);
+    static int main(int argc, char * argv[]);
+    static int main1(int argc, char * argv[]);
+    static int main2(int argc, char * argv[]);
 
     friend GridWorldModel;
     friend WallToPF;
@@ -194,7 +209,7 @@ public:
 class AtLocationPF : public PropositionalFunction {
 public:
     AtLocationPF(string name, vector<string> parameterClasses);
-    bool isTrue(OOState * st, vector<string> params);
+    bool isTrue(OOState * st, vector<string> params) override;
 };
 
 class WallToPF : public PropositionalFunction {
@@ -204,7 +219,7 @@ private:
     GridWorldDomain * parent;
 public:
     WallToPF(GridWorldDomain * parent_, string name, vector<string> parameterClasses, int direction);
-    bool isTrue(OOState * st, vector<string> params);
+    bool isTrue(OOState * st, vector<string> params) override;
 };
 
 #endif // FASTRL_DOMAIN_SINGLEAGENT_GRIDWORLD_GRID_WORLD_DOMAIN_H

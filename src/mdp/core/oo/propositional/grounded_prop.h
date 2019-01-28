@@ -18,7 +18,20 @@ public:
     GroundedProp(PropositionalFunction p, vector<string> par) :
         pf(move(p)), params(move(par)) { }
 
-    bool isTrue(OOState s);
+    bool isTrue(OOState * s);
+    string to_string() {
+        string ret;
+        ret += pf.getName();
+        ret += "(";
+        for (int ind = 0; ind < params.size(); ind++) {
+            if (ind > 0) {
+                ret += ", ";
+            }
+            ret += params[ind];
+        }
+        ret += ")";
+        return ret;
+    }
 };
 
 #endif //FASTRL_MDP_CORE_OO_PROPOSITIONAL_GROUNDED_PROP_H

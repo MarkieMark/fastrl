@@ -288,7 +288,7 @@ set(SOURCE_FILES
         src/domain/singleagent/gridworld/state/grid_world_state.cpp
         src/domain/singleagent/gridworld/grid_world_domain.cpp
         src/domain/singleagent/gridworld/grid_world_reward_function.cpp
-        src/domain/singleagent/gridworld/grid_world_terminal_function.hpp
+        src/domain/singleagent/gridworld/grid_world_terminal_function.h
         src/domain/singleagent/gridworld/grid_world_visualizer.cpp
         src/domain/singleagent/lunarlander/state/LL_agent.cpp
         src/domain/singleagent/lunarlander/state/LL_block.cpp
@@ -352,7 +352,7 @@ set(SOURCE_FILES
         src/mdp/core/state/vardomain/state_domain.cpp
         src/mdp/core/state/vardomain/variable_domain.cpp
         src/mdp/core/state/mutable_state.hpp
-        src/mdp/core/state/null_state.cpp
+        src/mdp/core/state/null_state.hpp
         src/mdp/core/state/state.hpp
         src/mdp/core/state/state_utilities.hpp
         src/mdp/core/state/unknown_key_exception.cpp
@@ -448,7 +448,7 @@ set(SOURCE_FILES
         src/shell/command/world/set_var_SG_command.cpp
         src/shell/command/world/world_observation_command.cpp
         src/shell/visual/SG_visual_explorer.cpp
-        src/shell/visual/text_area_streams.cpp
+        src/shell/visual/text_area_streams.h
         src/shell/visual/visual_explorer.cpp
         src/shell/fastrl_shell.cpp
         src/shell/environment_shell.h
@@ -474,12 +474,9 @@ set(SOURCE_FILES
         src/statehashing/reflective_hashable_state_factory.cpp
         src/statehashing/wrapped_hashable_state.cpp
         src/visualizer/multi_layer_renderer.cpp
-        src/visualizer/object_painter.cpp
-        src/visualizer/OO_state_painter.cpp
-        src/visualizer/render_layer.cpp
-        src/visualizer/state_action_render_layer.cpp
-        src/visualizer/state_painter.cpp
-        src/visualizer/state_render_layer.cpp
+        src/visualizer/OO_state_painter.hpp
+        src/visualizer/render_layer.hpp
+        src/visualizer/state_action_render_layer.hpp
         src/visualizer/visualizer.cpp
         src/mdp/core/oo/propositional/propositional_function.h
         src/mdp/core/oo/propositional/grounded_prop.h
@@ -496,10 +493,33 @@ set(SOURCE_FILES
         src/mdp/singleagent/model/statemodel/full_state_model.cpp
         src/mdp/singleagent/SA_domain.h
         src/mdp/core/oo/OO_domain.cpp
-        src/domain/singleagent/gridworld/state/grid_world_state.h src/mdp/singleagent/environment/simulated_environment.h src/behavior/singleagent/learning/tdmethods/Q_learning.h src/behavior/valuefunction/Q_provider.h src/behavior/singleagent/episode.h src/mdp/core/action/action_utils.h src/behavior/policy/greedy_Q_policy.h src/behavior/policy/policy_utils.h src/behavior/singleagent/options/option.h src/behavior/policy/epsilon_greedy.h src/mdp/core/oo/state/key_container.hpp src/shell/fastrl_shell.h src/shell/command/env/observation_command.cpp src/shell/environment_shell.cpp src/shell/command/env/action_command.h)
+        src/domain/singleagent/gridworld/state/grid_world_state.h
+        src/mdp/singleagent/environment/simulated_environment.h
+        src/behavior/singleagent/learning/tdmethods/Q_learning.h
+        src/behavior/valuefunction/Q_provider.h
+        src/behavior/singleagent/episode.h
+        src/mdp/core/action/action_utils.h
+        src/behavior/policy/greedy_Q_policy.h
+        src/behavior/policy/policy_utils.h
+        src/behavior/singleagent/options/option.h
+        src/behavior/policy/epsilon_greedy.h
+        src/mdp/core/oo/state/key_container.hpp
+        src/shell/fastrl_shell.h
+        src/shell/command/env/observation_command.cpp
+        src/shell/environment_shell.cpp
+        src/shell/command/env/action_command.h
+        src/domain/singleagent/gridworld/grid_world_visualizer.h
+        src/visualizer/multi_layer_renderer.h src/visualizer/visualizer.h
+        src/visualizer/state_render_layer.h
+        src/visualizer/object_state_painters.hpp
+        src/domain/singleagent/gridworld/grid_world_terminal_function.cpp
+        src/visualizer/state_render_layer.cpp
+        src/shell/visual/visual_explorer.h src/shell/visual/text_area_streams.cpp src/main.h)
 
 add_executable(fastrl ${SOURCE_FILES})
 
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui)
 
-target_link_libraries(fastrl Qt5::Core Qt5::Widgets Qt5::Gui)
+find_package(Threads)
+
+target_link_libraries(fastrl Qt5::Core Qt5::Widgets Qt5::Gui ${CMAKE_THREAD_LIBS_INIT})

@@ -27,11 +27,11 @@ public:
     string getName();
     vector<string> getParameterClasses();
     vector<string> getParameterOrderGroups();
-    virtual bool isTrue(OOState s, vector<string> params) { throw runtime_error("PropositionalFunction::isTrue() Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
-    vector<GroundedProp> allGroundings(OOState s);
-    bool someGroundingIsTrue(OOState s);
-    static vector<GroundedProp> allGroundingsFromList(vector<PropositionalFunction> pfs, OOState s);
-    PropositionalFunction findPF(vector<PropositionalFunction> pfs, string pfName);
+    virtual bool isTrue(OOState * s, vector<string> params) { throw runtime_error("PropositionalFunction::isTrue() Not Implemented"); } // NOLINT(performance-unnecessary-value-param)
+    vector<GroundedProp *> allGroundings(OOState * s);
+    bool someGroundingIsTrue(OOState * s);
+    static vector<GroundedProp *> allGroundingsFromList(vector<PropositionalFunction *> pfs, OOState * s);
+    PropositionalFunction * findPF(vector<PropositionalFunction* > pfs, string pfName);
     bool operator==(const PropositionalFunction &comp) {
         return name == comp.name;
     }

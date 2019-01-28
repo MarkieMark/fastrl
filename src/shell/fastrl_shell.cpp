@@ -158,31 +158,46 @@ void FastRLShell::setDomain(Domain * domain_) {
 //    this.visualizer = visualizer;
 //}
 
-void FastRLShell::addObservers(vector<ShellObserver> observers_){
-    for(ShellObserver observer : observers_){
+void FastRLShell::addObservers(vector<ShellObserver *> observers_){
+    for(ShellObserver * observer : observers_){
         observers.push_back(observer);
     }
 }
 
-
-void FastRLShell::start(){
+void FastRLShell::start_main_thread() {
     shutting = false;
-    // todo threading
-//    Thread thread = new Thread(new Runnable() {
-//        @Override
-//        public void run() {
-            *os << welcomeMessage << endl;
-            while(!shutting){
-                *os << "> ";
-                string input = string();
-                getline(*is, input);
-//                cout << "you wrote <" << input << ">" << endl;
-                actionCommand(input);
-            }
-//        }
-//    });
-//
-//    thread.start();
+    the_loop();
+}
+
+
+void FastRLShell::thread_start() {
+    shutting = false;
+    shell_thread = new thread(&FastRLShell::the_loop, this);
+//    shell_thread->detach();
+}
+
+void FastRLShell::thread_join() {
+    shell_thread->join();
+}
+
+void FastRLShell::the_loop() {
+    *os << welcomeMessage << endl;
+//    cout << "printed '" << welcomeMessage << "' to " << os << endl;
+    while(!shutting){
+        *os << "> ";
+//        cout << "printed '> ' to " << os << endl;
+        string input = string();
+        // get lock
+        lck_is = unique_lock<mutex>(m_is);
+        while (!input_ready) {
+            cv_is.wait(lck_is);
+        }
+        getline(*is, input);
+        input_ready = false;
+        lck_is.unlock();
+        cout << "retrieved '" << input << "' from " << is << endl;
+        actionCommand(input);
+    }
 }
 
 void FastRLShell::actionCommand(string input) {
@@ -240,4 +255,12 @@ vector<ShellCommand *> FastRLShell::generateReserved(){
 
 vector<ShellCommand *> FastRLShell::generateStandard(){
     return vector<ShellCommand *>();
+}
+
+Visualizer *FastRLShell::getVisualizer() {
+    return visualizer;
+}
+
+void FastRLShell::setVisualizer(Visualizer * visualizer_) {
+    visualizer = visualizer_;
 }

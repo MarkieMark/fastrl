@@ -10,16 +10,13 @@
 #include <QtCore/QArgument>
 #include <QObject>
 #include "../../../../mdp/core/oo/state/object_instance.hpp"
-#include "../grid_world_domain.h"
 
 using namespace std;
 
 class GridAgent : public QObject, public ObjectInstance {
     Q_OBJECT
 private:
-    vector<KeyContainer *> keys = vector<KeyContainer *>(
-            {new KeyContainer(GridWorldDomain::VAR_X()),
-             new KeyContainer(GridWorldDomain::VAR_Y())});
+    vector<KeyContainer *> keys;
 public:
     int x;
     int y;

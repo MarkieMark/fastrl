@@ -2,19 +2,10 @@
  * Mark Benjamin 30th May 2017
  */
 #include <iostream>
+#include <QApplication>
 #include "grid_world_domain.h"
-#include "state/grid_agent.h"
-#include "state/grid_location.h"
-#include "../../../mdp/singleagent/common/uniform_cost_RF.h"
-#include "../../../mdp/auxiliary/common/null_termination.hpp"
-#include "../../../mdp/singleagent/model/factored_model.h"
-#include "../../../mdp/core/action/universal_action_type.hpp"
-#include "state/grid_world_state.h"
-#include "grid_world_terminal_function.hpp"
-#include "../../../mdp/singleagent/environment/environment.hpp"
-#include "../../../shell/environment_shell.h"
-#include "../../../mdp/singleagent/environment/simulated_environment.h"
-#include "../../../behavior/singleagent/learning/tdmethods/Q_learning.h"
+#include "../../../shell/visual/visual_explorer.h"
+#include "../../../main.h"
 
 //Q_DECLARE_METATYPE(GridWorldDomain)
 
@@ -499,11 +490,11 @@ State * GridWorldModel::move(State * s, int xd, int yd){
     unsigned long map_height = map.size();
     bool solid_wall = false;
     bool thin_wall = false;
-    for (const vector<unsigned int> &row : map) {
-        if (row.empty() || row.size() < map[0].size()) {
-            cout << "map row wonky" << endl;
-        }
-    }
+//    for (const vector<unsigned int> &row : map) {
+//        if (row.empty() || row.size() < map[0].size()) {
+//            cout << "map row wonky" << endl;
+//        }
+//    }
     if (nx < 0 || nx >= map_width || ny < 0 || ny >= map_height || map[nx][ny] == 1) {
         solid_wall = true;
     }
@@ -605,17 +596,17 @@ bool WallToPF::isTrue(OOState * st, vector<string> params) {
  * the upper right. Use w-a-s-d to move.
  * @param args command line args
  */
-void GridWorldDomain::main(vector<string> args) {
+int GridWorldDomain::main(int argc, char * argv[]) {
 //    cout << "GridWorldDomain::main()" << endl;
 //    cout << "option " << args[args.size() - 1] << endl;
-    if (args[args.size() - 1] == string("2")) {
-        GridWorldDomain::main2(args);
+    if (string(argv[argc - 2]) == string("2")) {
+        return GridWorldDomain::main2(argc, argv);
     } else {
-        GridWorldDomain::main1(args);
+        return GridWorldDomain::main1(argc, argv);
     }
 }
 
-void GridWorldDomain::main1(vector<string> args) {
+int GridWorldDomain::main1(int argc, char * argv[]) {
     cout << "GridWorldDomain::main1()" << endl;
     auto * gwdg = new GridWorldDomain(11, 11);
     gwdg->setMapToFourRooms();
@@ -627,11 +618,12 @@ void GridWorldDomain::main1(vector<string> args) {
             new GridAgent(0, 0), vector<GridLocation *>({new GridLocation(10, 10, -1, "loc0")}));
 
     int expMode = 0;
-    if (!args.empty()) {
-        if (args[0] == "v") { // TODO adjust indices
+    if (argc > 4) {
+        string st = string(argv[4]);
+        cout << "checking args[4] " << st << endl;
+        if (st == string("v")) { // TODO adjust indices
             expMode = 1;
-        }
-        else if (args[0] == "t") {
+        } else if (st == string("t")) {
             expMode = 0;
         }
     }
@@ -639,24 +631,32 @@ void GridWorldDomain::main1(vector<string> args) {
 //        cout << "making shell" << endl;
         auto * shell = new EnvironmentShell(d, static_cast<State *>(s));
 //        cout << "shell made" << endl;
-        shell->start();
+        dynamic_cast<FastRLShell *>(shell)->start_main_thread();
+        return 0;
     }
     else if (expMode == 1) {
+        QApplication app(argc, argv);
 
-//        Visualizer v = GridWorldVisualizer.getVisualizer(gwdg.getMap());
-//        VisualExplorer exp = new VisualExplorer(d, v, s);
-//
-//        //use w-s-a-d-x
-//        exp.addKeyAction("w", ACTION_NORTH, "");
-//        exp.addKeyAction("s", ACTION_SOUTH, "");
-//        exp.addKeyAction("a", ACTION_WEST, "");
-//        exp.addKeyAction("d", ACTION_EAST, "");
-//
-//        exp.initGUI();
+        Visualizer * v = GridWorldVisualizer::getVisualizer(gwdg->getMap());
+        auto * ve = new VisualExplorer(d, v, s);
+
+        //use w-s-a-d-x
+        ve->addKeyAction("W", ACTION_NORTH(), "");
+        ve->addKeyAction("S", ACTION_SOUTH(), "");
+        ve->addKeyAction("A", ACTION_WEST(), "");
+        ve->addKeyAction("D", ACTION_EAST(), "");
+
+        ve->initGUI();
+        int ret = QApplication::exec();
+//        if (ve->getShell()->shell_thread != nullptr && ve->getShell()->shell_thread->joinable())
+//        delete ve->getShell()->shell_thread;
+        ve->shell->thread_join();
+        return ret;
     }
+    return -1;
 }
 
-void GridWorldDomain::main2(vector<string> args) {
+int GridWorldDomain::main2(int argc, char * argv[]) {
     cout << "GridWorldDomain::main2()" << endl;
     auto * gwd = new GridWorldDomain(11, 11);
     gwd->setMapToFourRooms();
@@ -673,9 +673,8 @@ void GridWorldDomain::main2(vector<string> args) {
         episodes.push_back(agent->runLearningEpisode(env));
         env->resetEnvironment();
     }
-
 ////visualize the completed learning episodes
 //    new EpisodeSequenceVisualizer(GridWorldVisualizer.getVisualizer(gwd->getMap()), domain, episodes);
+    return 0;
 
 }
-

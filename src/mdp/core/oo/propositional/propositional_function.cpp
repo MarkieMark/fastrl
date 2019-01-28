@@ -47,11 +47,10 @@ vector<string> PropositionalFunction::getParameterOrderGroups() { return paramet
  * @param s the {@link State} in which all groundings will be returned
  * @return a {@link List} of all possible groundings of this {@link PropositionalFunction} for the given {@link State}
  */
-vector<GroundedProp> PropositionalFunction::allGroundings(OOState s) {
-    vector<GroundedProp> res = vector<GroundedProp>();
-
+vector<GroundedProp *> PropositionalFunction::allGroundings(OOState * s) {
+    vector<GroundedProp* > res;
     if(getParameterClasses().empty()){
-        res.emplace_back(GroundedProp(*this, vector<string>()));
+        res.emplace_back(new GroundedProp(*this, vector<string>()));
         return res; //no parameters so just the single gp without params
     }
 
@@ -60,14 +59,13 @@ vector<GroundedProp> PropositionalFunction::allGroundings(OOState s) {
 //    }
 
     vector<vector<string>> bindings = OOStateUtilities::getPossibleBindingsGivenParamOrderGroups(
-            move(s), getParameterClasses(), getParameterOrderGroups());
+            s, getParameterClasses(), getParameterOrderGroups());
 
     for(const vector<string> &params : bindings){
         const vector<string> &params_ = params;
-        GroundedProp gp = GroundedProp(*this, params_);
+        GroundedProp * gp = new GroundedProp(*this, params_);
         res.push_back(gp);
     }
-
     return res;
 }
 
@@ -76,14 +74,13 @@ vector<GroundedProp> PropositionalFunction::allGroundings(OOState s) {
  * @param s the {@link State} to test.
  * @return true if there existing a {@link GroundedProp} for the provided {@link State} that is in true in the {@link State}; false otherwise.
  */
-bool PropositionalFunction::someGroundingIsTrue(OOState s){
-    vector<GroundedProp> gps = allGroundings(s);
-    for(GroundedProp gp : gps){
-        if(gp.isTrue(s)){
+bool PropositionalFunction::someGroundingIsTrue(OOState * s){
+    vector<GroundedProp* > gps = allGroundings(s);
+    for(GroundedProp * gp : gps){
+        if(gp->isTrue(s)){
             return true;
         }
     }
-
     return false;
 }
 
@@ -99,10 +96,10 @@ bool PropositionalFunction::someGroundingIsTrue(OOState s){
  * @param s the {@link State} in which the groundings should be produced.
  * @return a {@link List} of all possible groundings for all of the {@link PropositionalFunction}s in the provided list for the given {@link State}
  */
- vector<GroundedProp> PropositionalFunction::allGroundingsFromList(vector<PropositionalFunction> pfs, OOState s){
-    vector<GroundedProp> res = vector<GroundedProp>();
-    for(PropositionalFunction pf : pfs){
-        vector<GroundedProp> gps = pf.allGroundings(s);
+ vector<GroundedProp *> PropositionalFunction::allGroundingsFromList(vector<PropositionalFunction *> pfs, OOState * s){
+    vector<GroundedProp *> res;
+    for(PropositionalFunction * pf : pfs){
+        vector<GroundedProp *> gps = pf->allGroundings(s);
         res.insert(res.end(), gps.begin(), gps.end());
     }
     return res;
@@ -115,11 +112,11 @@ bool PropositionalFunction::someGroundingIsTrue(OOState s){
  * @param pfName The name of the {@link PropositionalFunction}
  * @return the {@link PropositionalFunction} with the name or null if it does not exist
  */
-PropositionalFunction PropositionalFunction::findPF(vector<PropositionalFunction> pfs, string pfName){
-    for(PropositionalFunction pf : pfs){
-        if(pf.getName() == pfName){
+PropositionalFunction * PropositionalFunction::findPF(vector<PropositionalFunction *> pfs, string pfName){
+    for(PropositionalFunction * pf : pfs){
+        if(pf->getName() == pfName){
             return pf;
         }
     }
-    return PropositionalFunction();
+    return new PropositionalFunction();
 }

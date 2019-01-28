@@ -12,8 +12,8 @@ Aspects such as Reflection, GUI leverage Qt5
 TODO list
 ---------
 1  Visual elements; Qt5    
-2  Debugging    
-3  Attributions    
+2  Debugging
+3  Attributions  
 4  Destructors; Memory Management more generally; smart pointers  
 5  Alternative entry points (translation from BURLAP)    
 6  Translation of more Algorithms / Domains    
@@ -25,6 +25,7 @@ TODO list
 11 Make the c++ more idiomatic
 12 More 'native' handling of copy() / to_string() bearing in mind the need for
    some Q_OBJECT functionality while Q_OBJECT 'deletes' copy()
+13 Thread safe implementation of the shell streams redirection to GUI elements
 
 Debugging Task List
 -------------------

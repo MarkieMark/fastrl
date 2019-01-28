@@ -1,12 +1,12 @@
+/**
+ * Mark Benjamin 30th May 2017
+ */
+
 #ifndef FASTRL_MDP_CORE_OO_STATE_OBJECT_INSTANCE_HPP
 #define FASTRL_MDP_CORE_OO_STATE_OBJECT_INSTANCE_HPP
 
 #include <string>
 #include "../../state/state.hpp"
-
-/**
- * Mark Benjamin 30th May 2017
- */
 
 class ObjectInstance : public State {
 public:

@@ -15,12 +15,17 @@
 #include <sstream>
 #include <algorithm>
 #include <iterator>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
 #include "../mdp/core/domain.hpp"
 #include "shell_observer.hpp"
+#include "../visualizer/visualizer.h"
 
 using namespace std;
 
 class ShellCommand;
+class ShellObserver;
 
 class FastRLShell {
 public:
@@ -33,6 +38,12 @@ public:
                       "alias - set an alias for a command.\n"
                       "quit - close the shell";
     Domain * domain;
+    Visualizer * visualizer;
+    thread * shell_thread;
+    mutex m_is;
+    condition_variable cv_is;
+    unique_lock<mutex> lck_is;
+    bool input_ready = false;
     FastRLShell(Domain * domain_, istream * is_, ostream * os_);
     void addCommand(ShellCommand * command);
     void addCommandAs(ShellCommand * command, string as);
@@ -55,10 +66,13 @@ public:
     set<pair<string, string>> getAliases();
     Domain * getDomain();
     void setDomain(Domain * domain);
-    // Visualizer getVisualizer();
-//    void setVisualizer(Visualizer visualizer);
-    void addObservers(vector<ShellObserver> observers);
-    void start();
+    Visualizer * getVisualizer();
+    void setVisualizer(Visualizer * visualizer);
+    void addObservers(vector<ShellObserver *> observers);
+    void start_main_thread();
+    void thread_start();
+    void thread_join();
+    void the_loop();
     void actionCommand(string input);
 
     vector<ShellCommand *> generateReserved();
@@ -70,7 +84,7 @@ private:
     set<string> reserved;
     map<string, string> aliases;;
     map<string, ShellCommand *> commands;
-    vector<ShellObserver> observers;
+    vector<ShellObserver *> observers;
     bool shutting;
 };
 

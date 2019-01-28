@@ -1,12 +1,16 @@
 #include "grid_agent.h"
 #include "../../../../mdp/core/oo/state/OO_state_utilities.h"
+#include "../grid_world_domain.h"
 
 /**
  * Mark Benjamin 31st May 2017
  */
 
 GridAgent::GridAgent(int x_, int y_, string name_)
-    : _name(move(name_)), x(x_), y(y_) { }
+    : _name(move(name_)), x(x_), y(y_) {
+    keys = vector<KeyContainer *>({new KeyContainer(GridWorldDomain::VAR_X()),
+                                   new KeyContainer(GridWorldDomain::VAR_Y())});
+}
 
 GridAgent* GridAgent::instantiate() {
     return (GridAgent*) staticMetaObject.newInstance();

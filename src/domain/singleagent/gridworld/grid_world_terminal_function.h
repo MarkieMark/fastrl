@@ -2,8 +2,8 @@
  * Mark Benjamin 31st May 2017
  */
 
-#ifndef FASTRL_DOMAIN_SINGLEAGENT_GRIDWORLD_GRID_WORLD_TERMINAL_FUNCTION_HPP
-#define FASTRL_DOMAIN_SINGLEAGENT_GRIDWORLD_GRID_WORLD_TERMINAL_FUNCTION_HPP
+#ifndef FASTRL_DOMAIN_SINGLEAGENT_GRIDWORLD_GRID_WORLD_TERMINAL_FUNCTION_H
+#define FASTRL_DOMAIN_SINGLEAGENT_GRIDWORLD_GRID_WORLD_TERMINAL_FUNCTION_H
 
 #include <set>
 #include <vector>
@@ -41,10 +41,7 @@ public:
         return (terminalPositions.find(TFPoint(x, y)) != terminalPositions.end());
     }
 
-    bool isTerminal(State *s) override {
-        auto *s_ = dynamic_cast<GridWorldState *>(s);
-        return isTerminalPosition(s_->agent->x, s_->agent->y);
-    }
+    bool isTerminal(State *s) override;
 };
 
-#endif // FASTRL_DOMAIN_SINGLEAGENT_GRIDWORLD_GRID_WORLD_TERMINAL_FUNCTION_HPP
+#endif // FASTRL_DOMAIN_SINGLEAGENT_GRIDWORLD_GRID_WORLD_TERMINAL_FUNCTION_H
