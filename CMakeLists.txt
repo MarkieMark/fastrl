@@ -364,9 +364,9 @@ set(SOURCE_FILES
         src/mdp/singleagent/common/single_goal_PFRF.cpp
         src/mdp/singleagent/common/uniform_cost_RF.cpp
         src/mdp/singleagent/common/visual_action_observer.cpp
-        src/mdp/singleagent/environment/extensions/environment_delegation.cpp
+        src/mdp/singleagent/environment/extensions/environment_delegation.hpp
         src/mdp/singleagent/environment/extensions/environment_observer.hpp
-        src/mdp/singleagent/environment/extensions/environment_server.cpp
+        src/mdp/singleagent/environment/extensions/environment_server.h
         src/mdp/singleagent/environment/extensions/environment_server_interface.hpp
         src/mdp/singleagent/environment/extensions/state_settable_environment.hpp
         src/mdp/singleagent/environment/environment.hpp
@@ -514,7 +514,13 @@ set(SOURCE_FILES
         src/visualizer/object_state_painters.hpp
         src/domain/singleagent/gridworld/grid_world_terminal_function.cpp
         src/visualizer/state_render_layer.cpp
-        src/shell/visual/visual_explorer.h src/shell/visual/text_area_streams.cpp src/main.h)
+        src/shell/visual/visual_explorer.h
+        src/shell/visual/text_area_streams.cpp
+        src/main.h src/shell/stream_wrapper.h
+        src/shell/stream_wrapper.cpp
+        src/mdp/singleagent/environment/extensions/state_settable_environment.hpp
+        src/mdp/singleagent/environment/extensions/environment_server.cpp
+        src/mdp/singleagent/environment/extensions/environment_server.h src/shell/command/env/episode_recording_commands.h)
 
 add_executable(fastrl ${SOURCE_FILES})
 

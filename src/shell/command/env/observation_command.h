@@ -15,7 +15,7 @@ public:
     string commandName() override {
         return "obs";
     }
-    int call(FastRLShell * shell, string argString, istream * is, ostream * os) override;
+    int call(FastRLShell * shell, string argString, StreamWrapper * s) override;
 };
 
 #endif // FASTRL_SHELL_COMMAND_ENV_OBSERVATION_COMMAND_H

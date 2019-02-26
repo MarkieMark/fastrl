@@ -14,55 +14,27 @@
 
 using namespace std;
 
-class TextAreaStreams;
-
-class TextOut : public ostream, public streambuf {
-public:
-    QTextEdit * area_p;
-    explicit TextOut(TextAreaStreams * tas);
-    int overflow(int b) override;
-};
-
-class TextIn : public istream, public streambuf {
-public:
-    TextAreaStreams * tas;
-    string * input_buf_p;
-    int * buf_index_p;
-    mutex * m_buf_p;
-    condition_variable * cv_buf_p;
-    unique_lock<mutex> * lck_buf_p;
-    explicit TextIn(TextAreaStreams * tas);
-    void pointersFromStreams();
-    int underflow() override;
-};
+class FastRLShell;
 
 class TextAreaStreams {
 public:
     QTextEdit * area;
     string inputBuf;
-    int bufIndex = 0;
     mutex * m_buf_p;
     condition_variable * cv_buf_p;
-    unique_lock<mutex> * lck_buf_p;
-    TextOut * tout;
-    TextIn * tin;
     FastRLShell * shell;
 
     explicit TextAreaStreams(QTextEdit * area_);
 
-    void setLockPointers(mutex * m_p, condition_variable * cv_p, unique_lock<mutex> * lck_p);
+    void setLockPointers(mutex * m_p, condition_variable * cv_p);
 
-    void setShell(FastRLShell * sh){
+    void setShell(FastRLShell * sh) {
         shell = sh;
     }
 
-    TextOut * getTout() {
-        return tout;
-    }
+    string getInput();
 
-    TextIn * getTin() {
-        return tin;
-    }
+    void printOutput(string s);
 
     /**
      * Adds data to the istream

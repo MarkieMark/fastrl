@@ -16,7 +16,7 @@ class EnvironmentShell : public FastRLShell {
 private:
     Environment * env;
 public:
-    EnvironmentShell(Domain * domain_, Environment * env_, istream * is_, ostream * os_) : FastRLShell(domain_, is_, os_) {
+    EnvironmentShell(Domain * domain_, Environment * env_, StreamWrapper * s_) : FastRLShell(domain_, s_) {
         env = env_;
         welcomeMessage = "Welcome to the FastRL agent environment shell. Type the command 'help' to bring "
                               "up additional information about using this shell.";
@@ -36,9 +36,9 @@ public:
             addCommand(c);
         }
     }
-    EnvironmentShell(Domain * domain_, Environment * env_) : EnvironmentShell(domain_, env_, &cin, &cout) { }
+    EnvironmentShell(Domain * domain_, Environment * env_) : EnvironmentShell(domain_, env_, new StreamWrapper(nullptr)) { }
     EnvironmentShell(SADomain * domain_, State * s_) : EnvironmentShell(domain_,
-            static_cast<Environment *>(new SimulatedEnvironment(domain_, s_)), &cin, &cout) { }
+            static_cast<Environment *>(new SimulatedEnvironment(domain_, s_)), new StreamWrapper(nullptr)) { }
     Environment * getEnv() { return env;}
     void setEnv(Environment * env_) { env = env_;}
     vector<ShellCommand *> generateStandard() override;

@@ -20,12 +20,14 @@
 #include <condition_variable>
 #include "../mdp/core/domain.hpp"
 #include "shell_observer.hpp"
+#include "stream_wrapper.h"
 #include "../visualizer/visualizer.h"
 
 using namespace std;
 
 class ShellCommand;
 class ShellObserver;
+class StreamWrapper;
 
 class FastRLShell {
 public:
@@ -42,9 +44,8 @@ public:
     thread * shell_thread;
     mutex m_is;
     condition_variable cv_is;
-    unique_lock<mutex> lck_is;
     bool input_ready = false;
-    FastRLShell(Domain * domain_, istream * is_, ostream * os_);
+    FastRLShell(Domain * domain_, StreamWrapper * s_);
     void addCommand(ShellCommand * command);
     void addCommandAs(ShellCommand * command, string as);
     void setAlias(string commandName, string alias);
@@ -56,10 +57,8 @@ public:
     string getWelcomeMessage();
     void setWelcomeMessage(string welcomeMessage);
     void close();
-    istream * getIs();
-    void setIs(istream * is);
-    ostream * getOs();
-    void setOs(ostream * os);
+    StreamWrapper * getStreams();
+    void setStreams(StreamWrapper * s);
     ShellCommand * resolveCommand(string commandName);
     string aliasPointer(string alias);
     set<string> getCommands();
@@ -79,8 +78,7 @@ public:
 
     virtual vector<ShellCommand *> generateStandard();
 private:
-    istream * is;
-    ostream * os;
+    StreamWrapper * streams;
     set<string> reserved;
     map<string, string> aliases;;
     map<string, ShellCommand *> commands;
@@ -91,7 +89,7 @@ private:
 class ShellCommand {
 public:
     virtual string commandName() {throw runtime_error("ShellCommand::commandName Not Implemented");}
-    virtual int call(FastRLShell * shell, string argString, istream * is, ostream * os) {throw runtime_error("ShellCommand::call Not Implemented");} // NOLINT(performance-unnecessary-value-param)
+    virtual int call(FastRLShell * shell, string argString, StreamWrapper * s) {throw runtime_error("ShellCommand::call Not Implemented");} // NOLINT(performance-unnecessary-value-param)
 };
 
 class ShellOptParser {

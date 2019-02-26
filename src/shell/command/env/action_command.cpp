@@ -7,16 +7,16 @@
 
 #include "action_command.h"
 
-int ActionCommand::call(FastRLShell * shell, string argString, istream * is, ostream * os) {
+int ActionCommand::call(FastRLShell * shell, string argString, StreamWrapper * s) {
 //    return 0;
-    Environment * env = (dynamic_cast<EnvironmentShell *>(shell))->getEnv();
+    Environment * env = (dynamic_cast<EnvironmentShell *>(shell))->getEnv(); // todo shell has observers, env does not
     ShellOptParser sp = ShellOptParser(argString);
 
     if ((sp.isOpt("h")) || (sp.isOpt("-h"))) {
-        *os << "[v|a] args*\nCommand to execute an action or set an action name alias.\n"
+        s->printOutput("[v|a] args*\nCommand to execute an action or set an action name alias.\n"
                    "If -a is not specified, then executes the action with name args[0] with parameters args[1]*\n"
                    "-v: the resulting reward, termination, and observation from execution is printed.\n"
-                   "-a: assigns an action name alias where args[0] is the original action name, and args[1] is the alias.";
+                   "-a: assigns an action name alias where args[0] is the original action name, and args[1] is the alias.");
         return 0;
     }
 
@@ -62,14 +62,17 @@ int ActionCommand::call(FastRLShell * shell, string argString, istream * is, ost
         Action * a = action_type->associatedAction(non_option_args);
         EnvironmentOutcome * o = env->act(a);
         if (sp.isOpt("-v")) {
-            *os << "reward: " << o->reward << endl;
+            ostringstream os;
+            os << "reward: " << o->reward;
+            s->printOutput(os.str());
             if (o->done) {
-                *os << "IS terminal" << endl;
+                s->printOutput("IS terminal");
             }
             else{
-                *os << "is NOT terminal" << endl;
+                s->printOutput("is NOT terminal");
             }
-            *os << o->o_prime->to_string() << endl;
+            os << o->o_prime->to_string();
+            s->printOutput(os.str());
         }
         return 1;
     }

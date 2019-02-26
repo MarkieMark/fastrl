@@ -17,7 +17,7 @@ public:
     }
 
 
-    int call(FastRLShell * shell, string argString, istream * is, ostream * os) override {
+    int call(FastRLShell * shell, string argString, StreamWrapper * s) override {
 
 //        OptionSet oset = parser.parse(argString.split(" "));
 //        if(oset.has("h")){
@@ -26,7 +26,7 @@ public:
 //        }
 
         for(const string &command : shell->getCommands()){
-            *os << command << endl;
+            s->printOutput(command);
         }
         return 0;
     }

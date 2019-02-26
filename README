@@ -25,7 +25,7 @@ TODO list
 11 Make the c++ more idiomatic
 12 More 'native' handling of copy() / to_string() bearing in mind the need for
    some Q_OBJECT functionality while Q_OBJECT 'deletes' copy()
-13 Thread safe implementation of the shell streams redirection to GUI elements
+13 Thread safe implementation of the shell streams redirection to GUI elements; c++ wrapper-oriented modification of Java stream inheritance methodology
 
 Debugging Task List
 -------------------

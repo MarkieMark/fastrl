@@ -21,7 +21,7 @@ public:
         return "ac";
     }
 
-    int call(FastRLShell * shell, string argString, istream * is, ostream * os) override;
+    int call(FastRLShell * shell, string argString, StreamWrapper * s) override;
 };
 
 #endif //FASTRL_SHELL_COMMAND_ENV_EXECUTE_ACTION_COMMAND_H

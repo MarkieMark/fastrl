@@ -621,7 +621,7 @@ int GridWorldDomain::main1(int argc, char * argv[]) {
     if (argc > 4) {
         string st = string(argv[4]);
         cout << "checking args[4] " << st << endl;
-        if (st == string("v")) { // TODO adjust indices
+        if (st == string("v")) {
             expMode = 1;
         } else if (st == string("t")) {
             expMode = 0;

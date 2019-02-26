@@ -11,8 +11,8 @@ public:
         return "help";
     }
 
-    int call(FastRLShell * shell, string argString, istream * is, ostream * os) override {
-        *os << shell->getHelpText() << endl;
+    int call(FastRLShell * shell, string argString, StreamWrapper * s) override {
+        s->printOutput(shell->getHelpText());
         return 0;
     }
 };

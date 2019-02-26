@@ -11,7 +11,7 @@
 
 using namespace std;
 
-FastRLShell::FastRLShell(Domain * domain_, istream * is_, ostream * os_) : is(is_), os(os_), domain(domain_)
+FastRLShell::FastRLShell(Domain * domain_, StreamWrapper * s_) : streams(s_), domain(domain_)
 {
 //    this.scanner = new Scanner(is);
     vector<ShellCommand *> res = generateReserved();
@@ -26,8 +26,8 @@ FastRLShell::FastRLShell(Domain * domain_, istream * is_, ostream * os_) : is(is
 void FastRLShell::addCommand(ShellCommand * command){
 //    cout << "FastRLShell::addCommand " << typeid(*command).name() << " " << command->commandName() << endl;
     if (reserved.count(command->commandName()) > 0) {
-        *os << "Cannot add command " << command->commandName() << " because that is a reserved name. " <<
-            "Consider using addCommand(ShellCommand command, String as); to add it under a different name" << endl;
+        streams->printOutput("Cannot add command " + command->commandName() + " because that is a reserved name. " +
+            "Consider using addCommand(ShellCommand command, String as); to add it under a different name");
     } else {
         commands.insert(pair<string, ShellCommand *>(command->commandName(), command));
     }
@@ -35,8 +35,8 @@ void FastRLShell::addCommand(ShellCommand * command){
 
 void FastRLShell::addCommandAs(ShellCommand * command, string as) {
     if(reserved.count(as) > 0) {
-        *os << "Cannot add command " << command->commandName() << " as " << as <<
-            " because that is a reserved name. " << "Please add it as a different name." << endl;
+        streams->printOutput("Cannot add command " + command->commandName() + " as " + as +
+            " because that is a reserved name. " + "Please add it as a different name.");
     } else {
         commands.insert(pair<string, ShellCommand *>(as, command));
     }
@@ -49,10 +49,10 @@ void FastRLShell::setAlias(string commandName, string alias) {
 void FastRLShell::setAlias(string commandName, string alias, bool force){
 
     if (reserved.count(alias) > 0) {
-        *os << "Cannot give " << commandName << " the alias " << alias << " because that name is reserved." << endl;
+        streams->printOutput("Cannot give " + commandName + " the alias " + alias + " because that name is reserved.");
     } else if ((commands.count(alias) > 0) && !force) {
-        *os << "Cannot give " << commandName << " the alias " << alias << " because that name is already assigned" <<
-           "to a command. If you wish to override, use the force option" << endl;
+        streams->printOutput("Cannot give " + commandName + " the alias " + alias + " because that name is already assigned" +
+           "to a command. If you wish to override, use the force option");
     } else {
         aliases.insert(pair<string, string>(alias, commandName));
         if ((commands.count(alias) > 0) && !(alias == commandName)) {
@@ -70,7 +70,7 @@ void FastRLShell::removeCommand(string command){
     if (reserved.count(command) == 0) {
         commands.erase(command);
     } else {
-        *os << "Cannot remove command " << command << " because it is a reserved command." << endl;
+        streams->printOutput("Cannot remove command " + command + " because it is a reserved command.");
     }
 }
 
@@ -94,21 +94,13 @@ void FastRLShell::close(){
     shutting = true;
 }
 
-istream * FastRLShell::getIs() {
-    return is;
+StreamWrapper * FastRLShell::getStreams() {
+    return streams;
 }
 
-void FastRLShell::setIs(istream * is_) {
-    is = is_;
+void FastRLShell::setStreams(StreamWrapper * s_) {
+    streams = s_;
 //    this.scanner = new Scanner(is);
-}
-
-ostream * FastRLShell::getOs() {
-    return os;
-}
-
-void FastRLShell::setOs(ostream * os_) {
-    os = os_;
 }
 
 ShellCommand * FastRLShell::resolveCommand(string commandName){
@@ -181,21 +173,25 @@ void FastRLShell::thread_join() {
 }
 
 void FastRLShell::the_loop() {
-    *os << welcomeMessage << endl;
+    streams->printOutput(welcomeMessage);
 //    cout << "printed '" << welcomeMessage << "' to " << os << endl;
+    string input;
     while(!shutting){
-        *os << "> ";
+        streams->printOutput("\n> ", false);
 //        cout << "printed '> ' to " << os << endl;
-        string input = string();
         // get lock
-        lck_is = unique_lock<mutex>(m_is);
+//        cout << "locking unique lock in the loop" << endl;
+        unique_lock<mutex> lck(m_is);
+//        cout << "waiting for input ready cv in the loop" << endl;
         while (!input_ready) {
-            cv_is.wait(lck_is);
+            cv_is.wait(lck);
         }
-        getline(*is, input);
+//        cout << "input ready cv in the loop; calling getInput()" << endl;
+        input = streams->getInput();
         input_ready = false;
-        lck_is.unlock();
-        cout << "retrieved '" << input << "' from " << is << endl;
+//        cout << "unlocking unique lock in the loop" << endl;
+        lck.unlock();
+//        cout << "retrieved '" << input << "' from " << streams << endl;
         actionCommand(input);
     }
 }
@@ -210,7 +206,7 @@ void FastRLShell::actionCommand(string input) {
 //    cout << "command_word " << command_word << endl;
     ShellCommand * command = resolveCommand(command_word);
     if(command == nullptr) {
-        *os << "Unknown command: " << command_word << endl;
+        streams->printOutput("Unknown command: " + command_word);
         return;
     }
     string arg_string;
@@ -218,18 +214,18 @@ void FastRLShell::actionCommand(string input) {
         arg_string = input.substr(first_space + 1);
         // todo trim whitespace
     }
-    *os << "command <" << command_word << "> arg <" << arg_string << ">" << endl;
-        try {
-            int status_code = command->call(this, arg_string, is, os);
-            if(status_code == -1){
-                *os << command->commandName() << " could not parse input args" << endl;
-            }
-//            for(ShellObserver observer : observers){
-//                observer.observeCommand(this, new ShellObserver.ShellCommandEvent(input, command, statusCode));
-//            }
-        } catch (exception &e){
-            *os << "Exception in command completion:\n" << e.what() << endl;
+    streams->printOutput("command <" + command_word + "> arg <" + arg_string + ">");
+    try {
+        int status_code = command->call(this, arg_string, streams);
+        if(status_code == -1){
+            streams->printOutput(command->commandName() + " could not parse input args");
         }
+        for(ShellObserver * observer : observers){
+            observer->observeCommand(this, new ShellCommandEvent(input, command, status_code));
+        }
+    } catch (exception &e){
+        streams->printOutput(string("Exception in command completion:\n") + string(e.what()));
+    }
 }
 
 

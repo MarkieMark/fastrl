@@ -10,11 +10,11 @@
 
 VisualExplorer::VisualExplorer(SADomain * domain, Visualizer * painter, State * base_state) : QMainWindow(nullptr) {
     Environment * env = new SimulatedEnvironment(domain, base_state);
-    init(domain, env, painter, 700, 700);
+    init(domain, env, painter, 800, 1000);
 }
 
 VisualExplorer::VisualExplorer(SADomain * domain, Environment * env, Visualizer * painter) : QMainWindow(nullptr) {
-    init(domain, env, painter, 700, 700);
+    init(domain, env, painter, 800, 1000);
 }
 
 VisualExplorer::VisualExplorer(SADomain * domain, Environment * env, Visualizer * painter, int w, int h) : QMainWindow(nullptr) {
@@ -29,7 +29,7 @@ void VisualExplorer::init(SADomain * domain_, Environment * env_, Visualizer * p
     keyShellMap.insert(pair<string, string>("`", "reset"));
     canvas_width = w;
     canvas_height = h;
-    propViewer = new QTextEdit();
+    propViewer = new ListenTextEdit();
     propViewer->setReadOnly(true);
 }
 
@@ -84,7 +84,8 @@ void VisualExplorer::updatePropTextArea(State * s) {
             }
         }
     }
-    propViewer->setText(QString::fromStdString(buf));
+    emit newPropText(QString::fromStdString(buf));
+//    propViewer->setText(QString::fromStdString(buf));
 }
 
 void VisualExplorer::observeCommand(FastRLShell * shell, ShellCommandEvent * event) {
@@ -97,7 +98,7 @@ void VisualExplorer::observeCommand(FastRLShell * shell, ShellCommandEvent * eve
 }
 
 void VisualExplorer::handleAct() {
-    string actionCommand = actionField->toPlainText().toStdString();
+    string actionCommand = string(actionField->toPlainText().toStdString());
     if(actionCommand.empty()){
         return;
     }
@@ -163,6 +164,7 @@ void VisualExplorer::initGUI() {
     // ditto for propViewer
     connect(actionButton, &QPushButton::clicked, this, &VisualExplorer::handleAct);
     connect(showShellButton, &QPushButton::clicked, this, &VisualExplorer::showShell);
+    connect(this, &VisualExplorer::newPropText, propViewer, &ListenTextEdit::addText);
 
     painter->repaint();
     painter->updateState(env->currentObservation());
@@ -176,6 +178,8 @@ void VisualExplorer::initGUI() {
     consoleCommand->streams = tstreams;
     stateConsole->refocusWidget = consoleCommand;
     consoleCommand->outputTextEdit = stateConsole;
+    // todo click on canvas should set focus to canvas too
+    // todo white background
 //    check wrap
 //    check caret
     stateConsole->setReadOnly(true);
@@ -183,11 +187,11 @@ void VisualExplorer::initGUI() {
     // check scrolling
     auto * cvbl = new QVBoxLayout();
     cvbl->addWidget(stateConsole);
-    shell = new EnvironmentShell(domain, env, tstreams->getTin(), tstreams->getTout());
+    shell = new EnvironmentShell(domain, env, new StreamWrapper(tstreams));
     tstreams->setShell(shell);
-    tstreams->setLockPointers(&(shell->m_is), &(shell->cv_is), &(shell->lck_is));
-    tstreams->getTin()->pointersFromStreams();
-    auto vso = vector<ShellObserver *>{this};
+    tstreams->setLockPointers(&(shell->m_is), &(shell->cv_is));
+    auto vso = vector<ShellObserver *>();
+    vso.push_back(this);
 
     shell->addObservers(vso);
     shell->setVisualizer(painter);
@@ -229,17 +233,12 @@ void ShiftFocusTextEdit::mousePressEvent(QMouseEvent *event) {
 }
 
 void EnterTextEdit::keyPressEvent(QKeyEvent *e) {
-//    cout << char(e->key());
     if (e->key() == Qt::Key_Return) {
-//        cout << endl;
         QString command = toPlainText();
-        string cmd = command.toStdString();
+        string cmd = string(command.toStdString());
         cout << "'" << cmd << "'" << endl;
-        outputTextEdit->moveCursor(QTextCursor::End);
-        outputTextEdit->insertPlainText(command);
-        outputTextEdit->moveCursor(QTextCursor::End);
         setPlainText(QString(""));
-        cmd += "\n";
+        streams->printOutput(cmd + "\n");
         streams->receiveInput(cmd);
     } else {
         QTextEdit::keyPressEvent(e);
@@ -252,4 +251,8 @@ void EnterButtonTextEdit::keyPressEvent(QKeyEvent *e) {
     } else {
         QTextEdit::keyPressEvent(e);
     }
+}
+
+void ListenTextEdit::addText(const QString &s) {
+    setText(s);
 }

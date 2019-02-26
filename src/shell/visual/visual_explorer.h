@@ -23,6 +23,7 @@
 class EnterTextEdit;
 class ShiftFocusTextEdit;
 class EnterButtonTextEdit;
+class ListenTextEdit;
 
 class VisualExplorer : public QMainWindow, public ShellObserver {
 Q_OBJECT
@@ -32,7 +33,7 @@ public:
     map <string, Action *> keyActionMap;
     map <string, string> keyShellMap;
     Visualizer * painter;
-    QTextEdit * propViewer;
+    ListenTextEdit * propViewer;
     EnterButtonTextEdit * actionField;
     EnterTextEdit * consoleCommand;
     ShiftFocusTextEdit * stateConsole;
@@ -78,6 +79,8 @@ public:
 public slots:
     void animation_timer_poll();
     void live_timer_poll();
+signals:
+    void newPropText(const QString &s);
 protected:
     void keyPressEvent(QKeyEvent * e) override;
 };
@@ -106,6 +109,12 @@ public:
     explicit EnterButtonTextEdit(QWidget * parent = nullptr) : QTextEdit(parent) { }
 protected:
     void keyPressEvent(QKeyEvent * e) override;
+};
+
+class ListenTextEdit : public QTextEdit {
+Q_OBJECT
+public slots:
+    void addText(const QString &s);
 };
 
 #endif //FASTRL_SHELL_VISUAL_VISUAL_EXPLORER_H

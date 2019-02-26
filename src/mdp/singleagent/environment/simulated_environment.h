@@ -6,13 +6,14 @@
 #ifndef FASTRL_MDP_SINGLEAGENT_ENVIRONMENT_SIMULATED_ENVIRONMENT_H
 #define FASTRL_MDP_SINGLEAGENT_ENVIRONMENT_SIMULATED_ENVIRONMENT_H
 
+#include "../SA_domain.h"
 #include "../model/sample_model.hpp"
 #include "../../auxiliary/state_generator.hpp"
 #include "extensions/environment_observer.hpp"
-#include "../SA_domain.h"
+#include "extensions/environment_server_interface.hpp"
 #include "extensions/state_settable_environment.hpp"
 
-class SimulatedEnvironment : public StateSettableEnvironment {
+class SimulatedEnvironment : public StateSettableEnvironment, public EnvironmentServerInterface {
 public:
     SampleModel * model;
     StateGenerator * stateGenerator;
@@ -29,10 +30,10 @@ public:
     SimulatedEnvironment(SampleModel * model_, StateGenerator * state_generator);
     StateGenerator * getStateGenerator();
     void setStateGenerator(StateGenerator * state_generator);
-    void addObservers(vector<EnvironmentObserver *> observers_);
-    void clearAllObservers();
-    void removeObservers(vector<EnvironmentObserver *> observers_);
-    vector<EnvironmentObserver *> observers();
+    void addObservers(vector<EnvironmentObserver *> observers_) override;
+    void clearAllObservers() override;
+    void removeObservers(vector<EnvironmentObserver *> observers_) override;
+    vector<EnvironmentObserver *> observers() override;
     void setAllowActionFromTerminalStates(bool allow);
     void setCurrentStateTo(State *s) override;
     State * currentObservation() override;

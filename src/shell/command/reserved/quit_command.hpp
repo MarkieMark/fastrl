@@ -11,7 +11,7 @@ public:
         return "quit";
     }
 
-    int call(FastRLShell * shell, string argString, istream * is, ostream * os) override {
+    int call(FastRLShell * shell, string argString, StreamWrapper * s) override {
         shell->close();
         return 0;
     }

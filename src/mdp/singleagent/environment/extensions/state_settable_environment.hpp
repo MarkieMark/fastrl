@@ -8,6 +8,7 @@
 #include "../environment.hpp"
 
 class StateSettableEnvironment : virtual public Environment {
+public:
     virtual void setCurrentStateTo(State *s) { throw runtime_error("StateSettableEnvironment::setCurrentStateTo() Not Implemented"); }
 };
 
