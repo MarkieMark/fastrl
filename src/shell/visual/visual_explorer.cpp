@@ -168,6 +168,7 @@ void VisualExplorer::initGUI() {
 
     painter->repaint();
     painter->updateState(env->currentObservation());
+    painter->clickFocusWidget = this;
 
     updatePropTextArea(env->currentObservation());
     consoleWindow = new QMainWindow();
@@ -178,8 +179,6 @@ void VisualExplorer::initGUI() {
     consoleCommand->streams = tstreams;
     stateConsole->refocusWidget = consoleCommand;
     consoleCommand->outputTextEdit = stateConsole;
-    // todo click on canvas should set focus to canvas too
-    // todo white background
 //    check wrap
 //    check caret
     stateConsole->setReadOnly(true);
@@ -228,11 +227,11 @@ void VisualExplorer::showShell() {
     shell->thread_start();
 }
 
-void ShiftFocusTextEdit::mousePressEvent(QMouseEvent *event) {
+void ShiftFocusTextEdit::mousePressEvent(QMouseEvent * event) {
     refocusWidget->setFocus();
 }
 
-void EnterTextEdit::keyPressEvent(QKeyEvent *e) {
+void EnterTextEdit::keyPressEvent(QKeyEvent * e) {
     if (e->key() == Qt::Key_Return) {
         QString command = toPlainText();
         string cmd = string(command.toStdString());

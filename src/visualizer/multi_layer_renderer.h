@@ -10,6 +10,7 @@
 #include "render_layer.hpp"
 
 class MultiLayerRenderer : public QWidget {
+Q_OBJECT
 public:
     vector<RenderLayer *> render_layers;
     QColor bg_color = Qt::white;
@@ -18,6 +19,7 @@ public:
     // offscreen image for buffering & its buffer
     QPixmap * offscreen = nullptr;
     QPainter * buffer_qp = nullptr;
+    QWidget * clickFocusWidget = nullptr;
 
     int mem_render_width = 0;
     int mem_render_height = 0;
@@ -33,10 +35,10 @@ public:
         initOffScreen();
         buffer_qp->fillRect(0, 0, width(), height(), bg_color);
         for(RenderLayer * l : render_layers) {
-//            l->render(buffer_qp, width(), height());
-            l->render(qp, width(), height());
+            l->render(buffer_qp, width(), height());
+//            l->render(qp, width(), height());
         }
-//        qp->drawPixmap(0, 0, *offscreen);
+        qp->drawPixmap(0, 0, *offscreen);
     }
     void initOffScreen() {
         if (buffer_qp == nullptr || mem_render_width != width() || mem_render_height != height()) {
@@ -50,6 +52,14 @@ protected:
     void paintEvent(QPaintEvent * e) override {
         QPainter qp(this);
         paintComponent(&qp);
+    }
+
+    void mousePressEvent(QMouseEvent * event) override {
+        if (clickFocusWidget != nullptr) {
+            clickFocusWidget->setFocus();
+        } else {
+            QWidget::mousePressEvent(event);
+        }
     }
 };
 
