@@ -9,10 +9,9 @@
 #include <string>
 #include <iostream>
 #include "visual/text_area_streams.h"
+#include "../include/classes.h"
 
 using namespace std;
-
-class TextAreaStreams;
 
 class StreamWrapper {
 public:

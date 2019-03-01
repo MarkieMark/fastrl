@@ -19,15 +19,12 @@
 #include <mutex>
 #include <condition_variable>
 #include "../mdp/core/domain.hpp"
+#include "../visualizer/visualizer.h"
 #include "shell_observer.hpp"
 #include "stream_wrapper.h"
-#include "../visualizer/visualizer.h"
+#include "../include/classes.h"
 
 using namespace std;
-
-class ShellCommand;
-class ShellObserver;
-class StreamWrapper;
 
 class FastRLShell {
 public:

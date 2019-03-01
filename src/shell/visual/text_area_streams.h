@@ -11,10 +11,9 @@
 #include <mutex>
 #include <condition_variable>
 #include "../fastrl_shell.h"
+#include "../../include/classes.h"
 
 using namespace std;
-
-class FastRLShell;
 
 class TextAreaStreams {
 public:

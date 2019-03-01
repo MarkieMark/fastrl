@@ -8,12 +8,7 @@
 #define FASTRL_FASTRL_SHELL_SHELL_OBSERVER_HPP
 
 #include "fastrl_shell.h"
-
-class FastRLShell;
-
-class ShellCommandEvent;
-
-class ShellCommand;
+#include "../include/classes.h"
 
 class ShellObserver {
 public:

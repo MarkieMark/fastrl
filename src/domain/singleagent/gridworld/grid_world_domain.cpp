@@ -650,7 +650,7 @@ int GridWorldDomain::main1(int argc, char * argv[]) {
         int ret = QApplication::exec();
 //        if (ve->getShell()->shell_thread != nullptr && ve->getShell()->shell_thread->joinable())
 //        delete ve->getShell()->shell_thread;
-        ve->shell->thread_join();
+//        ve->shell->thread_join();
         return ret;
     }
     return -1;

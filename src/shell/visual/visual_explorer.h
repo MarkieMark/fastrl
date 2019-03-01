@@ -13,17 +13,14 @@
 #include <QtWidgets/QPushButton>
 #include <QTimer>
 #include <QKeyEvent>
+#include "text_area_streams.h"
 #include "../shell_observer.hpp"
+#include "../environment_shell.h"
 #include "../../mdp/singleagent/environment/environment.hpp"
 #include "../../mdp/singleagent/SA_domain.h"
 #include "../../visualizer/visualizer.h"
-#include "../environment_shell.h"
-#include "text_area_streams.h"
+#include "../../include/classes.h"
 
-class EnterTextEdit;
-class ShiftFocusTextEdit;
-class EnterButtonTextEdit;
-class ListenTextEdit;
 
 class VisualExplorer : public QMainWindow, public ShellObserver {
 Q_OBJECT

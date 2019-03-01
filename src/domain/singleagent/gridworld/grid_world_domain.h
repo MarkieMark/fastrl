@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <thread>
+#include "../../../include/classes.h"
 #include "../../../mdp/singleagent/model/reward_function.hpp"
 #include "../../../mdp/core/terminal_function.hpp"
 #include "../../../mdp/core/oo/propositional/propositional_function.h"
@@ -30,8 +31,6 @@
 #include "grid_world_terminal_function.h"
 #include "grid_world_visualizer.h"
 
-class GridWorldModel;
-class WallToPF;
 
 
 class GridWorldDomain {

@@ -520,7 +520,7 @@ set(SOURCE_FILES
         src/shell/stream_wrapper.cpp
         src/mdp/singleagent/environment/extensions/state_settable_environment.hpp
         src/mdp/singleagent/environment/extensions/environment_server.cpp
-        src/mdp/singleagent/environment/extensions/environment_server.h src/shell/command/env/episode_recording_commands.h)
+        src/mdp/singleagent/environment/extensions/environment_server.h src/shell/command/env/episode_recording_commands.h src/behavior/singleagent/auxiliary/episode_sequence_visualizer.h)
 
 add_executable(fastrl ${SOURCE_FILES})
 
