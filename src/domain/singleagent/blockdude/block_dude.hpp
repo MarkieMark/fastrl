@@ -1,0 +1,14 @@
+
+/*
+ * Mark Benjamin 6th March 2019
+ * Copyright (c) 2019 Mark Benjamin
+ */
+
+#ifndef FASTRL_DOMAIN_SINGLEAGENT_BLOCKDUDE_BLOCK_DUDE_HPP
+#define FASTRL_DOMAIN_SINGLEAGENT_BLOCKDUDE_BLOCK_DUDE_HPP
+
+class BlockDude {
+
+};
+
+#endif //FASTRL_DOMAIN_SINGLEAGENT_BLOCKDUDE_BLOCK_DUDE_HPP

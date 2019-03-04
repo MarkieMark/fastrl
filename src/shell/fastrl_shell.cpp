@@ -253,7 +253,7 @@ vector<ShellCommand *> FastRLShell::generateStandard(){
     return vector<ShellCommand *>();
 }
 
-Visualizer *FastRLShell::getVisualizer() {
+Visualizer * FastRLShell::getVisualizer() {
     return visualizer;
 }
 

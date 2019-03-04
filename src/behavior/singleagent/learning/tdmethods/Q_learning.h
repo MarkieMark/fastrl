@@ -28,23 +28,18 @@ public:
     double maxQChangeInMostRecentEpisode = numeric_limits<double>::max();
     bool shouldDecomposeOptions = true;
     int agentIterationCounter = 0;
-    QLearning(SADomain * domain_, double gamma_,
-            /*HashableStateFactory * factory,*/ double qInitial,
+    QLearning(SADomain * domain_, double gamma_, double qInitial,
             double learning_rate);
-    QLearning(SADomain * domain_, double gamma_,
-            /*HashableStateFactory * factory,*/ double qInitial,
+    QLearning(SADomain * domain_, double gamma_, double qInitial,
               double learning_rate, int max_episode_size);
-    QLearning(SADomain * domain_, double gamma_,
-            /*HashableStateFactory * factory,*/ double qInitial,
+    QLearning(SADomain * domain_, double gamma_, double qInitial,
               double learning_rate, Policy * learning_policy,
               int max_episode_size);
-    QLearning(SADomain * domain_, double gamma_,
-            /*HashableStateFactory * factory,*/ QFunction * qInitial,
+    QLearning(SADomain * domain_, double gamma_, QFunction * qInitial,
               double learning_rate, Policy * learning_policy,
               int max_episode_size);
 
-    void QLInit(SADomain * domain_, double gamma_,
-            /*HashableStateFactory * factory,*/ QFunction * qInitial,
+    void QLInit(SADomain * domain_, double gamma_, QFunction * qInitial,
               double learning_rate, Policy * learning_policy,
               int max_episode_size);
     void initializeForPlanning(int n_episodes_for_planning);

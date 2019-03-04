@@ -24,7 +24,7 @@ public:
 
     string typeName() override { return _typeName; }
     Action * associatedAction(string stringRep) override { return action; }
-    vector<Action *> allApplicableActions(State s) { return allActions; } // NOLINT(performance-unnecessary-value-param)
+    vector<Action *> allApplicableActions(State * s) override { return allActions; } // NOLINT(performance-unnecessary-value-param)
 };
 
 #endif // FASTRL_MDP_CORE_ACTION_UNIVERSAL_ACTION_TYPE_HPP

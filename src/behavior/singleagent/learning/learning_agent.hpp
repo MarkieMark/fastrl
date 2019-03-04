@@ -9,6 +9,7 @@
 #include "../episode.h"
 
 class LearningAgent {
+public:
     virtual Episode * runLearningEpisode(Environment *env) { throw runtime_error("LearningAgent::runLearningEpisode(env) Not Implemented"); }
     virtual Episode * runLearningEpisode(Environment *env, int maxIterations) { throw runtime_error("LearningAgent::runLearningEpisode(env, maxIter) Not Implemented"); }
 };

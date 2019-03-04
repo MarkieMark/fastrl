@@ -5,8 +5,6 @@
 #include "option.h"
 #include "../../policy/support/annotated_action.hpp"
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-msc30-c"
 EnvironmentOptionOutcome * OptionHelper::control(Option *o, Environment *env, double discountFactor) {
     State * initial = env->currentObservation();
     State * current = initial;
@@ -30,10 +28,9 @@ EnvironmentOptionOutcome * OptionHelper::control(Option *o, Environment *env, do
         AnnotatedAction * annotatedAction = new AnnotatedAction(a, s.str());
         episode->transition(annotatedAction, eo->o_prime, reward);
         pTransition = o->probabilityOfTermination(eo->o_prime, history);
-        roll = static_cast<double>(rand()) / RAND_MAX;
+        roll = drand48();
     } while ((roll > pTransition) && (!env->isInTerminalState()));
     auto * eoo = new EnvironmentOptionOutcome(
             initial, o, current, reward, env->isInTerminalState(), discountFactor, episode);
     return eoo;
 }
-#pragma clang diagnostic pop

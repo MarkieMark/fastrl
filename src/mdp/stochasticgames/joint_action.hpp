@@ -1,0 +1,14 @@
+
+/*
+ * Mark Benjamin 6th March 2019
+ * Copyright (c) 2019 Mark Benjamin
+ */
+
+#ifndef FASTRL_MDP_STOCHASTICGAMES_JOINT_ACTION_HPP
+#define FASTRL_MDP_STOCHASTICGAMES_JOINT_ACTION_HPP
+
+class JointAction {
+
+};
+
+#endif //FASTRL_MDP_STOCHASTICGAMES_JOINT_ACTION_HPP

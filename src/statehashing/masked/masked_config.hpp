@@ -1,0 +1,14 @@
+
+/*
+ * Mark Benjamin 6th March 2019
+ * Copyright (c) 2019 Mark Benjamin
+ */
+
+#ifndef FASTRL_STATEHASHING_MASKED_MASKED_CONFIG_HPP
+#define FASTRL_STATEHASHING_MASKED_MASKED_CONFIG_HPP
+
+class MaskedConfig {
+
+};
+
+#endif //FASTRL_STATEHASHING_MASKED_MASKED_CONFIG_HPP

@@ -68,8 +68,6 @@ vector<ActionProb *> PolicyUtils::deterministicPolicyDistribution(Policy *p, Sta
     return aps;
 }
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-msc30-c"
 /**
  * This is a helper method for stochastic policies. If the policy is stochastic, then rather than
  * having the policy define both the {@link Policy#action(State)} method and
@@ -82,7 +80,7 @@ vector<ActionProb *> PolicyUtils::deterministicPolicyDistribution(Policy *p, Sta
  * @return an {@link Action} to take
  */
 Action * PolicyUtils::sampleFromActionDistribution(EnumerablePolicy *p, State *s){
-    double roll = static_cast<double>(rand()) / RAND_MAX;
+    double roll = drand48();
     vector<ActionProb *> probs = p->policyDistribution(s);
     if(probs.empty()){
         throw runtime_error("Policy Not Defined");
@@ -96,7 +94,6 @@ Action * PolicyUtils::sampleFromActionDistribution(EnumerablePolicy *p, State *s
     }
     throw runtime_error("Policy Action Distribution Not Summing to 1");
 }
-#pragma clang diagnostic pop
 
 /**
  * This method will return the an episode that results from following the given policy from state s. The episode will terminate

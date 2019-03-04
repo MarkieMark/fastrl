@@ -1,0 +1,14 @@
+
+/*
+ * Mark Benjamin 6th March 2019
+ * Copyright (c) 2019 Mark Benjamin
+ */
+
+#ifndef FASTRL_MDP_SINGLEAGENT_COMMON_NULL_REWARD_FUNCTION_HPP
+#define FASTRL_MDP_SINGLEAGENT_COMMON_NULL_REWARD_FUNCTION_HPP
+
+class NullRewardFunction {
+
+};
+
+#endif //FASTRL_MDP_SINGLEAGENT_COMMON_NULL_REWARD_FUNCTION_HPP

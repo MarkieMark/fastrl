@@ -10,11 +10,9 @@ vector<TransitionProb *> FullModelHelper::deterministicTransition(SampleModel * 
     return vector<TransitionProb *>({new TransitionProb(1., eo)});
 }
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-msc50-cpp"
 EnvironmentOutcome * FullModelHelper::sampleByEnumeration(FullModel * model, State * s, Action * a) {
     vector<TransitionProb *> tps = model->transitions(s, a);
-    double roll = static_cast<double>(rand()) / RAND_MAX; // NOLINT(cert-msc30-c)
+    double roll = drand48();
     double sum = 0;
     for (TransitionProb * tp : tps) {
         sum += tp->p;
@@ -25,4 +23,3 @@ EnvironmentOutcome * FullModelHelper::sampleByEnumeration(FullModel * model, Sta
     /* todo added nullptr */
     return nullptr;
 }
-#pragma clang diagnostic pop

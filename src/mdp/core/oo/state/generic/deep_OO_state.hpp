@@ -1,0 +1,14 @@
+
+/*
+ * Mark Benjamin 6th March 2019
+ * Copyright (c) 2019 Mark Benjamin
+ */
+
+#ifndef FASTRL_MDP_CORE_OO_STATE_GENERIC_DEEP_OO_STATE_HPP
+#define FASTRL_MDP_CORE_OO_STATE_GENERIC_DEEP_OO_STATE_HPP
+
+class DeepOOState {
+
+};
+
+#endif //FASTRL_MDP_CORE_OO_STATE_GENERIC_DEEP_OO_STATE_HPP

@@ -1,0 +1,14 @@
+
+/*
+ * Mark Benjamin 6th March 2019
+ * Copyright (c) 2019 Mark Benjamin
+ */
+
+#ifndef FASTRL_SHELL_COMMAND_ENV_LIST_PROP_FUNCTIONS_HPP
+#define FASTRL_SHELL_COMMAND_ENV_LIST_PROP_FUNCTIONS_HPP
+
+class ListPropFunctions {
+
+};
+
+#endif //FASTRL_SHELL_COMMAND_ENV_LIST_PROP_FUNCTIONS_HPP

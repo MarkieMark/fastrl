@@ -9,11 +9,11 @@ with thanks mainly to James MacGlashan
 Aspects such as Reflection, GUI leverage Qt5
 
 
-TODO list
----------
+TODO list [not necessarily priority ordered]
+--------------------------------------------
 1  Visual elements; Qt5    
 2  Debugging
-3  Attributions  
+3  Attributions; most code principally derived from James MacGlashan's BURLAP Java code
 4  Destructors; Memory Management more generally; smart pointers  
 5  Alternative entry points (translation from BURLAP)    
 6  Translation of more Algorithms / Domains    
@@ -21,11 +21,17 @@ TODO list
 8  Pointerization as much as possible to avoid overhead  
 9  Linking Tensorflow c++ API for implementation of Deep Q Learning etcetera;
    possibly a translation of keras-rl https://github.com/matthiasplappert/keras-rl
-10 Transfer / adjust more documentation comments
+10 Transfer / adjust more documentation comments; ; pick a system for auto generation, add function descriptions in the proper places; for the time being the similarity to BURLAP may allow consultation of BURLAP documentation
 11 Make the c++ more idiomatic
 12 More 'native' handling of copy() / to_string() bearing in mind the need for
    some Q_OBJECT functionality while Q_OBJECT 'deletes' copy()
 13 Thread safe implementation of the shell streams redirection to GUI elements; c++ wrapper-oriented modification of Java stream inheritance methodology
+14 Override `operator==` for relevant [`State` etc] classes that leverage hashing / 'hashable' / override `.equals()` in BURLAP.
+15 Address the inspection overrides gradually
+16 consider refactoring minimizing use of [.h] & [.cpp] when one [.hpp] would compile happily [predeclaring class names is sufficient, no cyclical function signature references]
+17 Add stochastic games classes in `src/behavior/stochasticgames` & `src/domain/stochasticgames`
+18 Add more worlds than gridworld in `/src/domain/singleagent/`
+
 
 Debugging Task List
 -------------------
@@ -33,4 +39,7 @@ dynamic_cast<> testing for multipurpose objects, usually keys;
 scrutinize the translation's use of key / value pairs as KeyContainer / integer
 scrutinize use of pointers to avoid copying; scrutinize use of references to / values of, vectors
 Monitor initial code paths for blank variables
-check for class name duplication / ambiguity
+Valgrind check for leaks
+check for class name duplication / ambiguity in view of the more generic 'import' mechanism
+Multipurpose the interaction mechanism between User Input thread and work thread so that it works for both shell and GUI User Input interfaces
+Fully implement & debug all the planning/learning algorithms invokable in the gridworld; add POMDP, Model Learning, Actor/Critic inc TD Lambda & helper classes.

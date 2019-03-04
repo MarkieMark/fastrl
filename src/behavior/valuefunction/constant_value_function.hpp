@@ -9,9 +9,8 @@
 
 class ConstantValueFunction : public QFunction {
 public:
-    double _value = 0.;
-    explicit ConstantValueFunction(double val = -1) : _value(val) { }
-    // todo check -1 value for consistency with code base
+    double _value;
+    explicit ConstantValueFunction(double val = 0.) : _value(val) { }
     double value(State *s) override { return _value; }
     double qValue(State *s, Action *a) override { return _value; }
 };

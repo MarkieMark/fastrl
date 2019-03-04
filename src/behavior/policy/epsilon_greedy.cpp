@@ -19,7 +19,7 @@ void EpsilonGreedy::setEpsilon(double epsilon_) {
     epsilon = epsilon_;
 }
 
-void EpsilonGreedy::setSolver(MDPSolverInterface *solver) {
+void EpsilonGreedy::setSolver(MDPSolverInterface * solver) {
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "OCDFAInspection"
     qPlanner = dynamic_cast<QProvider*>(solver);
@@ -32,9 +32,9 @@ void EpsilonGreedy::setSolver(MDPSolverInterface *solver) {
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "cert-msc50-cpp"
 #pragma ide diagnostic ignored "cert-msc30-c"
-Action * EpsilonGreedy::action(State *s) {
+Action * EpsilonGreedy::action(State * s) {
     vector<QValue *> qValues = qPlanner->qValues(s);
-    double roll = static_cast<double>(rand()) / RAND_MAX; // NOLINT(cert-msc30-c)
+    double roll = drand48();
     if (roll <= epsilon) { // TODO NB unusual use of epsilon
         return qValues[rand() % qValues.size()]->a;
     }
@@ -54,11 +54,11 @@ Action * EpsilonGreedy::action(State *s) {
 }
 #pragma clang diagnostic pop
 
-double EpsilonGreedy::actionProb(State *s, Action *a) {
+double EpsilonGreedy::actionProb(State * s, Action * a) {
     return PolicyUtils::actionProbFromEnum(this, s, a);
 }
 
-vector<ActionProb *> EpsilonGreedy::policyDistribution(State *s) {
+vector<ActionProb *> EpsilonGreedy::policyDistribution(State * s) {
     vector<QValue *> qValues = qPlanner->qValues(s);
     vector<ActionProb *> dist = vector<ActionProb *>();
     double maxQ = numeric_limits<double>::min();

@@ -1,0 +1,14 @@
+
+/*
+ * Mark Benjamin 6th March 2019
+ * Copyright (c) 2019 Mark Benjamin
+ */
+
+#ifndef FASTRL_SHELL_COMMAND_WORLD_GENERATE_STATE_COMMAND_HPP
+#define FASTRL_SHELL_COMMAND_WORLD_GENERATE_STATE_COMMAND_HPP
+
+class GenerateStateCommand {
+
+};
+
+#endif //FASTRL_SHELL_COMMAND_WORLD_GENERATE_STATE_COMMAND_HPP

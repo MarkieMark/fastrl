@@ -1,0 +1,14 @@
+
+/*
+ * Mark Benjamin 6th March 2019
+ * Copyright (c) 2019 Mark Benjamin
+ */
+
+#ifndef FASTRL_SHELL_COMMAND_WORLD_IS_TERMINAL_SG_COMMAND_HPP
+#define FASTRL_SHELL_COMMAND_WORLD_IS_TERMINAL_SG_COMMAND_HPP
+
+class IsTerminalSGCommand {
+
+};
+
+#endif //FASTRL_SHELL_COMMAND_WORLD_IS_TERMINAL_SG_COMMAND_HPP

@@ -9,6 +9,7 @@
 #include "../../policy/policy.hpp"
 
 class Planner {
+public:
     virtual Policy * planFromState(State * initialState) { throw runtime_error("Planner::planFromState() Not Implemented"); }
 };
 

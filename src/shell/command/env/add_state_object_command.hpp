@@ -1,0 +1,14 @@
+
+/*
+ * Mark Benjamin 6th March 2019
+ * Copyright (c) 2019 Mark Benjamin
+ */
+
+#ifndef FASTRL_SHELL_COMMAND_ENV_ADD_STATE_OBJECT_COMMAND_HPP
+#define FASTRL_SHELL_COMMAND_ENV_ADD_STATE_OBJECT_COMMAND_HPP
+
+class AddStateObjectCommand {
+
+};
+
+#endif //FASTRL_SHELL_COMMAND_ENV_ADD_STATE_OBJECT_COMMAND_HPP

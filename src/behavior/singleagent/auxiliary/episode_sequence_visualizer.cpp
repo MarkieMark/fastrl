@@ -9,7 +9,7 @@
 #include "../../../mdp/core/oo/OO_domain.h"
 #include "../../../mdp/core/oo/propositional/grounded_prop.h"
 
-EpisodeSequenceVisualizer::EpisodeSequenceVisualizer(Visualizer * v, Domain * d, string experimentDirectory){
+EpisodeSequenceVisualizer::EpisodeSequenceVisualizer(Visualizer * v, Domain * d, string experimentDirectory) {
     init(v, d, std::move(experimentDirectory), 800, 800);
 }
 

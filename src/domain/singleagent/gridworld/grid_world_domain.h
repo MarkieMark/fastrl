@@ -24,6 +24,7 @@
 #include "../../../shell/environment_shell.h"
 #include "../../../mdp/singleagent/environment/simulated_environment.h"
 #include "../../../behavior/singleagent/learning/tdmethods/Q_learning.h"
+#include "../../../behavior/singleagent/learning/tdmethods/sarsa_lam.hpp"
 #include "../../../visualizer/visualizer.h"
 #include "state/grid_agent.h"
 #include "state/grid_location.h"
@@ -178,6 +179,10 @@ public:
     static int main(int argc, char * argv[]);
     static int main1(int argc, char * argv[]);
     static int main2(int argc, char * argv[]);
+    static int main_multi(int argc, char * argv[]);
+
+    static void vis(string outputPath, GridWorldDomain * gwd, SADomain * domain);
+    static void valueVis(ValueFunction * valueFunction, Policy * p, State * initialState, SADomain * domain);
 
     friend GridWorldModel;
     friend WallToPF;

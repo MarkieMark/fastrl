@@ -8,6 +8,7 @@
 #include "../../mdp/core/state/state.hpp"
 
 class ValueFunction {
+public:
     virtual double value(State *s) { throw runtime_error("ValueFunction::value() Not Implemented"); }
 };
 

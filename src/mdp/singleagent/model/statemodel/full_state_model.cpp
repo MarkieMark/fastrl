@@ -14,7 +14,7 @@ vector<StateTransitionProb *> FullStateModelHelper::deterministicTransition(
 #pragma ide diagnostic ignored "cert-msc30-c"
 State * FullStateModelHelper::sampleByEnumeration(FullStateModel * model, State * s, Action * a) {
     vector<StateTransitionProb *> tps = model->stateTransitions(s, a);
-    double roll = static_cast<double>(rand()) / RAND_MAX;
+    double roll = drand48();
     double sum = 0;
     for (StateTransitionProb * tp : tps) {
         sum += tp->p;

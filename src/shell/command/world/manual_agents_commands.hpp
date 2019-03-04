@@ -1,0 +1,14 @@
+
+/*
+ * Mark Benjamin 6th March 2019
+ * Copyright (c) 2019 Mark Benjamin
+ */
+
+#ifndef FASTRL_SHELL_COMMAND_WORLD_MANUAL_AGENTS_COMMANDS_HPP
+#define FASTRL_SHELL_COMMAND_WORLD_MANUAL_AGENTS_COMMANDS_HPP
+
+class ManualAgentsCommands {
+
+};
+
+#endif //FASTRL_SHELL_COMMAND_WORLD_MANUAL_AGENTS_COMMANDS_HPP

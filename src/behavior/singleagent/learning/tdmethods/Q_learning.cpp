@@ -10,33 +10,33 @@
 #include "../../../../mdp/singleagent/environment/simulated_environment.h"
 #include "../../options/option.h"
 
-QLearning::QLearning(SADomain *domain_, double gamma_, double qInitial,
+QLearning::QLearning(SADomain * domain_, double gamma_, double qInitial,
                      double learning_rate) {
-    QLInit(domain, gamma, new ConstantValueFunction(qInitial), learning_rate,
+    QLInit(domain_, gamma_, new ConstantValueFunction(qInitial), learning_rate,
            new EpsilonGreedy(this, 0.1), numeric_limits<int>::max());
 }
 
-QLearning::QLearning(SADomain *domain_, double gamma_, double qInitial,
+QLearning::QLearning(SADomain * domain_, double gamma_, double qInitial,
                      double learning_rate, int max_episode_size) {
     QLInit(domain_, gamma_, new ConstantValueFunction(qInitial), learning_rate,
            new EpsilonGreedy(this, 0.1), max_episode_size);
 }
 
-QLearning::QLearning(SADomain *domain_, double gamma_, double qInitial,
-                     double learning_rate, Policy *learning_policy,
+QLearning::QLearning(SADomain * domain_, double gamma_, double qInitial,
+                     double learning_rate, Policy * learning_policy,
                      int max_episode_size) {
     QLInit(domain_, gamma_, new ConstantValueFunction(qInitial), learning_rate,
            learning_policy, max_episode_size);
 }
 
-QLearning::QLearning(SADomain *domain_, double gamma_, QFunction *qInitial,
+QLearning::QLearning(SADomain * domain_, double gamma_, QFunction * qInitial,
                      double learning_rate, Policy *learning_policy,
                      int max_episode_size) {
     QLInit(domain_, gamma_, qInitial, learning_rate, learning_policy, max_episode_size);
 }
 
-void QLearning::QLInit(SADomain *domain_, double gamma_, QFunction *qInitial,
-                       double learning_rate, Policy *learning_policy, int max_episode_size) {
+void QLearning::QLInit(SADomain *domain_, double gamma_, QFunction * qInitial,
+                       double learning_rate, Policy * learning_policy, int max_episode_size) {
     solverInit(domain_, gamma_);
     qFunction = map<State *, QLearningStateNode *>();
     learningRate = new ConstantLR(learning_rate);
@@ -59,7 +59,7 @@ void QLearning::setQInitFunction(QFunction * q_init) {
     qInitFunction = q_init;
 }
 
-void QLearning::setLearningPolicy(Policy *p) {
+void QLearning::setLearningPolicy(Policy * p) {
     learningPolicy = p;
 }
 
@@ -87,20 +87,20 @@ void QLearning::toggleShouldDecomposeOption(bool active) {
     shouldDecomposeOptions = active;
 }
 
-vector<QValue *> QLearning::qValues(State *s) {
+vector<QValue *> QLearning::qValues(State * s) {
     return getQs(s);
 }
 
-double QLearning::qValue(State *s, Action *a) {
+double QLearning::qValue(State *s, Action * a) {
     return getQ(s, a)->q;
 }
 
-vector<QValue *> QLearning::getQs(State *s) {
+vector<QValue *> QLearning::getQs(State * s) {
     QLearningStateNode * node = getStateNode(s);
     return node->qEntry;
 }
 
-QValue* QLearning::getQ(State *s, Action *a) {
+QValue * QLearning::getQ(State * s, Action * a) {
     QLearningStateNode * node = getStateNode(s);
     for (QValue * qv : node->qEntry) {
         if (qv->a == a) {
@@ -110,11 +110,11 @@ QValue* QLearning::getQ(State *s, Action *a) {
     return nullptr;
 }
 
-double QLearning::value(State *s) {
+double QLearning::value(State * s) {
     return QProviderHelper::maxQ(this, s);
 }
 
-QLearningStateNode* QLearning::getStateNode(State *s) {
+QLearningStateNode * QLearning::getStateNode(State * s) {
     QLearningStateNode *node;
     try {
         node = qFunction.at(s);
@@ -136,7 +136,7 @@ QLearningStateNode* QLearning::getStateNode(State *s) {
 }
 
 
-double QLearning::getMaxQ(State *s) {
+double QLearning::getMaxQ(State * s) {
     vector<QValue *> qs = getQs(s);
     double max = numeric_limits<double>::min();
     for (QValue * q : qs) {
@@ -147,7 +147,7 @@ double QLearning::getMaxQ(State *s) {
     return max;
 }
 
-Policy* QLearning::planFromState(State *initial_state) {
+Policy * QLearning::planFromState(State *initial_state) {
     if (model == nullptr) {
         throw runtime_error("QLearning Needs a Model to planFromState");
     }
@@ -160,11 +160,11 @@ Policy* QLearning::planFromState(State *initial_state) {
     return new GreedyQPolicy(this);
 }
 
-Episode* QLearning::runLearningEpisode(Environment *env) {
+Episode * QLearning::runLearningEpisode(Environment *env) {
     return runLearningEpisode(env, -1);
 }
 
-Episode* QLearning::runLearningEpisode(Environment *env, int max_iterations) {
+Episode * QLearning::runLearningEpisode(Environment *env, int max_iterations) {
     State * initialState = env->currentObservation();
     auto * e = new Episode(initialState);
     State * currentState = initialState; // TODO should possibly avoid pointers here

@@ -10,8 +10,8 @@
 
 class MDPSolver : public MDPSolverInterface {
 public:
-    SADomain *domain;
-    SampleModel *model;
+    SADomain * domain;
+    SampleModel * model;
 //    HashableStateFactory * hashingFactory;
     double gamma;
     vector<ActionType *> actionTypes = vector<ActionType *>();
@@ -22,18 +22,18 @@ public:
     void solverInit(SADomain * domain_, double gamma_/*, HashableStateFactory * factory*/) override {
         gamma = gamma_;
 //        hashingFactory = factory;
-        setDomain(domain);
+        setDomain(domain_);
     }
     void addActionType(ActionType * a) override {
         bool contains = false;
-        for (ActionType *at : actionTypes) {
+        for (auto * at : actionTypes) {
             if (at == a) { // TODO compare content rather than pointer
                 contains = true;
             }
         }
         if (!contains) actionTypes.push_back(a);
     }
-    void setModel(SampleModel *model_) override {
+    void setModel(SampleModel * model_) override {
         model = model_;
     }
     SampleModel * getModel() override {
@@ -67,7 +67,7 @@ public:
     }
     Domain * getDomain() override { return domain; }
 //    HashableState * stateHash(State *s) { return hashingFactory.hashState(s); }
-    vector<Action *> applicableActions(State *s) {
+    vector<Action *> applicableActions(State * s) {
         return ActionUtils::allApplicableActionsForTypes(actionTypes, s);
     }
 };

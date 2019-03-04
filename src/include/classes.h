@@ -20,6 +20,7 @@ class StreamWrapper;
 class TextAreaStreams;
 class GridWorldModel;
 class WallToPF;
+class SarsaLamEligibilityTrace;
 
 // todo check for all predeclarations, bring them here
 

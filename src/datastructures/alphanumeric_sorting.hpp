@@ -1,0 +1,14 @@
+
+/*
+ * Mark Benjamin 6th March 2019
+ * Copyright (c) 2019 Mark Benjamin
+ */
+
+#ifndef FASTRL_DATASTRUCTURES_ALPHANUMERIC_SORTING_HPP
+#define FASTRL_DATASTRUCTURES_ALPHANUMERIC_SORTING_HPP
+
+class AlphanumericSorting {
+
+};
+
+#endif //FASTRL_DATASTRUCTURES_ALPHANUMERIC_SORTING_HPP
