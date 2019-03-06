@@ -6,62 +6,71 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_AUTOMOC ON)
 
 set(SOURCE_FILES
-        src/behavior/functionapproximation/dense/fourier/fourier_basis.hpp
-        src/behavior/functionapproximation/dense/fourier/fourier_basis_learning_rate_wrapper.hpp
-        src/behavior/functionapproximation/dense/rbf/functions/gaussian_RBF.hpp
-        src/behavior/functionapproximation/dense/rbf/metrics/euclidean_distance.hpp
-        src/behavior/functionapproximation/dense/rbf/distance_metric.hpp
-        src/behavior/functionapproximation/dense/rbf/RBF.hpp
-        src/behavior/functionapproximation/dense/rbf/RBF_features.hpp
+        src/behavior/functionapproximation/dense/PF_features.hpp
         src/behavior/functionapproximation/dense/concatenated_object_features.hpp
         src/behavior/functionapproximation/dense/dense_cross_product_features.hpp
         src/behavior/functionapproximation/dense/dense_linear_VFA.hpp
         src/behavior/functionapproximation/dense/dense_state_action_features.hpp
         src/behavior/functionapproximation/dense/dense_state_action_linear_VFA.hpp
         src/behavior/functionapproximation/dense/dense_state_features.hpp
+        src/behavior/functionapproximation/dense/fourier/fourier_basis.hpp
+        src/behavior/functionapproximation/dense/fourier/fourier_basis_learning_rate_wrapper.hpp
         src/behavior/functionapproximation/dense/normalized_variable_features.hpp
         src/behavior/functionapproximation/dense/numeric_variable_features.hpp
-        src/behavior/functionapproximation/dense/PF_features.hpp
+        src/behavior/functionapproximation/dense/rbf/RBF.hpp
+        src/behavior/functionapproximation/dense/rbf/RBF_features.hpp
+        src/behavior/functionapproximation/dense/rbf/distance_metric.hpp
+        src/behavior/functionapproximation/dense/rbf/functions/gaussian_RBF.hpp
+        src/behavior/functionapproximation/dense/rbf/metrics/euclidean_distance.hpp
         src/behavior/functionapproximation/dense/sparse_to_dense_features.hpp
-        src/behavior/functionapproximation/sparse/tilecoding/tile_coding_features.hpp
-        src/behavior/functionapproximation/sparse/tilecoding/tiling.hpp
-        src/behavior/functionapproximation/sparse/tilecoding/tiling_arrangement.hpp
-        src/behavior/functionapproximation/sparse/linear_VFA.hpp
-        src/behavior/functionapproximation/sparse/sparse_cross_product_features.hpp
-        src/behavior/functionapproximation/sparse/sparse_state_action_features.hpp
-        src/behavior/functionapproximation/sparse/sparse_state_features.hpp
-        src/behavior/functionapproximation/sparse/state_feature.hpp
-        src/behavior/functionapproximation/supervised/supervised_VFA.hpp
         src/behavior/functionapproximation/differentiable_state_action_value.hpp
         src/behavior/functionapproximation/differentiable_state_value.hpp
         src/behavior/functionapproximation/function_gradient.hpp
         src/behavior/functionapproximation/gradient_utils.hpp
         src/behavior/functionapproximation/parametric_function.hpp
+        src/behavior/functionapproximation/sparse/linear_VFA.hpp
+        src/behavior/functionapproximation/sparse/sparse_cross_product_features.hpp
+        src/behavior/functionapproximation/sparse/sparse_state_action_features.hpp
+        src/behavior/functionapproximation/sparse/sparse_state_features.hpp
+        src/behavior/functionapproximation/sparse/state_feature.hpp
+        src/behavior/functionapproximation/sparse/tilecoding/tile_coding_features.hpp
+        src/behavior/functionapproximation/sparse/tilecoding/tiling.hpp
+        src/behavior/functionapproximation/sparse/tilecoding/tiling_arrangement.hpp
+        src/behavior/functionapproximation/supervised/supervised_VFA.hpp
         src/behavior/learningrate/constant_LR.hpp
         src/behavior/learningrate/exponential_decay_LR.hpp
         src/behavior/learningrate/learning_rate.hpp
         src/behavior/learningrate/soft_time_inverse_decay_LR.hpp
-        src/behavior/policy/support/action_prob.hpp
-        src/behavior/policy/support/annotated_action.hpp
-        src/behavior/policy/support/policy_undefined_exception.hpp
         src/behavior/policy/boltzmann_Q_policy.hpp
         src/behavior/policy/cached_policy.hpp
         src/behavior/policy/enumerable_policy.hpp
         src/behavior/policy/epsilon_greedy.cpp
-        src/behavior/policy/greedy_deterministic_Q_policy.hpp
+        src/behavior/policy/epsilon_greedy.h
         src/behavior/policy/greedy_Q_policy.cpp
+        src/behavior/policy/greedy_Q_policy.h
+        src/behavior/policy/greedy_deterministic_Q_policy.hpp
         src/behavior/policy/policy.hpp
         src/behavior/policy/policy_utils.cpp
+        src/behavior/policy/policy_utils.h
         src/behavior/policy/random_policy.hpp
         src/behavior/policy/solver_derived_policy.hpp
-        src/behavior/singleagent/auxiliary/gridset/flat_state_gridder.hpp
+        src/behavior/policy/support/action_prob.hpp
+        src/behavior/policy/support/annotated_action.hpp
+        src/behavior/policy/support/policy_undefined_exception.hpp
+        src/behavior/singleagent/MDP_solver.hpp
+        src/behavior/singleagent/MDP_solver_interface.hpp
+        src/behavior/singleagent/auxiliary/episode_sequence_visualizer.cpp
+        src/behavior/singleagent/auxiliary/episode_sequence_visualizer.h
         src/behavior/singleagent/auxiliary/gridset/OO_state_gridder.hpp
+        src/behavior/singleagent/auxiliary/gridset/flat_state_gridder.hpp
         src/behavior/singleagent/auxiliary/gridset/variable_grid_spec.hpp
         src/behavior/singleagent/auxiliary/performance/experimental_environment.hpp
         src/behavior/singleagent/auxiliary/performance/learning_algorithm_experimenter.hpp
         src/behavior/singleagent/auxiliary/performance/performance_metric.hpp
         src/behavior/singleagent/auxiliary/performance/performance_plotter.hpp
         src/behavior/singleagent/auxiliary/performance/trial_mode.hpp
+        src/behavior/singleagent/auxiliary/state_enumerator.hpp
+        src/behavior/singleagent/auxiliary/state_reachability.hpp
         src/behavior/singleagent/auxiliary/valuefunctionvis/common/action_glyph_painter.hpp
         src/behavior/singleagent/auxiliary/valuefunctionvis/common/arrow_action_glyph.hpp
         src/behavior/singleagent/auxiliary/valuefunctionvis/common/color_blend.hpp
@@ -74,16 +83,22 @@ set(SOURCE_FILES
         src/behavior/singleagent/auxiliary/valuefunctionvis/static_domain_painter.hpp
         src/behavior/singleagent/auxiliary/valuefunctionvis/value_function_render_layer.hpp
         src/behavior/singleagent/auxiliary/valuefunctionvis/value_function_visualizer_GUI.hpp
-        src/behavior/singleagent/auxiliary/episode_sequence_visualizer.cpp
-        src/behavior/singleagent/auxiliary/state_enumerator.hpp
-        src/behavior/singleagent/auxiliary/state_reachability.hpp
+        src/behavior/singleagent/episode.cpp
+        src/behavior/singleagent/episode.h
         src/behavior/singleagent/interfaces/rlglue/RL_glue_agent.hpp
         src/behavior/singleagent/interfaces/rlglue/RL_glue_domain.hpp
         src/behavior/singleagent/interfaces/rlglue/RL_glue_state.hpp
+        src/behavior/singleagent/learnfromdemo/IRL_request.hpp
         src/behavior/singleagent/learnfromdemo/apprenticeship/apprenticeship_learning.hpp
         src/behavior/singleagent/learnfromdemo/apprenticeship/apprenticeship_learning_request.hpp
+        src/behavior/singleagent/learnfromdemo/custom_reward_model.hpp
+        src/behavior/singleagent/learnfromdemo/mlirl/MLIRL.hpp
+        src/behavior/singleagent/learnfromdemo/mlirl/MLIRL_request.hpp
         src/behavior/singleagent/learnfromdemo/mlirl/commonrfs/linear_state_action_differentiable_RF.hpp
         src/behavior/singleagent/learnfromdemo/mlirl/commonrfs/linear_state_differentiable_RF.hpp
+        src/behavior/singleagent/learnfromdemo/mlirl/differentiableplanners/differentiable_DP.hpp
+        src/behavior/singleagent/learnfromdemo/mlirl/differentiableplanners/differentiable_VI.hpp
+        src/behavior/singleagent/learnfromdemo/mlirl/differentiableplanners/differentiable_sparse_sampling.hpp
         src/behavior/singleagent/learnfromdemo/mlirl/differentiableplanners/diffvinit/diff_VFRF.hpp
         src/behavior/singleagent/learnfromdemo/mlirl/differentiableplanners/diffvinit/differentiable_V_init.hpp
         src/behavior/singleagent/learnfromdemo/mlirl/differentiableplanners/diffvinit/linear_diff_RFV_init.hpp
@@ -92,148 +107,149 @@ set(SOURCE_FILES
         src/behavior/singleagent/learnfromdemo/mlirl/differentiableplanners/dpoperator/differentiable_DP_operator.hpp
         src/behavior/singleagent/learnfromdemo/mlirl/differentiableplanners/dpoperator/differentiable_softmax_operator.hpp
         src/behavior/singleagent/learnfromdemo/mlirl/differentiableplanners/dpoperator/sub_differentiable_max_operator.hpp
-        src/behavior/singleagent/learnfromdemo/mlirl/differentiableplanners/differentiable_DP.hpp
-        src/behavior/singleagent/learnfromdemo/mlirl/differentiableplanners/differentiable_sparse_sampling.hpp
-        src/behavior/singleagent/learnfromdemo/mlirl/differentiableplanners/differentiable_VI.hpp
+        src/behavior/singleagent/learnfromdemo/mlirl/multiple_intentions_MLIRL.hpp
+        src/behavior/singleagent/learnfromdemo/mlirl/multiple_intentions_MLIRL_request.hpp
+        src/behavior/singleagent/learnfromdemo/mlirl/support/Q_gradient_planner_factory.hpp
+        src/behavior/singleagent/learnfromdemo/mlirl/support/Q_gradient_tuple.hpp
         src/behavior/singleagent/learnfromdemo/mlirl/support/boltzmann_policy_gradient.hpp
         src/behavior/singleagent/learnfromdemo/mlirl/support/differentiable_Q_function.hpp
         src/behavior/singleagent/learnfromdemo/mlirl/support/differentiable_RF.hpp
         src/behavior/singleagent/learnfromdemo/mlirl/support/differentiable_value_function.hpp
-        src/behavior/singleagent/learnfromdemo/mlirl/support/Q_gradient_planner_factory.hpp
-        src/behavior/singleagent/learnfromdemo/mlirl/support/Q_gradient_tuple.hpp
-        src/behavior/singleagent/learnfromdemo/mlirl/MLIRL.hpp
-        src/behavior/singleagent/learnfromdemo/mlirl/MLIRL_request.hpp
-        src/behavior/singleagent/learnfromdemo/mlirl/multiple_intentions_MLIRL.hpp
-        src/behavior/singleagent/learnfromdemo/mlirl/multiple_intentions_MLIRL_request.hpp
-        src/behavior/singleagent/learnfromdemo/custom_reward_model.hpp
-        src/behavior/singleagent/learnfromdemo/IRL_request.hpp
         src/behavior/singleagent/learnfromdemo/reward_value_projection.hpp
-        src/behavior/singleagent/learning/actorcritic/actor/boltzmann_actor.hpp
-        src/behavior/singleagent/learning/actorcritic/critics/TD_lambda.hpp
-        src/behavior/singleagent/learning/actorcritic/critics/time_indexed_TD_lambda.hpp
         src/behavior/singleagent/learning/actorcritic/actor.hpp
+        src/behavior/singleagent/learning/actorcritic/actor/boltzmann_actor.hpp
         src/behavior/singleagent/learning/actorcritic/actor_critic.hpp
         src/behavior/singleagent/learning/actorcritic/critic.hpp
+        src/behavior/singleagent/learning/actorcritic/critics/TD_lambda.hpp
+        src/behavior/singleagent/learning/actorcritic/critics/time_indexed_TD_lambda.hpp
         src/behavior/singleagent/learning/experiencereplay/experience_memory.hpp
         src/behavior/singleagent/learning/experiencereplay/fixed_size_memory.hpp
+        src/behavior/singleagent/learning/learning_agent.hpp
+        src/behavior/singleagent/learning/learning_agent_factory.hpp
         src/behavior/singleagent/learning/lspi/LSPI.hpp
         src/behavior/singleagent/learning/lspi/SARS_collector.hpp
         src/behavior/singleagent/learning/lspi/SARS_data.hpp
-        src/behavior/singleagent/learning/modellearning/artdp/ARTDP.hpp
-        src/behavior/singleagent/learning/modellearning/modelplanners/VI_model_learning_planner.hpp
-        src/behavior/singleagent/learning/modellearning/models/tabular_model.hpp
-        src/behavior/singleagent/learning/modellearning/rmax/potential_shaped_R_max.hpp
-        src/behavior/singleagent/learning/modellearning/rmax/R_max_model.hpp
-        src/behavior/singleagent/learning/modellearning/rmax/unmodeled_favored_policy.hpp
         src/behavior/singleagent/learning/modellearning/KWIK_model.hpp
+        src/behavior/singleagent/learning/modellearning/artdp/ARTDP.hpp
         src/behavior/singleagent/learning/modellearning/learned_model.hpp
         src/behavior/singleagent/learning/modellearning/model_learning_planner.hpp
+        src/behavior/singleagent/learning/modellearning/modelplanners/VI_model_learning_planner.hpp
+        src/behavior/singleagent/learning/modellearning/models/tabular_model.hpp
+        src/behavior/singleagent/learning/modellearning/rmax/R_max_model.hpp
+        src/behavior/singleagent/learning/modellearning/rmax/potential_shaped_R_max.hpp
+        src/behavior/singleagent/learning/modellearning/rmax/unmodeled_favored_policy.hpp
+        src/behavior/singleagent/learning/tdmethods/Q_learning.cpp
+        src/behavior/singleagent/learning/tdmethods/Q_learning.h
+        src/behavior/singleagent/learning/tdmethods/Q_learning_state_node.hpp
+        src/behavior/singleagent/learning/tdmethods/sarsa_lam.hpp
         src/behavior/singleagent/learning/tdmethods/vfa/approximate_Q_learning.hpp
         src/behavior/singleagent/learning/tdmethods/vfa/gradient_descent_Q_learning.hpp
         src/behavior/singleagent/learning/tdmethods/vfa/gradient_descent_sarsa_lam.hpp
-        src/behavior/singleagent/learning/tdmethods/Q_learning.cpp
-        src/behavior/singleagent/learning/tdmethods/Q_learning_state_node.hpp
-        src/behavior/singleagent/learning/tdmethods/sarsa_lam.hpp
-        src/behavior/singleagent/learning/learning_agent.hpp
-        src/behavior/singleagent/learning/learning_agent_factory.hpp
-        src/behavior/singleagent/options/model/BFS_markov_option_model.hpp
-        src/behavior/singleagent/options/model/BFS_non_markov_option_model.hpp
         src/behavior/singleagent/options/environment_option_outcome.hpp
         src/behavior/singleagent/options/macro_action.hpp
+        src/behavior/singleagent/options/model/BFS_markov_option_model.hpp
+        src/behavior/singleagent/options/model/BFS_non_markov_option_model.hpp
         src/behavior/singleagent/options/option.cpp
+        src/behavior/singleagent/options/option.h
         src/behavior/singleagent/options/option_type.hpp
         src/behavior/singleagent/options/subgoal_option.hpp
-        src/behavior/singleagent/planning/deterministic/informed/astar/dynamic_weighted_A_star.hpp
+        src/behavior/singleagent/planning/deterministic/DD_planner_policy.hpp
+        src/behavior/singleagent/planning/deterministic/SD_planner_policy.cpp
+        src/behavior/singleagent/planning/deterministic/SD_planner_policy.h
+        src/behavior/singleagent/planning/deterministic/deterministic_planner.cpp
+        src/behavior/singleagent/planning/deterministic/deterministic_planner.h
+        src/behavior/singleagent/planning/deterministic/informed/astar/A_star.hpp
         src/behavior/singleagent/planning/deterministic/informed/astar/IDA_star.hpp
+        src/behavior/singleagent/planning/deterministic/informed/astar/dynamic_weighted_A_star.hpp
         src/behavior/singleagent/planning/deterministic/informed/astar/static_weighted_A_star.hpp
         src/behavior/singleagent/planning/deterministic/informed/astar/weighted_greedy.hpp
         src/behavior/singleagent/planning/deterministic/informed/best_first.cpp
+        src/behavior/singleagent/planning/deterministic/informed/best_first.h
         src/behavior/singleagent/planning/deterministic/informed/heuristic.hpp
         src/behavior/singleagent/planning/deterministic/informed/null_heuristic.hpp
         src/behavior/singleagent/planning/deterministic/informed/prioritized_search_node.hpp
-        src/behavior/singleagent/planning/deterministic/uninformed/bfs/BFS.cpp
-        src/behavior/singleagent/planning/deterministic/uninformed/dfs/DFS.cpp
-        src/behavior/singleagent/planning/deterministic/uninformed/dfs/limited_memory_DFS.hpp
-        src/behavior/singleagent/planning/deterministic/DD_planner_policy.hpp
-        src/behavior/singleagent/planning/deterministic/deterministic_planner.cpp
         src/behavior/singleagent/planning/deterministic/multi_state_pre_planner.hpp
-        src/behavior/singleagent/planning/deterministic/SD_planner_policy.cpp
         src/behavior/singleagent/planning/deterministic/search_node.hpp
-        src/behavior/singleagent/planning/stochastic/dpoperator/bellman_operator.hpp
+        src/behavior/singleagent/planning/deterministic/uninformed/bfs/BFS.cpp
+        src/behavior/singleagent/planning/deterministic/uninformed/bfs/BFS.h
+        src/behavior/singleagent/planning/deterministic/uninformed/dfs/DFS.cpp
+        src/behavior/singleagent/planning/deterministic/uninformed/dfs/DFS.h
+        src/behavior/singleagent/planning/deterministic/uninformed/dfs/limited_memory_DFS.hpp
+        src/behavior/singleagent/planning/planner.hpp
         src/behavior/singleagent/planning/stochastic/dpoperator/DP_operator.hpp
+        src/behavior/singleagent/planning/stochastic/dpoperator/bellman_operator.hpp
         src/behavior/singleagent/planning/stochastic/dpoperator/softmax_operator.hpp
+        src/behavior/singleagent/planning/stochastic/dynamic_programming.hpp
         src/behavior/singleagent/planning/stochastic/montecarlo/uct/UCT.hpp
         src/behavior/singleagent/planning/stochastic/montecarlo/uct/UCT_action_node.hpp
         src/behavior/singleagent/planning/stochastic/montecarlo/uct/UCT_state_node.hpp
         src/behavior/singleagent/planning/stochastic/montecarlo/uct/UCT_tree_walk_policy.hpp
         src/behavior/singleagent/planning/stochastic/policyiteration/policy_evaluation.hpp
-        src/behavior/singleagent/planning/stochastic/rtdp/bounded_RTDP.hpp
+        src/behavior/singleagent/planning/stochastic/policyiteration/policy_iteration.hpp
         src/behavior/singleagent/planning/stochastic/rtdp/RTDP.hpp
+        src/behavior/singleagent/planning/stochastic/rtdp/bounded_RTDP.hpp
         src/behavior/singleagent/planning/stochastic/sparsesampling/sparse_sampling.hpp
         src/behavior/singleagent/planning/stochastic/valueiteration/prioritized_sweeping.hpp
         src/behavior/singleagent/planning/stochastic/valueiteration/value_iteration.hpp
         src/behavior/singleagent/planning/vfa/fittedvi/fitted_VI.hpp
-        src/behavior/singleagent/planning/planner.hpp
+        src/behavior/singleagent/pomdp/belief_policy_agent.hpp
         src/behavior/singleagent/pomdp/qmdp/QMDP.hpp
         src/behavior/singleagent/pomdp/wrappedmdpalgs/belief_sparse_sampling.hpp
-        src/behavior/singleagent/pomdp/belief_policy_agent.hpp
         src/behavior/singleagent/shaping/potential/potential_function.hpp
         src/behavior/singleagent/shaping/potential/potential_shaped_RF.hpp
         src/behavior/singleagent/shaping/shaped_reward_function.hpp
-        src/behavior/singleagent/episode.cpp
-        src/behavior/singleagent/MDP_solver.hpp
-        src/behavior/singleagent/MDP_solver_interface.hpp
         src/behavior/stochasticgames/agents/interfacing/singleagent/learning_agent_to_SG_agent_interface.hpp
         src/behavior/stochasticgames/agents/madp/MADP_plan_agent_factory.hpp
         src/behavior/stochasticgames/agents/madp/MADP_planner_factory.hpp
         src/behavior/stochasticgames/agents/madp/multi_agent_DP_planning_agent.hpp
         src/behavior/stochasticgames/agents/maql/MAQL_factory.hpp
         src/behavior/stochasticgames/agents/maql/multi_agent_Q_learning.hpp
-        src/behavior/stochasticgames/agents/naiveq/history/history_state.hpp
+        src/behavior/stochasticgames/agents/naiveq/SG_naive_QL_agent.hpp
+        src/behavior/stochasticgames/agents/naiveq/SG_naive_Q_factory.hpp
         src/behavior/stochasticgames/agents/naiveq/history/SGQW_action_history.hpp
         src/behavior/stochasticgames/agents/naiveq/history/SGQW_action_history_factory.hpp
-        src/behavior/stochasticgames/agents/naiveq/SG_naive_Q_factory.hpp
-        src/behavior/stochasticgames/agents/naiveq/SG_naive_QL_agent.hpp
+        src/behavior/stochasticgames/agents/naiveq/history/history_state.hpp
+        src/behavior/stochasticgames/agents/random_SG_agent.hpp
+        src/behavior/stochasticgames/agents/set_strategy_SG_agent.hpp
         src/behavior/stochasticgames/agents/twoplayer/repeatedsinglestage/grim_trigger.hpp
         src/behavior/stochasticgames/agents/twoplayer/repeatedsinglestage/tit_for_tat.hpp
+        src/behavior/stochasticgames/agents/twoplayer/singlestage/equilibriumplayer/bimatrix_equilibrium_solver.hpp
+        src/behavior/stochasticgames/agents/twoplayer/singlestage/equilibriumplayer/equilibrium_playing_SG_agent.hpp
         src/behavior/stochasticgames/agents/twoplayer/singlestage/equilibriumplayer/equilibriumsolvers/correlated_equilibrium.hpp
         src/behavior/stochasticgames/agents/twoplayer/singlestage/equilibriumplayer/equilibriumsolvers/max_max.hpp
         src/behavior/stochasticgames/agents/twoplayer/singlestage/equilibriumplayer/equilibriumsolvers/min_max.hpp
         src/behavior/stochasticgames/agents/twoplayer/singlestage/equilibriumplayer/equilibriumsolvers/utilitarian.hpp
-        src/behavior/stochasticgames/agents/twoplayer/singlestage/equilibriumplayer/bimatrix_equilibrium_solver.hpp
-        src/behavior/stochasticgames/agents/twoplayer/singlestage/equilibriumplayer/equilibrium_playing_SG_agent.hpp
-        src/behavior/stochasticgames/agents/random_SG_agent.hpp
-        src/behavior/stochasticgames/agents/set_strategy_SG_agent.hpp
+        src/behavior/stochasticgames/auxiliary/game_sequence_visualizer.hpp
         src/behavior/stochasticgames/auxiliary/performance/agent_factory_and_type.hpp
         src/behavior/stochasticgames/auxiliary/performance/multi_agent_experimenter.hpp
         src/behavior/stochasticgames/auxiliary/performance/multi_agent_performance_plotter.hpp
-        src/behavior/stochasticgames/auxiliary/game_sequence_visualizer.hpp
+        src/behavior/stochasticgames/game_episode.hpp
+        src/behavior/stochasticgames/joint_policy.hpp
+        src/behavior/stochasticgames/madynamicprogramming/JAQ_value.hpp
+        src/behavior/stochasticgames/madynamicprogramming/MAQ_source_policy.hpp
+        src/behavior/stochasticgames/madynamicprogramming/MA_dynamic_programming.hpp
+        src/behavior/stochasticgames/madynamicprogramming/Q_source_for_single_agent.hpp
+        src/behavior/stochasticgames/madynamicprogramming/SG_backup_operator.hpp
+        src/behavior/stochasticgames/madynamicprogramming/agent_Q_source_map.hpp
         src/behavior/stochasticgames/madynamicprogramming/backupOperators/co_co_Q.hpp
         src/behavior/stochasticgames/madynamicprogramming/backupOperators/correlated_Q.hpp
         src/behavior/stochasticgames/madynamicprogramming/backupOperators/max_Q.hpp
         src/behavior/stochasticgames/madynamicprogramming/backupOperators/min_max_Q.hpp
         src/behavior/stochasticgames/madynamicprogramming/dpplanners/MA_value_iteration.hpp
+        src/behavior/stochasticgames/madynamicprogramming/multi_agent_Q_source_provider.hpp
         src/behavior/stochasticgames/madynamicprogramming/policies/E_correlated_Q_joint_policy.hpp
         src/behavior/stochasticgames/madynamicprogramming/policies/E_greedy_joint_policy.hpp
         src/behavior/stochasticgames/madynamicprogramming/policies/E_greedy_max_wellfare.hpp
         src/behavior/stochasticgames/madynamicprogramming/policies/E_min_max_policy.hpp
-        src/behavior/stochasticgames/madynamicprogramming/agent_Q_source_map.hpp
-        src/behavior/stochasticgames/madynamicprogramming/JAQ_value.hpp
-        src/behavior/stochasticgames/madynamicprogramming/MA_dynamic_programming.hpp
-        src/behavior/stochasticgames/madynamicprogramming/MAQ_source_policy.hpp
-        src/behavior/stochasticgames/madynamicprogramming/multi_agent_Q_source_provider.hpp
-        src/behavior/stochasticgames/madynamicprogramming/Q_source_for_single_agent.hpp
-        src/behavior/stochasticgames/madynamicprogramming/SG_backup_operator.hpp
+        src/behavior/stochasticgames/policy_from_joint_policy.hpp
         src/behavior/stochasticgames/solvers/correlated_equilibrium_solver.hpp
         src/behavior/stochasticgames/solvers/general_bimatrix_solver_tools.hpp
         src/behavior/stochasticgames/solvers/min_max_solver.hpp
-        src/behavior/stochasticgames/game_episode.hpp
-        src/behavior/stochasticgames/joint_policy.hpp
-        src/behavior/stochasticgames/policy_from_joint_policy.hpp
-        src/behavior/valuefunction/constant_value_function.hpp
         src/behavior/valuefunction/Q_function.hpp
         src/behavior/valuefunction/Q_provider.cpp
+        src/behavior/valuefunction/Q_provider.h
         src/behavior/valuefunction/Q_value.hpp
+        src/behavior/valuefunction/constant_value_function.hpp
         src/behavior/valuefunction/value_function.hpp
         src/datastructures/alphanumeric_sorting.hpp
         src/datastructures/boltzmann_distribution.hpp
@@ -244,57 +260,63 @@ set(SOURCE_FILES
         src/debugtools/debug_flags.hpp
         src/debugtools/my_timer.hpp
         src/debugtools/random_factory.hpp
+        src/domain/singleagent/blockdude/block_dude.hpp
+        src/domain/singleagent/blockdude/block_dude_TF.hpp
+        src/domain/singleagent/blockdude/block_dude_level_constructor.hpp
+        src/domain/singleagent/blockdude/block_dude_model.hpp
+        src/domain/singleagent/blockdude/block_dude_visualizer.hpp
         src/domain/singleagent/blockdude/state/block_dude_agent.hpp
         src/domain/singleagent/blockdude/state/block_dude_cell.hpp
         src/domain/singleagent/blockdude/state/block_dude_map.hpp
         src/domain/singleagent/blockdude/state/block_dude_state.hpp
-        src/domain/singleagent/blockdude/block_dude.hpp
-        src/domain/singleagent/blockdude/block_dude_level_constructor.hpp
-        src/domain/singleagent/blockdude/block_dude_model.hpp
-        src/domain/singleagent/blockdude/block_dude_TF.hpp
-        src/domain/singleagent/blockdude/block_dude_visualizer.hpp
+        src/domain/singleagent/blocksworld/BW_model.hpp
         src/domain/singleagent/blocksworld/blocks_world.hpp
         src/domain/singleagent/blocksworld/blocks_world_block.hpp
         src/domain/singleagent/blocksworld/blocks_world_state.hpp
         src/domain/singleagent/blocksworld/blocks_world_visualizer.hpp
-        src/domain/singleagent/blocksworld/BW_model.hpp
+        src/domain/singleagent/cartpole/cart_pole_domain.hpp
+        src/domain/singleagent/cartpole/cart_pole_visualizer.hpp
+        src/domain/singleagent/cartpole/inverted_pendulum.hpp
         src/domain/singleagent/cartpole/model/CP_classic_model.hpp
         src/domain/singleagent/cartpole/model/CP_correct_model.hpp
         src/domain/singleagent/cartpole/model/IP_model.hpp
         src/domain/singleagent/cartpole/states/cart_pole_full_state.hpp
         src/domain/singleagent/cartpole/states/cart_pole_state.hpp
         src/domain/singleagent/cartpole/states/inverted_pendulum_state.hpp
-        src/domain/singleagent/cartpole/cart_pole_domain.hpp
-        src/domain/singleagent/cartpole/cart_pole_visualizer.hpp
-        src/domain/singleagent/cartpole/inverted_pendulum.hpp
+        src/domain/singleagent/frostbite/frostbite_RF.hpp
+        src/domain/singleagent/frostbite/frostbite_TF.hpp
+        src/domain/singleagent/frostbite/frostbite_domain.hpp
+        src/domain/singleagent/frostbite/frostbite_model.hpp
+        src/domain/singleagent/frostbite/frostbite_visualizer.hpp
         src/domain/singleagent/frostbite/state/frostbite_agent.hpp
         src/domain/singleagent/frostbite/state/frostbite_igloo.hpp
         src/domain/singleagent/frostbite/state/frostbite_platform.hpp
         src/domain/singleagent/frostbite/state/frostbite_state.hpp
-        src/domain/singleagent/frostbite/frostbite_domain.hpp
-        src/domain/singleagent/frostbite/frostbite_model.hpp
-        src/domain/singleagent/frostbite/frostbite_RF.hpp
-        src/domain/singleagent/frostbite/frostbite_TF.hpp
-        src/domain/singleagent/frostbite/frostbite_visualizer.hpp
-        src/domain/singleagent/graphdefined/graph_defined_domain.hpp
         src/domain/singleagent/graphdefined/graph_RF.hpp
-        src/domain/singleagent/graphdefined/graph_state_node.hpp
         src/domain/singleagent/graphdefined/graph_TF.hpp
-        src/domain/singleagent/gridworld/state/grid_agent.cpp
-        src/domain/singleagent/gridworld/state/grid_location.cpp
-        src/domain/singleagent/gridworld/state/grid_world_state.cpp
+        src/domain/singleagent/graphdefined/graph_defined_domain.hpp
+        src/domain/singleagent/graphdefined/graph_state_node.hpp
         src/domain/singleagent/gridworld/grid_world_domain.cpp
+        src/domain/singleagent/gridworld/grid_world_domain.h
         src/domain/singleagent/gridworld/grid_world_reward_function.hpp
+        src/domain/singleagent/gridworld/grid_world_terminal_function.cpp
         src/domain/singleagent/gridworld/grid_world_terminal_function.h
         src/domain/singleagent/gridworld/grid_world_visualizer.cpp
+        src/domain/singleagent/gridworld/grid_world_visualizer.h
+        src/domain/singleagent/gridworld/state/grid_agent.cpp
+        src/domain/singleagent/gridworld/state/grid_agent.h
+        src/domain/singleagent/gridworld/state/grid_location.cpp
+        src/domain/singleagent/gridworld/state/grid_location.h
+        src/domain/singleagent/gridworld/state/grid_world_state.cpp
+        src/domain/singleagent/gridworld/state/grid_world_state.h
+        src/domain/singleagent/lunarlander/LL_visualizer.hpp
+        src/domain/singleagent/lunarlander/lunar_lander_RF.hpp
+        src/domain/singleagent/lunarlander/lunar_lander_TF.hpp
+        src/domain/singleagent/lunarlander/lunar_lander_domain.hpp
+        src/domain/singleagent/lunarlander/lunar_lander_model.hpp
         src/domain/singleagent/lunarlander/state/LL_agent.hpp
         src/domain/singleagent/lunarlander/state/LL_block.hpp
         src/domain/singleagent/lunarlander/state/LL_state.hpp
-        src/domain/singleagent/lunarlander/LL_visualizer.hpp
-        src/domain/singleagent/lunarlander/lunar_lander_domain.hpp
-        src/domain/singleagent/lunarlander/lunar_lander_model.hpp
-        src/domain/singleagent/lunarlander/lunar_lander_RF.hpp
-        src/domain/singleagent/lunarlander/lunar_lander_TF.hpp
         src/domain/singleagent/mountaincar/MC_random_state_generator.hpp
         src/domain/singleagent/mountaincar/MC_state.hpp
         src/domain/singleagent/mountaincar/mountain_car.hpp
@@ -305,81 +327,106 @@ set(SOURCE_FILES
         src/domain/singleagent/pomdp/tiger/tiger_observations.hpp
         src/domain/singleagent/pomdp/tiger/tiger_state.hpp
         src/domain/singleagent/rlglue/RL_glue_environment.hpp
-        src/domain/stochasticgames/gridgame/state/GG_agent.hpp
-        src/domain/stochasticgames/gridgame/state/GG_goal.hpp
-        src/domain/stochasticgames/gridgame/state/GG_wall.hpp
         src/domain/stochasticgames/gridgame/GG_visualizer.hpp
         src/domain/stochasticgames/gridgame/grid_game.hpp
         src/domain/stochasticgames/gridgame/grid_game_standard_mechanics.hpp
+        src/domain/stochasticgames/gridgame/state/GG_agent.hpp
+        src/domain/stochasticgames/gridgame/state/GG_goal.hpp
+        src/domain/stochasticgames/gridgame/state/GG_wall.hpp
         src/domain/stochasticgames/normalform/NF_game_state.hpp
         src/domain/stochasticgames/normalform/single_stage_normal_form_game.hpp
+        src/include/classes.h
+        src/include/entry_point.hpp
+        src/include/macros.h
+        src/main.cpp
+        src/main.h
         src/mdp/auxiliary/common/constant_state_generator.hpp
         src/mdp/auxiliary/common/goal_condition_TF.hpp
         src/mdp/auxiliary/common/identity_state_mapping.hpp
+        src/mdp/auxiliary/common/null_termination.hpp
         src/mdp/auxiliary/common/random_start_state_generator.hpp
         src/mdp/auxiliary/common/shallow_identity_state_mapping.hpp
         src/mdp/auxiliary/common/single_PFTF.hpp
-        src/mdp/auxiliary/stateconditiontest/single_PFSCT.hpp
-        src/mdp/auxiliary/stateconditiontest/state_condition_test.hpp
-        src/mdp/auxiliary/stateconditiontest/state_condition_test_iterable.hpp
-        src/mdp/auxiliary/stateconditiontest/TF_goal_condition.hpp
         src/mdp/auxiliary/domain_generator.hpp
         src/mdp/auxiliary/state_generator.hpp
         src/mdp/auxiliary/state_mapping.hpp
+        src/mdp/auxiliary/stateconditiontest/TF_goal_condition.hpp
+        src/mdp/auxiliary/stateconditiontest/single_PFSCT.hpp
+        src/mdp/auxiliary/stateconditiontest/state_condition_test.hpp
+        src/mdp/auxiliary/stateconditiontest/state_condition_test_iterable.hpp
         src/mdp/core/action/action.hpp
         src/mdp/core/action/action_type.hpp
         src/mdp/core/action/action_utils.cpp
+        src/mdp/core/action/action_utils.h
         src/mdp/core/action/simple_action.hpp
         src/mdp/core/action/universal_action_type.hpp
+        src/mdp/core/domain.hpp
+        src/mdp/core/oo/OO_domain.cpp
+        src/mdp/core/oo/OO_domain.h
+        src/mdp/core/oo/object_parameterized_action.hpp
         src/mdp/core/oo/propositional/grounded_prop.cpp
+        src/mdp/core/oo/propositional/grounded_prop.h
         src/mdp/core/oo/propositional/propositional_function.cpp
+        src/mdp/core/oo/propositional/propositional_function.h
+        src/mdp/core/oo/state/OO_state.hpp
+        src/mdp/core/oo/state/OO_state_utilities.cpp
+        src/mdp/core/oo/state/OO_state_utilities.h
+        src/mdp/core/oo/state/OO_variable_key.hpp
         src/mdp/core/oo/state/exceptions/unknown_class_exception.hpp
         src/mdp/core/oo/state/exceptions/unknown_object_exception.hpp
         src/mdp/core/oo/state/generic/deep_OO_state.hpp
         src/mdp/core/oo/state/generic/generic_OO_state.hpp
+        src/mdp/core/oo/state/key_container.hpp
         src/mdp/core/oo/state/mutable_OO_state.hpp
         src/mdp/core/oo/state/object_instance.hpp
-        src/mdp/core/oo/state/OO_state.hpp
-        src/mdp/core/oo/state/OO_state_utilities.cpp
-        src/mdp/core/oo/state/OO_variable_key.hpp
-        src/mdp/core/oo/object_parameterized_action.hpp
-        src/mdp/core/oo/OO_domain.h
         src/mdp/core/state/annotations/deep_copy_state.hpp
         src/mdp/core/state/annotations/shallow_copy_state.hpp
-        src/mdp/core/state/vardomain/state_domain.hpp
-        src/mdp/core/state/vardomain/variable_domain.hpp
         src/mdp/core/state/mutable_state.hpp
         src/mdp/core/state/null_state.hpp
         src/mdp/core/state/state.hpp
         src/mdp/core/state/state_utilities.hpp
         src/mdp/core/state/unknown_key_exception.hpp
-        src/mdp/core/domain.hpp
+        src/mdp/core/state/vardomain/state_domain.hpp
+        src/mdp/core/state/vardomain/variable_domain.hpp
         src/mdp/core/state_transition_prob.hpp
         src/mdp/core/terminal_function.hpp
+        src/mdp/singleagent/SA_domain.cpp
+        src/mdp/singleagent/SA_domain.h
         src/mdp/singleagent/common/goal_based_RF.hpp
         src/mdp/singleagent/common/null_reward_function.hpp
         src/mdp/singleagent/common/single_goal_PFRF.hpp
         src/mdp/singleagent/common/uniform_cost_RF.cpp
+        src/mdp/singleagent/common/uniform_cost_RF.h
         src/mdp/singleagent/common/visual_action_observer.hpp
+        src/mdp/singleagent/environment/environment.hpp
+        src/mdp/singleagent/environment/environment_outcome.hpp
         src/mdp/singleagent/environment/extensions/environment_delegation.hpp
         src/mdp/singleagent/environment/extensions/environment_observer.hpp
+        src/mdp/singleagent/environment/extensions/environment_server.cpp
+        src/mdp/singleagent/environment/extensions/environment_server.h
         src/mdp/singleagent/environment/extensions/environment_server.h
         src/mdp/singleagent/environment/extensions/environment_server_interface.hpp
         src/mdp/singleagent/environment/extensions/state_settable_environment.hpp
-        src/mdp/singleagent/environment/environment.hpp
-        src/mdp/singleagent/environment/environment_outcome.hpp
+        src/mdp/singleagent/environment/extensions/state_settable_environment.hpp
         src/mdp/singleagent/environment/simulated_environment.cpp
-        src/mdp/singleagent/model/statemodel/full_state_model.h
-        src/mdp/singleagent/model/statemodel/sample_state_model.hpp
+        src/mdp/singleagent/environment/simulated_environment.h
         src/mdp/singleagent/model/delegated_model.hpp
         src/mdp/singleagent/model/factored_model.cpp
+        src/mdp/singleagent/model/factored_model.h
+        src/mdp/singleagent/model/full_model.cpp
         src/mdp/singleagent/model/full_model.h
         src/mdp/singleagent/model/reward_function.hpp
         src/mdp/singleagent/model/sample_model.hpp
+        src/mdp/singleagent/model/statemodel/full_state_model.cpp
+        src/mdp/singleagent/model/statemodel/full_state_model.h
+        src/mdp/singleagent/model/statemodel/sample_state_model.hpp
         src/mdp/singleagent/model/task_factored_model.hpp
         src/mdp/singleagent/model/transition_prob.hpp
-        src/mdp/singleagent/oo/object_parameterized_action_type.hpp
         src/mdp/singleagent/oo/OOSA_domain.hpp
+        src/mdp/singleagent/oo/object_parameterized_action_type.hpp
+        src/mdp/singleagent/pomdp/PO_domain.hpp
+        src/mdp/singleagent/pomdp/belief_MDP_generator.hpp
+        src/mdp/singleagent/pomdp/belief_agent.hpp
         src/mdp/singleagent/pomdp/beliefstate/belief_state.hpp
         src/mdp/singleagent/pomdp/beliefstate/belief_update.hpp
         src/mdp/singleagent/pomdp/beliefstate/dense_belief_vector.hpp
@@ -390,19 +437,17 @@ set(SOURCE_FILES
         src/mdp/singleagent/pomdp/observations/observation_function.hpp
         src/mdp/singleagent/pomdp/observations/observation_probability.hpp
         src/mdp/singleagent/pomdp/observations/observation_utilities.hpp
-        src/mdp/singleagent/pomdp/belief_agent.hpp
-        src/mdp/singleagent/pomdp/belief_MDP_generator.hpp
-        src/mdp/singleagent/pomdp/PO_domain.hpp
         src/mdp/singleagent/pomdp/simulated_PO_environment.hpp
-        src/mdp/singleagent/SA_domain.cpp
-        src/mdp/stochasticgames/agent/agent_factory.hpp
+        src/mdp/stochasticgames/SG_domain.hpp
         src/mdp/stochasticgames/agent/SG_agent.hpp
         src/mdp/stochasticgames/agent/SG_agent_base.hpp
         src/mdp/stochasticgames/agent/SG_agent_type.hpp
+        src/mdp/stochasticgames/agent/agent_factory.hpp
         src/mdp/stochasticgames/common/agent_factory_with_subjective_reward.hpp
         src/mdp/stochasticgames/common/null_joint_reward_function.hpp
         src/mdp/stochasticgames/common/static_repeated_game_model.hpp
         src/mdp/stochasticgames/common/visual_world_observer.hpp
+        src/mdp/stochasticgames/joint_action.hpp
         src/mdp/stochasticgames/model/full_joint_model.hpp
         src/mdp/stochasticgames/model/joint_model.hpp
         src/mdp/stochasticgames/model/joint_reward_function.hpp
@@ -415,14 +460,16 @@ set(SOURCE_FILES
         src/mdp/stochasticgames/world/world.hpp
         src/mdp/stochasticgames/world/world_generator.hpp
         src/mdp/stochasticgames/world/world_observer.hpp
-        src/mdp/stochasticgames/joint_action.hpp
-        src/mdp/stochasticgames/SG_domain.hpp
+        src/shell/SG_world_shell.hpp
+        src/shell/command/env/action_command.cpp
+        src/shell/command/env/action_command.h
         src/shell/command/env/add_state_object_command.hpp
         src/shell/command/env/episode_recording_commands.cpp
-        src/shell/command/env/action_command.cpp
+        src/shell/command/env/episode_recording_commands.h
         src/shell/command/env/is_terminal_command.hpp
         src/shell/command/env/list_actions_command.hpp
         src/shell/command/env/list_prop_functions.hpp
+        src/shell/command/env/observation_command.cpp
         src/shell/command/env/observation_command.h
         src/shell/command/env/remove_state_object_command.hpp
         src/shell/command/env/reset_env_command.hpp
@@ -444,92 +491,47 @@ set(SOURCE_FILES
         src/shell/command/world/rewards_command.hpp
         src/shell/command/world/set_var_SG_command.hpp
         src/shell/command/world/world_observation_command.hpp
+        src/shell/environment_shell.cpp
+        src/shell/environment_shell.h
+        src/shell/fastrl_shell.cpp
+        src/shell/fastrl_shell.h
+        src/shell/shell_observer.hpp
+        src/shell/stream_wrapper.cpp
+        src/shell/stream_wrapper.h
         src/shell/visual/SG_visual_explorer.hpp
+        src/shell/visual/text_area_streams.cpp
         src/shell/visual/text_area_streams.h
         src/shell/visual/visual_explorer.cpp
-        src/shell/fastrl_shell.cpp
-        src/shell/environment_shell.h
-        src/shell/SG_world_shell.hpp
-        src/shell/shell_observer.hpp
-        src/statehashing/discretized/disc_config.hpp
-        src/statehashing/discretized/discretizing_hashable_state_factory.hpp
+        src/shell/visual/visual_explorer.h
         src/statehashing/discretized/ID_disc_hashable_state.hpp
         src/statehashing/discretized/II_disc_hashable_state.hpp
+        src/statehashing/discretized/disc_config.hpp
+        src/statehashing/discretized/discretizing_hashable_state_factory.hpp
+        src/statehashing/hashable_state.hpp
+        src/statehashing/hashable_state_factory.hpp
         src/statehashing/masked/ID_masked_hashable_state.hpp
         src/statehashing/masked/II_masked_hashable_state.hpp
         src/statehashing/masked/masked_config.hpp
         src/statehashing/masked/masked_hashable_state_factory.hpp
-        src/statehashing/maskeddiscretized/disc_masked_config.hpp
-        src/statehashing/maskeddiscretized/discretizing_masked_hashable_state_factory.hpp
         src/statehashing/maskeddiscretized/ID_disc_masked_hashable_state.hpp
         src/statehashing/maskeddiscretized/II_disc_masked_hashable_state.hpp
+        src/statehashing/maskeddiscretized/disc_masked_config.hpp
+        src/statehashing/maskeddiscretized/discretizing_masked_hashable_state_factory.hpp
+        src/statehashing/reflective_hashable_state_factory.hpp
         src/statehashing/simple/ID_simple_hashable_state.hpp
         src/statehashing/simple/II_simple_hashable_state.hpp
         src/statehashing/simple/simple_hashable_state_factory.hpp
-        src/statehashing/hashable_state.hpp
-        src/statehashing/hashable_state_factory.hpp
-        src/statehashing/reflective_hashable_state_factory.hpp
         src/statehashing/wrapped_hashable_state.hpp
-        src/visualizer/multi_layer_renderer.cpp
         src/visualizer/OO_state_painter.hpp
+        src/visualizer/multi_layer_renderer.cpp
+        src/visualizer/multi_layer_renderer.h
+        src/visualizer/object_state_painters.hpp
         src/visualizer/render_layer.hpp
         src/visualizer/state_action_render_layer.hpp
-        src/visualizer/visualizer.cpp
-        src/mdp/core/oo/propositional/propositional_function.h
-        src/mdp/core/oo/propositional/grounded_prop.h
-        src/domain/singleagent/gridworld/grid_world_domain.h
-        src/include/classes.h
-        src/main.cpp
-        src/mdp/core/oo/state/OO_state_utilities.h
-        src/domain/singleagent/gridworld/state/grid_agent.h
-        src/domain/singleagent/gridworld/state/grid_location.h
-        src/mdp/singleagent/common/uniform_cost_RF.h
-        src/mdp/auxiliary/common/null_termination.hpp
-        src/mdp/singleagent/model/full_model.cpp
-        src/mdp/singleagent/model/factored_model.h
-        src/mdp/singleagent/model/statemodel/full_state_model.cpp
-        src/mdp/singleagent/SA_domain.h
-        src/mdp/core/oo/OO_domain.cpp
-        src/domain/singleagent/gridworld/state/grid_world_state.h
-        src/mdp/singleagent/environment/simulated_environment.h
-        src/behavior/singleagent/learning/tdmethods/Q_learning.h
-        src/behavior/valuefunction/Q_provider.h
-        src/behavior/singleagent/episode.h
-        src/mdp/core/action/action_utils.h
-        src/behavior/policy/greedy_Q_policy.h
-        src/behavior/policy/policy_utils.h
-        src/behavior/singleagent/options/option.h
-        src/behavior/policy/epsilon_greedy.h
-        src/mdp/core/oo/state/key_container.hpp
-        src/shell/fastrl_shell.h
-        src/shell/command/env/observation_command.cpp
-        src/shell/environment_shell.cpp
-        src/shell/command/env/action_command.h
-        src/domain/singleagent/gridworld/grid_world_visualizer.h
-        src/visualizer/multi_layer_renderer.h src/visualizer/visualizer.h
-        src/visualizer/state_render_layer.h
-        src/visualizer/object_state_painters.hpp
-        src/domain/singleagent/gridworld/grid_world_terminal_function.cpp
         src/visualizer/state_render_layer.cpp
-        src/shell/visual/visual_explorer.h
-        src/shell/visual/text_area_streams.cpp
-        src/main.h
-        src/shell/stream_wrapper.h
-        src/shell/stream_wrapper.cpp
-        src/mdp/singleagent/environment/extensions/state_settable_environment.hpp
-        src/mdp/singleagent/environment/extensions/environment_server.cpp
-        src/mdp/singleagent/environment/extensions/environment_server.h
-        src/shell/command/env/episode_recording_commands.h
-        src/behavior/singleagent/auxiliary/episode_sequence_visualizer.h
-        src/include/macros.h
-        src/behavior/singleagent/planning/deterministic/deterministic_planner.h
-        src/behavior/singleagent/planning/deterministic/uninformed/bfs/BFS.h
-        src/behavior/singleagent/planning/deterministic/SD_planner_policy.h
-        src/behavior/singleagent/planning/deterministic/uninformed/dfs/DFS.h
-        src/behavior/singleagent/planning/deterministic/informed/best_first.h
-        src/behavior/singleagent/planning/deterministic/informed/astar/A_star.hpp
-        src/behavior/singleagent/planning/stochastic/dynamic_programming.hpp
-        src/behavior/singleagent/planning/stochastic/policyiteration/policy_iteration.hpp)
+        src/visualizer/state_render_layer.h
+        src/visualizer/visualizer.cpp
+        src/visualizer/visualizer.h)
 
 add_executable(fastrl ${SOURCE_FILES})
 

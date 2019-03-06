@@ -9,7 +9,9 @@
 #include <string>
 #include <vector>
 #include <thread>
+#include <QMetaType>
 #include "../../../include/classes.h"
+#include "../../../include/entry_point.hpp"
 #include "../../../mdp/singleagent/model/reward_function.hpp"
 #include "../../../mdp/core/terminal_function.hpp"
 #include "../../../mdp/core/oo/propositional/propositional_function.h"
@@ -34,7 +36,7 @@
 
 
 
-class GridWorldDomain {
+class GridWorldDomain : public EntryPoint {
 private:
     // grid world dimensions
     // width
@@ -176,17 +178,19 @@ public:
     string stringMap(vector<vector<int>> specials);
     void printMap();
 
-    static int main(int argc, char * argv[]);
-    static int main1(int argc, char * argv[]);
-    static int main2(int argc, char * argv[]);
-    static int main_multi(int argc, char * argv[]);
+    int main(int argc, char * argv[]) override;
+    int main1(int argc, char * argv[]);
+    int main2(int argc, char * argv[]);
+    int main_multi(int argc, char * argv[]);
 
-    static void vis(string outputPath, GridWorldDomain * gwd, SADomain * domain);
-    static void valueVis(ValueFunction * valueFunction, Policy * p, State * initialState, SADomain * domain);
+    void vis(string outputPath, GridWorldDomain * gwd, SADomain * domain);
+    void valueVis(ValueFunction * valueFunction, Policy * p, State * initialState, SADomain * domain);
 
     friend GridWorldModel;
     friend WallToPF;
 };
+
+Q_DECLARE_METATYPE(GridWorldDomain);
 
 //string GridWorldDomain::VAR_X = "x";
 //VAR_Y = "y";

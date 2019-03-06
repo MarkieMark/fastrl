@@ -7,7 +7,10 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <QMetaType>
 #include "domain/singleagent/gridworld/grid_world_domain.h"
+#include "include/entry_point.hpp"
+#include "include/macros.h"
 #include "main.h"
 
 char* getCmdOption(char ** begin, char ** end, const string & option) {
@@ -31,15 +34,16 @@ void printMainArgs(int argc, char * argv[]) {
 
 int main (int argc, char * argv[]) {
     printMainArgs(argc, argv);
+    ENTRY(GridWorldDomain);
     if (argc > 1) {
         char *mainName = getCmdOption(argv, argv + argc, "-main");
-        if (string(mainName) == "GridWorldDomain") {
-            // TODO replace with QMetaType / QMetaObject reflection
-            try {
-                return GridWorldDomain::main(argc, argv);
-            } catch (string &e) {
-                cout << "error " << e << endl;
-            }
+        int id = QMetaType::type(mainName);
+        if (id != QMetaType::UnknownType) {
+            auto * mainClassPtr = static_cast<EntryPoint *>(QMetaType::create(id));
+            int ret = mainClassPtr->main(argc, argv);
+            QMetaType::destroy(id, mainClassPtr);
+            mainClassPtr = nullptr;
+            return ret;
         } else {
             cout << "Unrecognized class name" << endl;
         }

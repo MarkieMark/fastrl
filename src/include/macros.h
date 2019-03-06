@@ -21,6 +21,8 @@
 
 #pragma clang diagnostic pop
 
+#define ENTRY(a) qRegisterMetaType<a>(#a);
+
 //#define FF string(__FILE__ + " " + __func__)
 
 #endif //FASTRL_INCLUDE_MACROS_H
