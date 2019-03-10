@@ -21,7 +21,7 @@ public:
     void updateStateAction(State * s, Action * a) {render_state = s; render_action = a; }
     void clearStateAction() {render_state = nullptr; render_action = nullptr; }
     void render(QPainter * qp, float width, float height) override {
-        if (render_state != nullptr && render_action != nullptr && dynamic_cast<NullState *>(render_state) != nullptr) {
+        if (render_state != nullptr && render_action != nullptr && dynamic_cast<NullState *>(render_state) == nullptr) {
             renderStateAction(qp, render_state, render_action, width, height);
         }
     }

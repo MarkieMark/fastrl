@@ -15,14 +15,14 @@ class KeyContainer {
 public:
     bool isString;
     string s;
-    OOVariableKey vk;
+    OOVariableKey * vk = nullptr;
     explicit KeyContainer(string s_) : isString(true), s(move(s_)) { }
-    explicit KeyContainer(OOVariableKey vk_) : isString(false), vk(move(vk_)) { }
+    explicit KeyContainer(OOVariableKey * vk_) : isString(false), vk(vk_) { }
     string to_string() {
         if (isString) {
             return s;
         } else {
-            return vk.to_string();
+            return vk->to_string();
         }
     }
 };

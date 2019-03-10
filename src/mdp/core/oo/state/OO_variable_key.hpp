@@ -15,8 +15,7 @@ public:
     string objName;
     string objVarKey;
 
-    explicit OOVariableKey(string strVersion = "", string obj_name = "", string obj_var_key = "") // NOLINT(performance-unnecessary-value-param)
-        : objName(move(obj_name)), objVarKey(move(obj_var_key)) {
+    explicit OOVariableKey(const string &strVersion) {
         if (strVersion.empty()) { return; }
         unsigned long ind = strVersion.find(':');
         if (ind == -1) {
@@ -26,10 +25,11 @@ public:
         objVarKey = strVersion.substr(ind + 1);
     }
 
+    explicit OOVariableKey(string obj_name, string obj_var_key)
+            : objName(move(obj_name)), objVarKey(move(obj_var_key)) { }
+
     string to_string() {
-        stringstream s;
-        s << objName << ":" << objVarKey;
-        return s.str();
+        return objName + ":" + objVarKey;
     }
 };
 

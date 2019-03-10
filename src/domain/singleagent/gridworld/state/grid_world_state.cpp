@@ -71,7 +71,7 @@ unsigned long GridWorldState::numObjects() {
     return 1 + locations.size();
 }
 
-ObjectInstance * GridWorldState::object(string objectName) {
+ObjectInstance * GridWorldState::object(string objectName) const {
     if (objectName == agent->name()) {
         return agent;
     }
@@ -82,14 +82,14 @@ ObjectInstance * GridWorldState::object(string objectName) {
     return nullptr;
 }
 
-vector<ObjectInstance *> GridWorldState::objects() {
+vector<ObjectInstance *> GridWorldState::objects() const {
     vector<ObjectInstance *> obs = vector<ObjectInstance *>();
     obs.push_back(dynamic_cast<ObjectInstance *>(agent));
     obs.insert(obs.end(), locations.begin(), locations.end());
     return obs;
 }
 
-vector<ObjectInstance *> GridWorldState::objectsOfClass(string objectClass) {
+vector<ObjectInstance *> GridWorldState::objectsOfClass(string objectClass) const {
     if (objectClass == "agent") {
         return vector<ObjectInstance *>({agent});
     } else if (objectClass == "location") {
@@ -101,21 +101,21 @@ vector<ObjectInstance *> GridWorldState::objectsOfClass(string objectClass) {
 MutableState * GridWorldState::set(KeyContainer *variableKey, void *value) {
     KeyContainer * key = OOStateUtilities::generateOOVariableKey(variableKey);
     int iv = *((int *) value);
-    if (key->vk.objName == agent->name()) {
-        if (key->vk.objVarKey == GridWorldDomain::VAR_X()) {
+    if (key->vk->objName == agent->name()) {
+        if (key->vk->objVarKey == GridWorldDomain::VAR_X()) {
             agent->x = iv;
-        } else if (key->vk.objVarKey == GridWorldDomain::VAR_Y()) {
+        } else if (key->vk->objVarKey == GridWorldDomain::VAR_Y()) {
             agent->y = iv;
         }
         return this;
     }
-    long ind = locationInd(key->vk.objName);
+    long ind = locationInd(key->vk->objName);
     if (ind != -1) {
-        if (key->vk.objVarKey == GridWorldDomain::VAR_X()) {
+        if (key->vk->objVarKey == GridWorldDomain::VAR_X()) {
             locations[ind]->x = iv;
-        } else if (key->vk.objVarKey == GridWorldDomain::VAR_Y()) {
+        } else if (key->vk->objVarKey == GridWorldDomain::VAR_Y()) {
             locations[ind]->y = iv;
-        } else if (key->vk.objVarKey == GridWorldDomain::VAR_TYPE()) {
+        } else if (key->vk->objVarKey == GridWorldDomain::VAR_TYPE()) {
             locations[ind]->type = iv;
         }
         return this;
@@ -123,17 +123,16 @@ MutableState * GridWorldState::set(KeyContainer *variableKey, void *value) {
     throw runtime_error("Unrecognized Variable Key");
 }
 
-vector<KeyContainer *> GridWorldState::variableKeys() {
-    OOState * oos = this;
-    return OOStateUtilities::flatStateKeys(*oos);
+vector<KeyContainer *> GridWorldState::variableKeys() const {
+    return OOStateUtilities::flatStateKeys(this);
 }
 
-int GridWorldState::get(KeyContainer * variableKey) {
+int GridWorldState::getIntValue(KeyContainer * variableKey) const {
     KeyContainer * key = OOStateUtilities::generateOOVariableKey(variableKey);
-    if (key->vk.objName == agent->name()) {
+    if (key->vk->objName == agent->name()) {
         return agent->getIntValue(key);
     }
-    long ind = locationInd(key->vk.objName);
+    long ind = locationInd(key->vk->objName);
     if (ind == -1) {
         throw runtime_error("Object Not Found");
     }
@@ -144,7 +143,7 @@ State * GridWorldState::makeCopy() {
     return dynamic_cast<State *>( new GridWorldState(agent->makeCopy(), locations)); // todo possibly copy locations
 }
 
-long GridWorldState::locationInd(string objName) {
+long GridWorldState::locationInd(string &objName) const {
     long ind = -1;
     for (long i = 0; i < locations.size(); i++) {
         if (locations[i]->name() == objName) {

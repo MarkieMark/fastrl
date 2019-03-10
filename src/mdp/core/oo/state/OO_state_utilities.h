@@ -22,9 +22,9 @@ class OOStateUtilities {
 public:
     static ObjectInstance objectWithName(vector<ObjectInstance> objects, string name);
     static int objectIndexWithName(vector<ObjectInstance> objects, string name);
-    static vector<KeyContainer *> flatStateKeys(OOState s);
+    static vector<KeyContainer *> flatStateKeys(const OOState * s);
     // TODO check assumption that all values are integers
-    static int get(OOState s, KeyContainer * variableKey);
+    static int get(OOState * s, KeyContainer * variableKey);
     static KeyContainer * generateOOVariableKey(KeyContainer *key);
     static map<string, vector<ObjectInstance *>> objectsByClass(OOState * s);
     static set<string> objectClassesPresent(OOState * s);

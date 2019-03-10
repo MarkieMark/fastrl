@@ -3,12 +3,16 @@
  */
 
 #include <limits>
+#include <iomanip>
 #include "Q_learning.h"
 #include "../../../valuefunction/constant_value_function.hpp"
 #include "../../../policy/epsilon_greedy.h"
 #include "../../../learningrate/constant_LR.hpp"
 #include "../../../../mdp/singleagent/environment/simulated_environment.h"
 #include "../../options/option.h"
+#include "../../../../domain/singleagent/gridworld/state/grid_world_state.h"
+#include "../../../../mdp/singleagent/model/factored_model.h"
+#include "../../../../domain/singleagent/gridworld/grid_world_domain.h"
 
 QLearning::QLearning(SADomain * domain_, double gamma_, double qInitial,
                      double learning_rate) {
@@ -35,10 +39,10 @@ QLearning::QLearning(SADomain * domain_, double gamma_, QFunction * qInitial,
     QLInit(domain_, gamma_, qInitial, learning_rate, learning_policy, max_episode_size);
 }
 
-void QLearning::QLInit(SADomain *domain_, double gamma_, QFunction * qInitial,
+void QLearning::QLInit(SADomain * domain_, double gamma_, QFunction * qInitial,
                        double learning_rate, Policy * learning_policy, int max_episode_size) {
     solverInit(domain_, gamma_);
-    qFunction = map<State *, QLearningStateNode *>();
+//    qFunction = map<State *, QLearningStateNode *>();
     learningRate = new ConstantLR(learning_rate);
     learningPolicy = learning_policy;
     maxEpisodeSize = max_episode_size;
@@ -170,11 +174,13 @@ Episode * QLearning::runLearningEpisode(Environment *env, int max_iterations) {
     State * currentState = initialState; // TODO should possibly avoid pointers here
     episodeIterationCounter = 0;
     maxQChangeInMostRecentEpisode = 0.;
+    print_grid_q_values();
     while (!(env->isInTerminalState()) && ((episodeIterationCounter < max_iterations) || max_iterations == -1)) {
-        Action *action = learningPolicy->action(currentState);
+        Action * action = learningPolicy->action(currentState);
+        D("Action " << action->actionName());
         QValue * currentQ = getQ(currentState, action);
         EnvironmentOutcome * eo;
-        if(!(dynamic_cast<Option *>(action))) {
+        if(dynamic_cast<Option *>(action) == nullptr) {
             eo = env->act(action);
         } else {
             eo = dynamic_cast<Option *>(action)->control(env, gamma);
@@ -184,23 +190,21 @@ Episode * QLearning::runLearningEpisode(Environment *env, int max_iterations) {
         if (!eo->done) {
             maxQ = getMaxQ(sPrime);
         }
-
         double reward = eo->reward;
-        double discount = (dynamic_cast<EnvironmentOptionOutcome *>(eo)) ?
+        double discount = (dynamic_cast<EnvironmentOptionOutcome *>(eo) != nullptr) ?
                           dynamic_cast<EnvironmentOptionOutcome *>(eo)->discount :
                           gamma;
-        long increment = (dynamic_cast<EnvironmentOptionOutcome *>(eo)) ?
+        long increment = (dynamic_cast<EnvironmentOptionOutcome *>(eo) != nullptr) ?
                          dynamic_cast<EnvironmentOptionOutcome *>(eo)->nIterations() :
                          1;
         episodeIterationCounter += increment;
-        if ((!(dynamic_cast<Option *>(action))) || (shouldDecomposeOptions)) {
+        if ((dynamic_cast<Option *>(action) == nullptr) || (shouldDecomposeOptions)) {
             e->transition(action, sPrime, reward);
         } else {
             e->appendThenMergeEpisode(dynamic_cast<EnvironmentOptionOutcome *>(eo)->episode);
         }
         double oldQ = currentQ->q;
-        currentQ->q += learningRate->pollLearningRate(
-                agentIterationCounter, currentState, action) *
+        currentQ->q += learningRate->pollLearningRate(agentIterationCounter, currentState, action) *
                 (reward + (discount * maxQ) - currentQ->q);
         double deltaQ = abs(oldQ - currentQ->q);
         if (deltaQ > maxQChangeInMostRecentEpisode) {
@@ -208,6 +212,8 @@ Episode * QLearning::runLearningEpisode(Environment *env, int max_iterations) {
         }
         currentState = env->currentObservation();
         agentIterationCounter++;
+        D("agentIterationCounter " << agentIterationCounter);
+        print_grid_q_values();
     }
     return e;
 }
@@ -216,4 +222,62 @@ void QLearning::resetSolver() {
     qFunction.clear();
     episodeIterationCounter = 0;
     maxQChangeInMostRecentEpisode = numeric_limits<double>::max();
+}
+
+void QLearning::print_grid_q_values() {
+    D("qFunction " << qFunction.size());
+//    for (auto el : qFunction) {
+//        auto * gws = dynamic_cast<GridWorldState *>(el.first);
+//        auto * qln = el.second;
+//        if (gws != nullptr) {
+//            cout << "(" << gws->agent->x << "," << gws->agent->y << "):";
+//            for (QValue * qv : qln->qEntry) {
+//                Action * a = qv->a;
+//                cout << setprecision(3) << a->actionName() << "=" << qv->q << ",";
+//            }
+//            cout << endl;
+//        } else {
+//            cout << el.first << ":" << el.second << endl;
+//        }
+//    }
+    if (dynamic_cast<FactoredModel *>(model) != nullptr &&
+        dynamic_cast<GridWorldModel *>(dynamic_cast<FactoredModel *>(model)->getStateModel()) != nullptr) {
+        auto gwm = dynamic_cast<GridWorldModel *>(dynamic_cast<FactoredModel *>(model)->getStateModel());
+        vector<vector<unsigned int>> map = gwm->map;
+        unsigned long d1 = map.size();
+        unsigned long d2 = map[0].size();
+//            D("map dimensions " << d1 << ", " <<  d2);
+        vector<vector<vector<double>>> q_value_map;
+        int i, j, k;
+        for (i = 0; i < d1; i++) {
+            vector<vector<double>> q_value_row;
+            for (j = 0; j < d2; j++) {
+                vector<double> q_values(4);
+                q_value_row.push_back(q_values);
+            }
+            q_value_map.emplace_back(q_value_row);
+        }
+//            D("Value Function " << valueFunction.size());
+        for (auto p : qFunction) {
+            State * s = p.first;
+            if (dynamic_cast<GridWorldState *>(s) != nullptr) {
+                auto * gws = dynamic_cast<GridWorldState *>(s);
+//                    D(s << ":" << gws->agent->x << "," << gws->agent->y);
+                for (k = 0; k < 4; k++) {
+                    q_value_map[gws->agent->y][gws->agent->x][k] = p.second->qEntry[k]->q;
+                }
+            } else {
+//                    D("non gridworld State " << s);
+            }
+        }
+        for (j = 0; j < d2; j++) {
+            for (i = 0; i < d1; i++) {
+                for (k = 0; k < 4; k++) {
+                    cout << setw(5) << setprecision(2) << q_value_map[d2 - j - 1][i][k] << " ";
+                }
+                cout << "  ";
+            }
+            cout << endl;
+        }
+    }
 }

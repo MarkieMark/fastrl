@@ -27,8 +27,9 @@ TODO list [not necessarily priority ordered]
 12 Override `operator==` for relevant [`State` etc] classes that leverage hashing / 'hashable' / override `.equals()` in BURLAP.
 13 Address the inspection overrides gradually
 14 consider refactoring minimizing use of [.h] & [.cpp] when one [.hpp] would compile happily [predeclaring class names is sufficient, no cyclical function signature references]
-15 Add stochastic games classes in `src/behavior/stochasticgames` & `src/domain/stochasticgames`
-16 Add more worlds than gridworld in `/src/domain/singleagent/`
+15 Add stochastic games classes in `src/behavior/stochasticgames` & `src/oosa_domain/stochasticgames`
+16 Add more worlds than gridworld in `/src/oosa_domain/singleagent/`
+17 `const`ify functions that don't modify the args and/or the instance
 
 
 Debugging Task List
@@ -41,3 +42,52 @@ Valgrind check for leaks
 check for class name duplication / ambiguity in view of the more generic 'import' mechanism
 Multipurpose the interaction mechanism between User Input thread and work thread so that it works for both shell and GUI User Input interfaces
 Fully implement & debug all the planning/learning algorithms invokable in the gridworld; add POMDP, Model Learning, Actor/Critic inc TD Lambda & helper classes.
+
+Equality task list
+-------------------------------
+Classes that need to override operator==
+
+behavior/functionapproximation/FunctionGradient
+behavior/functionapproximation/sparse/tilecoding/Tiling
+behavior/policy/support/AnnotatedAction
+behavior/singleagent/learning/modellearning/models/TabularModel
+behavior/singleagent/options/SubgoalOption
+behavior/singleagent/options/MacroAction
+behavior/singleagent/planning/stochastic/montecarlo/uct/UCTStateNode
+behavior/singleagent/planning/stochastic/sparsesampling/SparseSampling
+behavior/singleagent/planning/stochastic/valueiteration/PrioritizedSweeping
+behavior/singleagent/planning/deterministic/SearchNode
+behavior/singleagent/planning/deterministic/informed/PrioritizedSearchNode
+behavior/singleagent/interfaces/rlglue/RLGlueState
+behavior/singleagent/interfaces/rlglue/RLGlueDomain
+mdp/stochasticgames/JointAction
+mdp/stochasticgames/agent/SGAgentType
+mdp/core/oo/state/OOVariableKey
+mdp/core/oo/propositional/GroundedProp
+mdp/core/oo/propositional/PropositionalFunction
+mdp/core/state/NullState
+mdp/core/action/SimpleAction
+mdp/singleagent/oo/ObjectParameterizedActionType
+mdp/singleagent/pomdp/beliefstate/TabularBeliefState
+domain/stochasticgames/normalform/SingleStageNormalFormGame
+domain/stochasticgames/gridgame/GridGameStandardMechanics
+domain/singleagent/graphdefined/GraphDefinedDomain
+domain/singleagent/lunarlander/LunarLanderDomain
+domain/singleagent/gridworld/GridWorldTerminalFunction
+domain/singleagent/pomdp/tiger/TigerState
+
+equivalents for implementations of hashable marker
+statehashing/simple/IDSimpleHashableState
+statehashing/simple/IISimpleHashableState
+statehashing/WrappedHashableState
+as
+mdp/core/state/State
+
+Comparison task list
+--------------------
+classes that need to override comparison operators
+
+behavior/singleagent/planning/deterministic/informed/PrioritizedSearchNode
+
+all classes used as keys for a map, including
+mdp/core/state/State

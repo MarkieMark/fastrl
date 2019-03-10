@@ -6,11 +6,12 @@
 #ifndef FASTRL_VISUALIZER_VISUALIZER_H
 #define FASTRL_VISUALIZER_VISUALIZER_H
 
-#include "multi_layer_renderer.h"
+#include "multi_layer_renderer.hpp"
 #include "state_render_layer.h"
 #include "state_action_render_layer.hpp"
 
 class Visualizer : public MultiLayerRenderer {
+Q_OBJECT
 public:
     StateRenderLayer * s_render = nullptr;
     StateActionRenderLayer * sa_render = nullptr;
@@ -61,14 +62,14 @@ public:
         if(sa_render != nullptr){
             sa_render->clearStateAction();
         }
-        repaint();
+        update();
     }
     void updateStateAction(State * s, Action * a){
         s_render->updateState(s);
         if(sa_render != nullptr) {
             sa_render->updateStateAction(s, a);
         }
-        repaint();
+        update();
     }
     Visualizer * makeCopy(){
         auto * v = new Visualizer(s_render);

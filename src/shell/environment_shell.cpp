@@ -10,8 +10,8 @@ vector<ShellCommand *> EnvironmentShell::generateStandard() {
     ret.push_back(new ObservationCommand());
 
 //        EpisodeRecordingCommands erc = new EpisodeRecordingCommands();
-//        return Arrays.asList(new ActionCommand(domain), new ObservationCommand(), new ResetEnvCommand(),
-//                             new AddStateObjectCommand(domain), new RemoveStateObjectCommand(), new SetVarCommand(),
+//        return Arrays.asList(new ActionCommand(oosa_domain), new ObservationCommand(), new ResetEnvCommand(),
+//                             new AddStateObjectCommand(oosa_domain), new RemoveStateObjectCommand(), new SetVarCommand(),
 //                             new RewardCommand(), new IsTerminalCommand(),
 //                             erc.getRecCommand(), erc.getBrowser(), new ListActionsCommand(), new ListPropFunctions());
     return ret;

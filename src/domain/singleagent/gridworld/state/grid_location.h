@@ -25,11 +25,11 @@ public:
     // todo check -1 default values for consistency with code base
     string className() override;
     string name() override;
-    ObjectInstance* copyWithName(string objectName) override;
-    vector<KeyContainer *> variableKeys() override;
+    ObjectInstance * copyWithName(string objectName) override;
+    vector<KeyContainer *> variableKeys() const override;
     // TODO check assumption that all values are integers
-    int getIntValue(KeyContainer *variableKey) override;
-    State* makeCopy() override;
+    int getIntValue(KeyContainer *variableKey) const override;
+    State * makeCopy() override;
     string to_string() override;
     string getName();
     void setName(string name_);

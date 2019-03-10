@@ -16,17 +16,18 @@ public:
         static NullState instance;
         return instance;
     }
-    vector<KeyContainer *> variableKeys() override {
+    vector<KeyContainer *> variableKeys() const override {
         return vector<KeyContainer *>();
     }
-    int getIntValue (KeyContainer * variableKey) override {
+    int getIntValue (KeyContainer * variableKey) const override {
         return 0;
     }
     State * makeCopy() override {
         return this;
     }
 
-    bool operator==(State &comp) override {
+    bool operator==(State &comp) const {
+        // todo check that it overrides State::operator==()
         return comp == *this;
     }
 //    int hashCode() {

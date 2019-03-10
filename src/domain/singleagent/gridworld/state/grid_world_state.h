@@ -26,15 +26,15 @@ public:
     MutableOOState * removeObject(string objectName) override;
     MutableOOState * renameObject(string objectName, string newName) override;
     unsigned long numObjects();
-    ObjectInstance * object(string objectName) override;
-    vector<ObjectInstance *> objects() override;
-    vector<ObjectInstance *> objectsOfClass(string objectClass) override;
+    ObjectInstance * object(string objectName) const override;
+    vector<ObjectInstance *> objects() const override;
+    vector<ObjectInstance *> objectsOfClass(string objectClass) const override;
     MutableState * set(KeyContainer * variableKey, void * value) override;
-    vector<KeyContainer *> variableKeys() override;
+    vector<KeyContainer *> variableKeys() const override;
     // TODO check assumption that all values are integers
-    int get(KeyContainer * variableKey);
+    int getIntValue(KeyContainer * variableKey) const override;
     State * makeCopy() override;
-    long locationInd(string objectName);
+    long locationInd(string &objectName) const;
     string to_string() override;
 //    GridAgent * touchAgent();
 //    vector<GridLocation *> touchLocations();

@@ -13,13 +13,14 @@
 #include <QtWidgets/QPushButton>
 #include <QTimer>
 #include <QKeyEvent>
-#include "text_area_streams.h"
-#include "../shell_observer.hpp"
-#include "../environment_shell.h"
 #include "../../mdp/singleagent/environment/environment.hpp"
 #include "../../mdp/singleagent/SA_domain.h"
 #include "../../visualizer/visualizer.h"
 #include "../../include/classes.h"
+#include "../shell_observer.hpp"
+#include "../environment_shell.h"
+#include "text_area_streams.h"
+#include "text_areas.h"
 
 
 class VisualExplorer : public QMainWindow, public ShellObserver {
@@ -82,36 +83,5 @@ protected:
     void keyPressEvent(QKeyEvent * e) override;
 };
 
-class ShiftFocusTextEdit : public QTextEdit {
-    Q_OBJECT
-public:
-    QWidget * refocusWidget = nullptr;
-    explicit ShiftFocusTextEdit(QWidget * parent = nullptr) : QTextEdit(parent) { }
-protected:
-    void mousePressEvent(QMouseEvent *event) override;
-};
-
-class EnterTextEdit : public QTextEdit {
-public:
-    QTextEdit * outputTextEdit = nullptr;
-    TextAreaStreams * streams = nullptr;
-    explicit EnterTextEdit(QWidget * parent = nullptr) : QTextEdit(parent) { }
-protected:
-    void keyPressEvent(QKeyEvent * e) override;
-};
-
-class EnterButtonTextEdit : public QTextEdit {
-public:
-    QPushButton * button = nullptr;
-    explicit EnterButtonTextEdit(QWidget * parent = nullptr) : QTextEdit(parent) { }
-protected:
-    void keyPressEvent(QKeyEvent * e) override;
-};
-
-class ListenTextEdit : public QTextEdit {
-Q_OBJECT
-public slots:
-    void addText(const QString &s);
-};
 
 #endif //FASTRL_SHELL_VISUAL_VISUAL_EXPLORER_H

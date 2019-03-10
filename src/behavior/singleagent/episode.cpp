@@ -177,8 +177,8 @@ void Episode::main(string *args) {
     auto * gwd = new GridWorldDomain(11, 11);
     SADomain * domain = gwd->generateDomain();
     State *s = new GridWorldState(new GridAgent(1, 3), vector<GridLocation *>());
-//    Policy * p = new RandomPolicy(domain);
-//    Episode e = PolicyUtils.rollout(p, s, domain->getModel(), 30);
+//    Policy * p = new RandomPolicy(oosa_domain);
+//    Episode e = PolicyUtils.rollout(p, s, oosa_domain->getModel(), 30);
 
 //    Here test serialization functionality
 

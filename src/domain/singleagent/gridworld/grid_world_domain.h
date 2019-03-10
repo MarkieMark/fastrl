@@ -12,21 +12,23 @@
 #include <QMetaType>
 #include "../../../include/classes.h"
 #include "../../../include/entry_point.hpp"
-#include "../../../mdp/singleagent/model/reward_function.hpp"
-#include "../../../mdp/core/terminal_function.hpp"
-#include "../../../mdp/core/oo/propositional/propositional_function.h"
-#include "../../../mdp/core/oo/state/OO_state.hpp"
-#include "../../../mdp/singleagent/oo/OOSA_domain.hpp"
-#include "../../../mdp/singleagent/model/statemodel/full_state_model.h"
-#include "../../../mdp/singleagent/common/uniform_cost_RF.h"
-#include "../../../mdp/auxiliary/common/null_termination.hpp"
-#include "../../../mdp/singleagent/model/factored_model.h"
-#include "../../../mdp/core/action/universal_action_type.hpp"
-#include "../../../mdp/singleagent/environment/environment.hpp"
-#include "../../../shell/environment_shell.h"
-#include "../../../mdp/singleagent/environment/simulated_environment.h"
+#include "../../../behavior/singleagent/auxiliary/valuefunctionvis/value_function_visualizer_GUI.hpp"
 #include "../../../behavior/singleagent/learning/tdmethods/Q_learning.h"
 #include "../../../behavior/singleagent/learning/tdmethods/sarsa_lam.hpp"
+#include "../../../mdp/auxiliary/common/null_termination.hpp"
+#include "../../../mdp/auxiliary/stateconditiontest/TF_goal_condition.hpp"
+#include "../../../mdp/core/terminal_function.hpp"
+#include "../../../mdp/core/action/universal_action_type.hpp"
+#include "../../../mdp/core/oo/propositional/propositional_function.h"
+#include "../../../mdp/core/oo/state/OO_state.hpp"
+#include "../../../mdp/singleagent/common/uniform_cost_RF.h"
+#include "../../../mdp/singleagent/environment/environment.hpp"
+#include "../../../mdp/singleagent/environment/simulated_environment.h"
+#include "../../../mdp/singleagent/model/statemodel/full_state_model.h"
+#include "../../../mdp/singleagent/model/reward_function.hpp"
+#include "../../../mdp/singleagent/model/factored_model.h"
+#include "../../../mdp/singleagent/oo/OOSA_domain.hpp"
+#include "../../../shell/environment_shell.h"
 #include "../../../visualizer/visualizer.h"
 #include "state/grid_agent.h"
 #include "state/grid_location.h"
@@ -52,6 +54,17 @@ private:
 
     RewardFunction* rf = nullptr;
     TerminalFunction* tf = nullptr;
+
+    OOSADomain * oosa_domain = nullptr;
+    char * algorithm = nullptr;
+    SimulatedEnvironment * sim_env = nullptr;
+    State * launch_state = nullptr;
+    TFGoalCondition * gc = nullptr;
+    bool showValues = false;
+    long n_iterations = 100;
+
+    void init(unsigned int height_, unsigned int width_);
+    void init(vector<vector<unsigned int>> map_);
 
 public:
     // variable keys
@@ -164,7 +177,7 @@ public:
     void set1DEastWall(int x, int y);
     void clearLocationOfWalls(int x, int y);
     void setCellWallState(int x, int y, unsigned int wallType);
-    vector<vector<unsigned int>> getMap();
+    vector<vector<unsigned int>> &getMap();
     unsigned int getWidth();
     unsigned int getHeight();
     RewardFunction* getRf();
@@ -173,17 +186,22 @@ public:
     void setTf(TerminalFunction* tf_);
     vector<PropositionalFunction *> generatePfs();
     OOSADomain * generateDomain();
+    static ValueFunctionVisualizerGUI * getGridWorldValueFunctionVisualization(
+            vector<State *> states, int maxH, int maxV,
+            ValueFunction * valueFunction, Policy * p);
     static vector<int> movementDirectionFromIndex(int i);
     string stringMap();
     string stringMap(vector<vector<int>> specials);
     void printMap();
 
     int main(int argc, char * argv[]) override;
-    int main1(int argc, char * argv[]);
-    int main2(int argc, char * argv[]);
-    int main_multi(int argc, char * argv[]);
+    int main1();
+    int main2();
+    int main_multi();
 
-    void vis(string outputPath, GridWorldDomain * gwd, SADomain * domain);
+    int multi_alg();
+
+    void vis(string outputPath, SADomain * domain);
     void valueVis(ValueFunction * valueFunction, Policy * p, State * initialState, SADomain * domain);
 
     friend GridWorldModel;
@@ -198,7 +216,7 @@ Q_DECLARE_METATYPE(GridWorldDomain);
 //CLASS_AGENT = "agent";
 //CLASS_LOCATION = "location";
 
-class GridWorldModel : public FullStateModel{
+class GridWorldModel : public FullStateModel {
 private:
     vector<vector<double>> transitionDynamics;
     GridWorldDomain * parent;

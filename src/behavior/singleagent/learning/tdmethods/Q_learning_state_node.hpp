@@ -14,9 +14,9 @@ public:
     vector<QValue *> qEntry;
     QLearningStateNode() = default;
 
-    explicit QLearningStateNode(/*Hashable*/State *s_) : s(s_), qEntry(vector<QValue *>()) { }
-    void addQValue(Action *a, double q) {
-        auto * qv = new QValue(s/*->s()*/, a, q);
+    explicit QLearningStateNode(State *s_) : s(s_), qEntry(vector<QValue *>()) { }
+    void addQValue(Action * a, double q) {
+        auto * qv = new QValue(s, a, q);
         qEntry.push_back(qv);
     }
 };

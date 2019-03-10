@@ -35,12 +35,12 @@ GridAgent * GridAgent::makeCopy() {
     return new GridAgent(x, y, _name);
 }
 
-vector<KeyContainer *> GridAgent::variableKeys() {
+vector<KeyContainer *> GridAgent::variableKeys() const {
     return keys;
 }
 
-int GridAgent::getIntValue(KeyContainer *variableKey) {
-    string comp = (variableKey->isString ? variableKey->s : variableKey->vk.objVarKey);
+int GridAgent::getIntValue(KeyContainer *variableKey) const {
+    string comp = (variableKey->isString ? variableKey->s : variableKey->vk->objVarKey);
     if (comp == GridWorldDomain::VAR_X()) {
         return x;
     } else if (comp == GridWorldDomain::VAR_Y()) {

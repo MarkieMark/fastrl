@@ -43,19 +43,19 @@ int OOStateUtilities::objectIndexWithName(vector<ObjectInstance> objects, string
  * @param s the input state
  * @return the vector of all keys.
  */
-vector<KeyContainer *> OOStateUtilities::flatStateKeys(OOState s) {
+vector<KeyContainer *> OOStateUtilities::flatStateKeys(const OOState * s) {
     vector<KeyContainer *> flatKeys = vector<KeyContainer *>();
-    stringstream st;
-    for(ObjectInstance *o : s.objects()){
+    string st;
+    for(ObjectInstance * o : s->objects()){
         vector<KeyContainer *> keys = o->variableKeys();
-        for(KeyContainer * key : keys) {
-            st << o->name() << ":";
+        for (KeyContainer * key : keys) {
+            st = o->name() + ":";
             if (key->isString) {
-                st << key->s;
+                st += key->s;
             } else {
-                st << key->vk.objVarKey;
+                st += key->vk->objVarKey;
             }
-            KeyContainer * fKey = new KeyContainer(OOVariableKey(st.str()));
+            auto * fKey = new KeyContainer(new OOVariableKey(st));
             flatKeys.push_back(fKey);
         }
     }
@@ -69,9 +69,9 @@ vector<KeyContainer *> OOStateUtilities::flatStateKeys(OOState s) {
  * @param variableKey the object-variable key
  * @return the value of the object variable.
  */
-int OOStateUtilities::get(OOState s, KeyContainer * variableKey) {
+int OOStateUtilities::get(OOState * s, KeyContainer * variableKey) {
     KeyContainer * key = generateOOVariableKey(variableKey);
-    ObjectInstance * o = s.object(key->vk.objName);
+    ObjectInstance * o = s->object(key->vk->objName);
     return o->getIntValue(key);
 }
 
@@ -80,11 +80,11 @@ int OOStateUtilities::get(OOState s, KeyContainer * variableKey) {
  * @param key an {@link OOVariableKey} or a string representation of one.
  * @return the corresponding {@link OOVariableKey}
  */
-KeyContainer * OOStateUtilities::generateOOVariableKey(KeyContainer *key) {
+KeyContainer * OOStateUtilities::generateOOVariableKey(KeyContainer * key) {
     if(!(key->isString)) {
         return key;
     } else {
-        return new KeyContainer(OOVariableKey(key->s));
+        return new KeyContainer(new OOVariableKey(key->s));
     }
 }
 

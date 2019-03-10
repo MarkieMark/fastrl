@@ -10,11 +10,11 @@
 
 class QValue {
 public:
-    State *s = nullptr;
-    Action *a = nullptr;
+    State * s = nullptr;
+    Action * a = nullptr;
     double q = 0.;
     QValue() = default;
-    QValue(State *s_, Action *a_, double q_) : s(s_), a(a_), q(q_) { }
+    QValue(State * s_, Action * a_, double q_) : s(s_), a(a_), q(q_) { }
     explicit QValue(QValue * src) : s(src->s->makeCopy()) , a(src->a->makeCopy()), q(src->q) { }
 };
 

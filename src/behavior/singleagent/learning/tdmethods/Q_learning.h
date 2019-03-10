@@ -7,6 +7,7 @@
 #define FASTRL_BEHAVIOR_SINGLEAGENT_LEARNING_TDMETHODS_Q_LEARNING_H
 
 #include <limits>
+#include <unordered_map>
 #include "../../../valuefunction/Q_provider.h"
 #include "../learning_agent.hpp"
 #include "../../planning/planner.hpp"
@@ -15,9 +16,9 @@
 #include "../../../learningrate/learning_rate.hpp"
 #include "../../../policy/greedy_Q_policy.h"
 
-class QLearning : public MDPSolver, public QProvider, public LearningAgent, public Planner{
+class QLearning : public MDPSolver, public QProvider, public LearningAgent, public Planner {
 public:
-    map</*Hashable*/State *, QLearningStateNode *> qFunction;
+    unordered_map<State *, QLearningStateNode *, StateHashFunction, StateEqualFunction> qFunction;
     QFunction * qInitFunction;
     LearningRate * learningRate;
     Policy * learningPolicy;
@@ -63,5 +64,6 @@ public:
     void resetSolver() override;
 //    void writeQTable(string path);
 //    void loadQTable(string path);
+    void print_grid_q_values();
 };
 #endif // FASTRL_BEHAVIOR_SINGLEAGENT_LEARNING_TDMETHODS_Q_LEARNING_H

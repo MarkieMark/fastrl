@@ -19,6 +19,8 @@ using namespace std;
 
 class EntryPoint {
 public:
+    int argc = 0;
+    char ** argv = nullptr;
     virtual int main(int argc, char * argv[]) {throw runtime_error("EntryPoint::main() Not Implemented");}
 };
 

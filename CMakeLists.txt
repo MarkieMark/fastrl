@@ -5,6 +5,10 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_AUTOMOC ON)
 
+# set(CMAKE_VERBOSE_MAKEFILE ON)
+
+add_compile_definitions(BASE_DIR="${CMAKE_HOME_DIRECTORY}")
+
 set(SOURCE_FILES
         src/behavior/functionapproximation/dense/PF_features.hpp
         src/behavior/functionapproximation/dense/concatenated_object_features.hpp
@@ -523,15 +527,14 @@ set(SOURCE_FILES
         src/statehashing/simple/simple_hashable_state_factory.hpp
         src/statehashing/wrapped_hashable_state.hpp
         src/visualizer/OO_state_painter.hpp
-        src/visualizer/multi_layer_renderer.cpp
-        src/visualizer/multi_layer_renderer.h
+        src/visualizer/multi_layer_renderer.hpp
         src/visualizer/object_state_painters.hpp
         src/visualizer/render_layer.hpp
         src/visualizer/state_action_render_layer.hpp
         src/visualizer/state_render_layer.cpp
         src/visualizer/state_render_layer.h
         src/visualizer/visualizer.cpp
-        src/visualizer/visualizer.h)
+        src/visualizer/visualizer.h src/shell/visual/text_areas.h src/include/utils.cpp)
 
 add_executable(fastrl ${SOURCE_FILES})
 

@@ -6,6 +6,10 @@
 #ifndef FASTRL_BEHAVIOR_SINGLEAGENT_PLANNING_STOCHASTIC_DYNAMIC_PROGRAMMING_H
 #define FASTRL_BEHAVIOR_SINGLEAGENT_PLANNING_STOCHASTIC_DYNAMIC_PROGRAMMING_H
 
+#include <unordered_map>
+#include <unordered_set>
+#include <iomanip>
+#include "../../../../domain/singleagent/gridworld/grid_world_domain.h"
 #include "../../../../mdp/singleagent/model/transition_prob.hpp"
 #include "../../../../mdp/singleagent/model/full_model.h"
 #include "../../../valuefunction/Q_provider.h"
@@ -19,7 +23,7 @@
 
 class DynamicProgramming : public MDPSolver, /*public ValueFunction,*/ public QProvider {
 public:
-    map<State *, double> valueFunction;
+    unordered_map<State *, double, StateHashFunction, StateEqualFunction> valueFunction;
     ValueFunction * valueInitializer = new ConstantValueFunction();
     DPOperator * oper = new BellmanOperator();
 
@@ -52,11 +56,11 @@ public:
     }
 
     bool hasComputedValueFor(State * s) {
-        return valueFunction.find(s) != valueFunction.end();
+        return valueFunction.count(s) > 0;
     }
 
     double value(State * s) override {
-        if(model->terminal(s)){
+        if (model->terminal(s)) {
             return 0.;
         }
         auto it = valueFunction.find(s);
@@ -95,7 +99,7 @@ public:
         dpCopy->DPPInit(domain, gamma);
         //copy the value function
         for(auto e : valueFunction) {
-            dpCopy->valueFunction.insert(pair<State *, double>(e.first, e.second));
+            dpCopy->valueFunction[e.first] = e.second;
         }
         return dpCopy;
     }
@@ -103,7 +107,7 @@ public:
     double performBellmanUpdateOn(State * s) {
         if(model->terminal(s)) {
             //terminal states always have a state value of 0
-            valueFunction.insert(pair<State *, double>(s, 0.));
+            valueFunction[s] = 0.;
             return 0.;
         }
         vector<Action *> gas = applicableActions(s);
@@ -113,7 +117,7 @@ public:
             qs.push_back(q);
         }
         double nv = oper->apply(qs);
-        valueFunction.insert(pair<State *, double>(s, nv));
+        valueFunction[s] = nv;
         return nv;
     }
 
@@ -121,7 +125,7 @@ public:
     double performFixedPolicyBellmanUpdateOn(State * s, EnumerablePolicy * p) {
         if (model->terminal(s)) {
             //terminal states always have a state value of 0
-            valueFunction.insert(pair<State *, double>(s, 0.));
+            valueFunction[s] = 0.;
             return 0.;
         }
         double weightedQ = 0.;
@@ -136,7 +140,7 @@ public:
             double q = computeQ(s, ga);
             weightedQ += policyProb * q;
         }
-        valueFunction.insert(pair<State *, double>(s, weightedQ));
+        valueFunction[s] = weightedQ;
         return weightedQ;
     }
 
@@ -165,6 +169,43 @@ public:
 
     double getDefaultValue(State * s) {
         return valueInitializer->value(s);
+    }
+
+    void print_grid_value_function() {
+//        D(model);
+        if (dynamic_cast<FactoredModel *>(model) != nullptr &&
+                dynamic_cast<GridWorldModel *>(dynamic_cast<FactoredModel *>(model)->getStateModel()) != nullptr) {
+            auto gwm = dynamic_cast<GridWorldModel *>(dynamic_cast<FactoredModel *>(model)->getStateModel());
+            vector<vector<unsigned int>> map = gwm->map;
+            unsigned long d1 = map.size();
+            unsigned long d2 = map[0].size();
+//            D("map dimensions " << d1 << ", " <<  d2);
+            vector<vector<double>> value_map;
+            int i, j;
+            for (i = 0; i < d1; i++) {
+                value_map.emplace_back(vector<double>(d2));
+                for (j = 0; j < d2; j++) {
+                    value_map[i][j] = 0.;
+                }
+            }
+//            D("Value Function " << valueFunction.size());
+            for (auto p : valueFunction) {
+                State * s = p.first;
+                if (dynamic_cast<GridWorldState *>(s) != nullptr) {
+                    auto * gws = dynamic_cast<GridWorldState *>(s);
+//                    D(s << ":" << gws->agent->x << "," << gws->agent->y);
+                    value_map[gws->agent->y][gws->agent->x] = p.second;
+                } else {
+//                    D("non gridworld State " << s);
+                }
+            }
+            for (j = 0; j < d2; j++) {
+                for (i = 0; i < d1; i++) {
+                    cout << setw(7) << setprecision(4) << value_map[d2 - j - 1][i] << " ";
+                }
+                cout << endl;
+            }
+        }
     }
 
 };

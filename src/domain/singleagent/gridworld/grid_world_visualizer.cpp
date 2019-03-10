@@ -15,8 +15,8 @@
  * @param map the wall map matrix where 0s indicate it is clear of walls, 1s indicate a full cell wall in that cell, 2s indicate a 1D north wall, 3s indicate a 1D east wall, and 4s indicate a 1D north and east wall.
  * @return a grid world domain visualizer
  */
-Visualizer * GridWorldVisualizer::getVisualizer(Domain * d, vector<vector<unsigned int>> map) {
-    StateRenderLayer * r = getRenderLayer(d, move(map));
+Visualizer * GridWorldVisualizer::getVisualizer(Domain * d, vector<vector<unsigned int>> &map) {
+    StateRenderLayer * r = getRenderLayer(d, map);
     auto * v = new Visualizer(r);
     return v;
 }
@@ -26,8 +26,8 @@ Visualizer * GridWorldVisualizer::getVisualizer(Domain * d, vector<vector<unsign
  * @param map the wall map matrix where 0s indicate it is clear of walls, 1s indicate a full cell wall in that cell, 2s indicate a 1D north wall, 3s indicate a 1D east wall, and 4s indicate a 1D north and east wall.
  * @return a grid world domain visualizer
  */
-Visualizer * GridWorldVisualizer::getVisualizer(vector<vector<unsigned int>> map) {
-    StateRenderLayer * r = getRenderLayer(move(map));
+Visualizer * GridWorldVisualizer::getVisualizer(vector<vector<unsigned int>> &map) {
+    StateRenderLayer * r = getRenderLayer(map);
     auto * v = new Visualizer(r);
     return v;
 }
@@ -39,7 +39,7 @@ Visualizer * GridWorldVisualizer::getVisualizer(vector<vector<unsigned int>> map
  * @param map the wall map matrix where 0s indicate it is clear of walls, 1s indicate a full cell wall in that cell, 2s indicate a 1D north wall, 3s indicate a 1D east wall, and 4s indicate a 1D north and east wall.
  * @return a grid world domain state render layer
  */
-StateRenderLayer * GridWorldVisualizer::getRenderLayer(Domain * d, vector<vector<unsigned int>> map) {
+StateRenderLayer * GridWorldVisualizer::getRenderLayer(Domain * d, vector<vector<unsigned int>> &map) {
     auto * r = new StateRenderLayer();
     r->addStatePainter(new GridWorldMapPainter(map));
     auto * oopainter = new OOStatePainter();
@@ -54,7 +54,7 @@ StateRenderLayer * GridWorldVisualizer::getRenderLayer(Domain * d, vector<vector
  * @param map the wall map matrix where 0s indicate it is clear of walls, 1s indicate a full cell wall in that cell, 2s indicate a 1D north wall, 3s indicate a 1D east wall, and 4s indicate a 1D north and east wall.
  * @return a grid world domain state render layer
  */
-StateRenderLayer * GridWorldVisualizer::getRenderLayer(vector<vector<unsigned int>> map) {
+StateRenderLayer * GridWorldVisualizer::getRenderLayer(vector<vector<unsigned int>> &map) {
     auto * r = new StateRenderLayer();
     r->addStatePainter(new GridWorldMapPainter(map));
     auto * oopainter = new OOStatePainter();
@@ -90,7 +90,7 @@ void GridWorldMapPainter::paint(QPainter * qp, State * s, float canvas_width, fl
 //    cout << "Map Painter canvas width " << canvas_width << ", canvas_height " << canvas_height << endl;
     float domainXScale = dwidth;
     float domainYScale = dheight;
-//    cout << "domain h scale " << dwidth << ", v scale " << dheight << endl;
+//    cout << "oosa_domain h scale " << dwidth << ", v scale " << dheight << endl;
     //determine then normalized width
     float norm_width = (1.0f / domainXScale) * canvas_width;
     float norm_height = (1.0f / domainYScale) * canvas_height;

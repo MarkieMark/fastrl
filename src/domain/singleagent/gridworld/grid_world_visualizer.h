@@ -18,10 +18,10 @@
 class GridWorldVisualizer {
 public:
     GridWorldVisualizer() = default;
-    static Visualizer * getVisualizer(Domain * d, vector<vector<unsigned int>> map);
-    static Visualizer * getVisualizer(vector<vector<unsigned int>> map);
-    static StateRenderLayer * getRenderLayer(Domain * d, vector<vector<unsigned int>> map);
-    static StateRenderLayer * getRenderLayer(vector<vector<unsigned int>> map);
+    static Visualizer * getVisualizer(Domain * d, vector<vector<unsigned int>> &map);
+    static Visualizer * getVisualizer(vector<vector<unsigned int>> &map);
+    static StateRenderLayer * getRenderLayer(Domain * d, vector<vector<unsigned int>> &map);
+    static StateRenderLayer * getRenderLayer(vector<vector<unsigned int>> &map);
 };
 
 class GridWorldMapPainter : public StatePainter {

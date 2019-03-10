@@ -28,12 +28,12 @@ ObjectInstance* GridLocation::copyWithName(string objectName) {
     return dynamic_cast<ObjectInstance *>(newLocation);
 }
 
-vector<KeyContainer *> GridLocation::variableKeys() {
+vector<KeyContainer *> GridLocation::variableKeys() const {
     return keys;
 }
 
-int GridLocation::getIntValue(KeyContainer *variableKey) {
-    string comp = (variableKey->isString ? variableKey->s : variableKey->vk.objVarKey);
+int GridLocation::getIntValue(KeyContainer *variableKey) const {
+    string comp = (variableKey->isString ? variableKey->s : variableKey->vk->objVarKey);
     if (comp == GridWorldDomain::VAR_X()) {
         return x;
     } else if (comp == GridWorldDomain::VAR_Y()) {

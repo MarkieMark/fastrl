@@ -96,7 +96,7 @@ public:
         }
         double maxChangeInPolicyEvaluation = -numeric_limits<double>::infinity();
         set<State *> states;
-        for (auto p : valueFunction) {
+        for (const auto &p : valueFunction) {
             states.insert(p.first);
         }
         int i;
@@ -120,7 +120,7 @@ public:
 
     bool performReachabilityFrom(State * si) {
         //if this is not a new state and we are not required to perform a new reachability analysis, then this method does not need to do anything.
-        if (valueFunction.find(si) != valueFunction.end() && foundReachableStates) {
+        if (valueFunction.count(si) > 0 && foundReachableStates) {
             return false; //no need for additional reachability testing
         }
         D("Starting reachability analysis");
@@ -140,13 +140,13 @@ public:
             if (model->terminal(s)) {
                 continue;
             }
-            valueFunction.insert(pair<State *, double>(s, valueInitializer->value(s)));
+            valueFunction[s] = valueInitializer->value(s);
             vector<Action *> actions = applicableActions(s);
             for (Action * a : actions) {
                 vector<TransitionProb *> tps = dynamic_cast<FullModel *>(model)->transitions(s, a);
                 for (TransitionProb * tp : tps) {
                     State * ts = tp->eo->o_prime;
-                    if (openedSet.find(ts) == openedSet.end() && valueFunction.find(ts) == valueFunction.end()) {
+                    if (openedSet.count(ts) == 0 && valueFunction.count(ts) == 0) {
                         openedSet.insert(ts);
                         openList.push(ts);
                     }

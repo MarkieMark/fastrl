@@ -3,11 +3,13 @@
  */
 #include <iostream>
 #include <QApplication>
+#include <cstdlib>
 #include "../../../include/macros.h"
 #include "../../../behavior/singleagent/auxiliary/episode_sequence_visualizer.h"
 #include "../../../shell/visual/visual_explorer.h"
-#include "../../../mdp/auxiliary/stateconditiontest/TF_goal_condition.hpp"
 #include "../../../main.h"
+#include "../../../behavior/singleagent/auxiliary/state_reachability.hpp"
+#include "../../../behavior/singleagent/auxiliary/valuefunctionvis/value_function_visualizer_GUI.hpp"
 #include "../../../behavior/singleagent/planning/deterministic/deterministic_planner.h"
 #include "../../../behavior/singleagent/planning/deterministic/uninformed/bfs/BFS.h"
 #include "../../../behavior/singleagent/planning/deterministic/uninformed/dfs/DFS.h"
@@ -16,8 +18,8 @@
 #include "../../../behavior/singleagent/planning/stochastic/valueiteration/value_iteration.hpp"
 #include "../../../behavior/policy/policy_utils.h"
 #include "grid_world_domain.h"
-
-//Q_DECLARE_METATYPE(GridWorldDomain)
+#include "../../../mdp/singleagent/common/visual_action_observer.hpp"
+#include "../../../mdp/core/state/vardomain/variable_domain.hpp"
 
 class m1111GridWorldHeuristic : public Heuristic {
 public:
@@ -33,17 +35,19 @@ public:
 GridWorldDomain::GridWorldDomain() = default;
 
 GridWorldDomain::GridWorldDomain(unsigned int height_, unsigned int width_)
-    : GridWorldDomain()
-{
+    : GridWorldDomain() { init(height_, width_); }
+
+GridWorldDomain::GridWorldDomain(vector<vector<unsigned int>> map_)
+    : GridWorldDomain() { init(std::move(map_)); }
+
+void GridWorldDomain::init(unsigned int height_, unsigned int width_) {
     height = height_;
     width = width_;
     setDeterministicTransitionDynamics();
     makeEmptyMap();
 }
 
-GridWorldDomain::GridWorldDomain(vector<vector<unsigned int>> map_)
-    : GridWorldDomain()
-{
+void GridWorldDomain::init(vector<vector<unsigned int>> map_) {
     map = std::move(map_);
     setDeterministicTransitionDynamics();
 }
@@ -262,17 +266,17 @@ void GridWorldDomain::setCellWallState(int x, int y, unsigned int wallType){
     map[x][y] = wallType;
 }
 
-vector<vector<unsigned int>> GridWorldDomain::getMap() {
-    vector<vector<unsigned int>> ret = vector<vector<unsigned int>>();
+vector<vector<unsigned int>> &GridWorldDomain::getMap() {
+    auto * ret = new vector<vector<unsigned int>>();
     for (const vector<unsigned int> &map_element : map) {
-        auto ret_element = vector<unsigned int>();
+        auto * ret_element = new vector<unsigned int>();
         for (const unsigned int map_el : map_element) {
-            ret_element.push_back(map_el);
+            ret_element->push_back(map_el);
         }
-        ret.push_back(ret_element);
+        ret->push_back(*ret_element);
     }
 //    cout << &ret << endl;
-    return ret;
+    return *ret;
 }
 
 unsigned int GridWorldDomain::getWidth() { return width; }
@@ -315,7 +319,7 @@ OOSADomain * GridWorldDomain::generateDomain() {
     vector<vector<unsigned int>> cmap = getMap();
     domain->addStateClass(CLASS_AGENT(), GridAgent::staticMetaObject);
     domain->addStateClass(CLASS_LOCATION(), GridLocation::staticMetaObject);
-    GridWorldModel * smodel = new GridWorldModel(this, cmap, getTransitionDynamics());
+    auto * smodel = new GridWorldModel(this, cmap, getTransitionDynamics());
 //    RewardFunction* rf_ = rf;
 //    TerminalFunction* tf_ = tf;
     if(rf == nullptr){
@@ -341,26 +345,28 @@ OOSADomain * GridWorldDomain::generateDomain() {
  * Creates and returns a {@link fastrl.behavior.singleagent.auxiliary.valuefunctionvis.ValueFunctionVisualizerGUI}
  * object for a grid world. The value of states
  * will be represented by colored cells from red (lowest value) to blue (highest value). North-south-east-west
- * actions will be rendered with arrows using {@link burlap.behavior.singleagent.auxiliary.valuefunctionvis.common.ArrowActionGlyph}
+ * actions will be rendered with arrows using {@link fastrl.behavior.singleagent.auxiliary.valuefunctionvis.common.ArrowActionGlyph}
  * objects. The GUI will not be launched by default; call the
  * {@link fastrl.behavior.singleagent.auxiliary.valuefunctionvis.ValueFunctionVisualizerGUI#initGUI()}
  * on the returned object to start it.
  * @param states the states whose value should be rendered.
- * @param maxX the maximum value in the x dimension
- * @param maxY the maximum value in the y dimension
+ * @param maxH the maximum value in the horizontal dimension
+ * @param maxV the maximum value in the vertical dimension
  * @param valueFunction the value Function that can return the state values.
  * @param p the policy to render
- * @return a gridworld-based {@link burlap.behavior.singleagent.auxiliary.valuefunctionvis.ValueFunctionVisualizerGUI} object.
+ * @return a gridworld-based {@link fastrl.behavior.singleagent.auxiliary.valuefunctionvis.ValueFunctionVisualizerGUI} object.
  */
-//ValueFunctionVisualizerGUI getGridWorldValueFunctionVisualization(
-//        List <State> states, int maxX, int maxY,
-//        ValueFunction valueFunction, Policy p){
-//    return ValueFunctionVisualizerGUI.createGridWorldBasedValueFunctionVisualizerGUI(
-//            states, valueFunction, p, new OOVariableKey(
-//                    CLASS_AGENT, VAR_X), new OOVariableKey(
-//                    CLASS_AGENT, VAR_Y), new VariableDomain(0, maxX),
-//            new VariableDomain(0, maxY), 1, 1, ACTION_NORTH, ACTION_SOUTH, ACTION_EAST, ACTION_WEST);
-//}
+ValueFunctionVisualizerGUI * GridWorldDomain::getGridWorldValueFunctionVisualization(
+        vector<State *> states, int maxH, int maxV,
+        ValueFunction * valueFunction, Policy * p) {
+    OOVariableKey * agent_x = new OOVariableKey(GridWorldDomain::CLASS_AGENT(), GridWorldDomain::VAR_X());
+    OOVariableKey * agent_y = new OOVariableKey(GridWorldDomain::CLASS_AGENT(), GridWorldDomain::VAR_Y());
+    return ValueFunctionVisualizerGUI::createGridWorldBasedValueFunctionVisualizerGUI(states, valueFunction, p,
+            new KeyContainer(agent_x), new KeyContainer(agent_y),
+            new VariableDomain(0, maxH), new VariableDomain(0, maxV), 1, 1,
+            GridWorldDomain::ACTION_NORTH(), GridWorldDomain::ACTION_SOUTH(),
+            GridWorldDomain::ACTION_EAST(), GridWorldDomain::ACTION_WEST());
+}
 
 /**
  * Returns the change in x and y position for a given direction number.
@@ -436,13 +442,12 @@ GridWorldModel::GridWorldModel(GridWorldDomain * parent_, vector<vector<unsigned
 }
 
 vector<StateTransitionProb *> GridWorldModel::stateTransitions(State * s, Action * a) {
-
     vector<double> directionProbs = transitionDynamics[actionInd(a->actionName())];
-
     vector<StateTransitionProb *> transitions = vector<StateTransitionProb *>();
-    for(int i = 0; i < directionProbs.size(); i++){
+    for (int i = 0; i < directionProbs.size(); i++) {
         double p = directionProbs[i];
-        if(p == 0.){
+        if (p == 0.) {
+            transitions.push_back(new StateTransitionProb(&NullState::instance(), 0.));
             continue; //cannot transition in this direction
         }
         State * ns = s->makeCopy();
@@ -451,15 +456,15 @@ vector<StateTransitionProb *> GridWorldModel::stateTransitions(State * s, Action
 
         //make sure this direction doesn't actually stay in the same place and replicate another no-op
         bool isNew = true;
-        for(StateTransitionProb * tp : transitions){
-            if(*(tp->s) == *(ns)){
+        for (StateTransitionProb * tp : transitions) {
+            if (*(tp->s) == *(ns)) {
                 isNew = false;
                 tp->p += p;
                 break;
             }
         }
 
-        if(isNew){
+        if (isNew) {
             auto * tp = new StateTransitionProb(ns, p);
             transitions.push_back(tp);
         }
@@ -493,7 +498,10 @@ State * GridWorldModel::sample(State * s, Action * a) {
  * @param yd the attempted new Y position of the agent
  * @return input state s, after modification
  */
-State * GridWorldModel::move(State * s, int xd, int yd){
+State * GridWorldModel::move(State * s, int xd, int yd) {
+    if (s == nullptr || s == &NullState::instance()) {
+        return s;
+    }
 
     auto *gws = dynamic_cast<GridWorldState *>(s);
 
@@ -613,16 +621,18 @@ bool WallToPF::isTrue(OOState * st, vector<string> params) {
  * the upper right. Use w-a-s-d to move.
  * @param args command line args
  */
-int GridWorldDomain::main(int argc, char * argv[]) {
+int GridWorldDomain::main(int argc_, char * argv_[]) {
+    argc = argc_;
+    argv = argv_;
 //    cout << "GridWorldDomain::main()" << endl;
 //    cout << "option " << args[args.size() - 1] << endl;
-    vector<string> algorithms = vector<string>({"DFS", "BFS", "VI", "QL", "AStar", "Sarsa"});
+    vector<string> algorithms = vector<string>({"DFS", "BFS", "VI", "QL", "AStar", "Sarsa", "DEBUG", "DEBUGVIVV"});
     if (find(algorithms.begin(), algorithms.end(), argv[3]) != algorithms.end()) {
-        return GridWorldDomain::main_multi(argc, argv);
+        return GridWorldDomain::main_multi();
     } else if (string(argv[3]) == string("2")) {
-        return GridWorldDomain::main2(argc, argv);
+        return GridWorldDomain::main2();
     } else {
-        return GridWorldDomain::main1(argc, argv);
+        return GridWorldDomain::main1();
     }
 }
 
@@ -635,14 +645,14 @@ int GridWorldDomain::main(int argc, char * argv[]) {
 
 //todo debug console thread/loop
 
-int GridWorldDomain::main1(int argc, char * argv[]) {
+int GridWorldDomain::main1() {
     cout << "GridWorldDomain::main1()" << endl;
-    auto * gwdg = new GridWorldDomain(11, 11);
-    gwdg->setMapToFourRooms();
-    gwdg->setProbSucceedTransitionDynamics(0.75);
-    gwdg->printMap();
+    init(11, 11);
+    setMapToFourRooms();
+//    gwdg->setProbSucceedTransitionDynamics(0.75);
+    printMap();
 
-    OOSADomain * d = gwdg->generateDomain();
+    OOSADomain * d = generateDomain();
     GridWorldState * s = new GridWorldState(
             new GridAgent(0, 0), vector<GridLocation *>({new GridLocation(10, 10, -1, "loc0")}));
 
@@ -666,7 +676,7 @@ int GridWorldDomain::main1(int argc, char * argv[]) {
     else if (expMode == 1) {
         QApplication app(argc, argv);
 
-        Visualizer * v = GridWorldVisualizer::getVisualizer(gwdg->getMap());
+        Visualizer * v = GridWorldVisualizer::getVisualizer(getMap());
         auto * ve = new VisualExplorer(d, v, s);
 
         //use w-s-a-d-x
@@ -689,17 +699,17 @@ int GridWorldDomain::main1(int argc, char * argv[]) {
  * $ ./fastrl -main GridWorldDomain 2
  */
 
-int GridWorldDomain::main2(int argc, char * argv[]) {
+int GridWorldDomain::main2() {
     QApplication app(argc, argv);
     cout << "GridWorldDomain::main2()" << endl;
-    auto * gwd = new GridWorldDomain(11, 11);
-    gwd->setMapToFourRooms();
-    gwd->setTf(new GridWorldTerminalFunction(10, 10));
-    SADomain * domain = gwd->generateDomain();
+    init(11, 11);
+    setMapToFourRooms();
+    setTf(new GridWorldTerminalFunction(10, 10));
+    SADomain * domain = generateDomain();
     Environment * env = new SimulatedEnvironment(domain, new GridWorldState(0, 0, vector<GridLocation *>({new GridLocation(10, 10, 10, "goal0")})));
 
 //create a Q-learning agent
-    auto * agent = new QLearning(domain, 0.99/*, new SimpleHashableStateFactory()*/, 1.0, 1.0);
+    auto * agent = new QLearning(domain, 0.99, 1.0, 1.0);
 
 ////run 100 learning episode and save the episode results
     vector<Episode *> episodes = vector<Episode *>();
@@ -710,93 +720,155 @@ int GridWorldDomain::main2(int argc, char * argv[]) {
         env->resetEnvironment();
     }
 ////visualize the completed learning episodes
-    auto * esv = new EpisodeSequenceVisualizer(GridWorldVisualizer::getVisualizer(gwd->getMap()), domain, episodes);
+    auto * esv = new EpisodeSequenceVisualizer(GridWorldVisualizer::getVisualizer(getMap()), domain, episodes);
     return QApplication::exec();
 
 }
 
-int GridWorldDomain::main_multi(int argc, char * argv[]) {
-    auto * gwd = new GridWorldDomain(11, 11);
-    gwd->setMapToFourRooms();
-    //gwd.setProbSucceedTransitionDynamics(0.75);
-    TerminalFunction * tf = new GridWorldTerminalFunction(10, 10);
-    gwd->setTf(tf);
-    auto * goalCondition = new TFGoalCondition(tf);
-    OOSADomain * domain = gwd->generateDomain();
-//    HashableStateFactory hashingFactory = new SimpleHashableStateFactory();
-    GridWorldState * s = new GridWorldState(new GridAgent(0, 0), vector<GridLocation *>({new GridLocation(10, 10, -1, "loc0")}));
-    auto * env = new SimulatedEnvironment(domain, s);
+int GridWorldDomain::main_multi() {
+    algorithm = argv[3];
+    TerminalFunction * tf;
+    if ((string(algorithm) == string("DEBUG")) || (string(algorithm) == string("DEBUGVIVV"))) {
+        init(5, 5);
+        tf = new GridWorldTerminalFunction(4, 4);
+        launch_state = new GridWorldState(new GridAgent(0, 0),
+                vector<GridLocation *>({new GridLocation(4, 4, -1, "loc0")}));
+    } else {
+        init(11, 11);
+        setMapToFourRooms();
+        //gwd.setProbSucceedTransitionDynamics(0.75);
+        tf = new GridWorldTerminalFunction(10, 10);
+        launch_state = new GridWorldState(new GridAgent(0, 0),
+                vector<GridLocation *>({new GridLocation(10, 10, -1, "loc0")}));
+    }
+    setTf(tf);
+    gc = new TFGoalCondition(tf);
+    oosa_domain = generateDomain();
 
-    string outputPath = "output/";
-    bool showValues = false;
+    sim_env = new SimulatedEnvironment(oosa_domain, launch_state);
 
-//    if (argc > 4 && string(argv[4]) == string("lv")) {
-//        VisualActionObserver * observer = new VisualActionObserver(domain, GridWorldVisualizer.getVisualizer(gwd.getMap()));
-//        observer->initGUI();
-//        env->addObservers(observer);
-//    }
+    bool showViz = false;
+
+    if (argc > 4 && string(argv[4]) == string("lv")) {
+        showViz = true;
+    }
 
     if ((argc > 4 && string(argv[4]) == string("vv")) || (argc > 5 && string(argv[5]) == string("vv"))) {
         showValues = true;
     }
 
-    if (string(argv[3]) == string("BFS")) {
-        DeterministicPlanner * planner = new BFS(domain, goalCondition);
-        Policy * p = planner->planFromState(s);
-        PolicyUtils::rollout(p, s, domain->getModel())->write(outputPath + "bfs");
-    } else if (string(argv[3]) == string("DFS")) {
-        DeterministicPlanner * planner = new DFS(domain, goalCondition);
-        Policy * p = planner->planFromState(s);
-        PolicyUtils::rollout(p, s, domain->getModel())->write(outputPath + "dfs");
-    } else if (string(argv[3]) == string("AStar")) {
+    char *endptr;
+    long val;
+    if ((argc > 4 && (val = strtol(argv[4], &endptr, 10)) > 0) || (argc > 5 && (val = strtol(argv[5], &endptr, 10)) > 0)
+    || (argc > 6 && (val = strtol(argv[6], &endptr, 10)) > 0)) {
+        n_iterations = val;
+    }
+
+    D("n_iterations " << n_iterations);
+
+    if (showViz) {
+        QApplication app(argc, argv);
+        vector<vector<unsigned int>> map = getMap();
+        printMap();
+        Visualizer * viz = GridWorldVisualizer::getVisualizer(map);
+        auto * observer = new VisualActionObserver(viz, oosa_domain);
+        observer->initGUI();
+        auto ov = vector<EnvironmentObserver *>();
+        ov.emplace_back(observer);
+        sim_env->addObservers(ov);
+        thread * think_thread = new thread(&GridWorldDomain::multi_alg, this);
+        return QApplication::exec();
+    } else if (showValues) {
+        QApplication app(argc, argv);
+        multi_alg();
+        return QApplication::exec();
+    } else {
+        multi_alg();
+    }
+    return 0;
+}
+
+int GridWorldDomain::multi_alg() {
+    D("Algorithm " << algorithm << "; " << n_iterations << " iterations ");
+    string outputPath = "output/";
+    if (string(algorithm) == string("BFS")) {
+        DeterministicPlanner * planner = new BFS(oosa_domain, gc);
+        Policy * p = planner->planFromState(launch_state);
+        PolicyUtils::rollout(p, launch_state, oosa_domain->getModel())->write(outputPath + "bfs");
+    } else if (string(algorithm) == string("DFS")) {
+        DeterministicPlanner * planner = new DFS(oosa_domain, gc);
+        Policy * p = planner->planFromState(launch_state);
+        PolicyUtils::rollout(p, launch_state, oosa_domain->getModel())->write(outputPath + "dfs");
+    } else if (string(algorithm) == string("AStar")) {
         // todo needs PrioritizedSearchNode comparators before it'll work
         auto * mDistHeuristic = new m1111GridWorldHeuristic();
-        DeterministicPlanner * planner = new AStar(domain, goalCondition, mDistHeuristic);
-        Policy * p = planner->planFromState(s);
-        PolicyUtils::rollout(p, s, domain->getModel())->write(outputPath + "astar");
-    } else if (string(argv[3]) == string("VI")) {
-        Planner * planner = new ValueIteration(domain, 0.99, 0.001, 100);
-        Policy * p = planner->planFromState(s);
-        PolicyUtils::rollout(p, s, domain->getModel())->write(outputPath + "vi");
+        DeterministicPlanner * planner = new AStar(oosa_domain, gc, mDistHeuristic);
+        Policy * p = planner->planFromState(launch_state);
+        PolicyUtils::rollout(p, launch_state, oosa_domain->getModel())->write(outputPath + "astar");
+    } else if (string(algorithm) == string("VI")) {
+        Planner * planner = new ValueIteration(oosa_domain, 0.99, 0.001, 100);
+        Policy * p = planner->planFromState(launch_state);
+        PolicyUtils::rollout(p, launch_state, oosa_domain->getModel())->write(outputPath + "vi");
         if (showValues) {
-            valueVis(dynamic_cast<ValueFunction *>(planner), p, s, domain);
+            valueVis(dynamic_cast<ValueFunction *>(planner), p, launch_state, oosa_domain);
         }
-    } else if (string(argv[3]) == string("QL")) {
-        LearningAgent * agent = new QLearning(domain, 0.99, 0., 1.);
-        for (int i = 0; i < 50; i++) {
-            Episode * e = agent->runLearningEpisode(env);
+    } else if (string(algorithm) == string("QL")) {
+        LearningAgent * agent = new QLearning(oosa_domain, 0.99, 0.05, 1.);
+        for (int i = 0; i < n_iterations; i++) {
+            Episode * e = agent->runLearningEpisode(sim_env);
             stringstream os;
             os << outputPath << "ql_" << i;
             e->write(os.str());
             cout << i << ": " << e->maxIteration() << endl;
-            env->resetEnvironment();
+            sim_env->resetEnvironment();
             // todo create/update q value display
         }
-    } else if (string(argv[3]) == string("Sarsa")) {
-        LearningAgent * agent = new SarsaLam(domain, 0.99, 0., 0.5, 0.3);
+    } else if (string(algorithm) == string("Sarsa")) {
+        LearningAgent * agent = new SarsaLam(oosa_domain, 0.99, 0., 0.5, 0.3);
         for (int i = 0; i < 50; i++) {
-            Episode * e = agent->runLearningEpisode(env);
+            Episode * e = agent->runLearningEpisode(sim_env);
             stringstream os;
             os << outputPath << "sarsa_" << i;
             e->write(os.str());
             cout << i << ": " << e->maxIteration();
-            env->resetEnvironment();
+            sim_env->resetEnvironment();
         }
+    } else if (string(algorithm) == string("DEBUG")) {
+        LearningAgent * agent = new QLearning(oosa_domain, 0.99, 0.05, 1.);
+        for (int i = 0; i < n_iterations; i++) {
+            Episode * e = agent->runLearningEpisode(sim_env);
+            stringstream os;
+            os << outputPath << "ql_" << i;
+            e->write(os.str());
+            cout << i << ": " << e->maxIteration() << endl;
+            sim_env->resetEnvironment();
+            // todo create/update q value display
+        }
+    } else if (string(algorithm) == string("DEBUGVIVV")) {
+        Planner * planner = new ValueIteration(oosa_domain, 0.99, 0.001, 20);
+        Policy * p = planner->planFromState(launch_state);
+        PolicyUtils::rollout(p, launch_state, oosa_domain->getModel())->write(outputPath + "vi");
+        QApplication app(argc, argv);
+        valueVis(dynamic_cast<ValueFunction *>(planner), p, launch_state, oosa_domain);
+        return QApplication::exec();
+    } else {
+        cout << "unrecognized algorithm!" << endl;
+        return -1;
     }
-//    vis(outputPath, gwd, domain);
     return 0;
+//    vis(outputPath, oosa_domain);
 }
 
-void GridWorldDomain::vis(string outputPath, GridWorldDomain * gwd, SADomain * domain) {
+void GridWorldDomain::vis(string outputPath, SADomain * domain) {
 //    Visualizer v = GridWorldVisualizer::getVisualizer(gwd->getMap());
-//    auto * esv = new EpisodeSequenceVisualizer(v, domain, outputPath);
+//    auto * esv = new EpisodeSequenceVisualizer(v, oosa_domain, outputPath);
 }
 
 void GridWorldDomain::valueVis(ValueFunction * valueFunction, Policy * p, State * initialState,
                              SADomain * domain) {
-//    vector<State *> allStates = StateReachability::getReachableStates(initialState, domain);
-//    ValueFunctionVisualizerGUI * gui = GridWorldDomain::getGridWorldValueFunctionVisualization(allStates,
-//            11, 11, valueFunction, p);
-//    gui->initGUI();
+    vector<State *> allStates = StateReachability::getReachableStates(initialState, oosa_domain);
+    ValueFunctionVisualizerGUI * gui = GridWorldDomain::getGridWorldValueFunctionVisualization(allStates,
+            width, height, valueFunction, p);
+    gui->initGUI();
 }
 

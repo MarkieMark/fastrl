@@ -27,9 +27,9 @@ public:
     string className() override;
     string name() override;
     ObjectInstance* copyWithName(string objectName) override;
-    vector<KeyContainer *> variableKeys() override;
+    vector<KeyContainer *> variableKeys() const override;
     // TODO check assumption that all values are integers
-    int getIntValue(KeyContainer *variableKey) override;
+    int getIntValue(KeyContainer *variableKey) const override;
     GridAgent * makeCopy() override;
     string getName();
     void setName(string name_);

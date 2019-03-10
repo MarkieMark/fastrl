@@ -132,45 +132,44 @@ void VisualExplorer::implementAction(Action * a) {
 }
 
 void VisualExplorer::initGUI() {
-//    painter->resize(canvas_width - 50, canvas_height - 50);
     cout << "canvas width " << canvas_width << ", canvas height " << canvas_height << endl;
 // need to add some encapsulation
     propViewer->resize(canvas_width, 100);
-//    painter->resize(canvas_width - 100, canvas_height - 300);
     resize(canvas_width, canvas_height);
-    auto * containerVE = new QWidget(this);
-    auto * qvl = new QVBoxLayout();
-    auto * qhl = new QHBoxLayout();
-    auto * qhw = new QWidget();
+    auto * containerVE = new QWidget(this); // main central widget in main window
+    auto * qvl = new QVBoxLayout(); // vbox in main window
+    auto * qhl = new QHBoxLayout(); // hbox in main window
+    auto * qhw = new QWidget();  // hbox container widget
     propViewer->setFixedHeight(100);
-    qvl->addWidget(painter);
+    qvl->addWidget(painter); // at top of vbox
     qvl->setSpacing(3);
-    qvl->addWidget(propViewer);
+    qvl->addWidget(propViewer); // middle of vbox
     actionField = new EnterButtonTextEdit();
     actionButton = new QPushButton("Act");
     actionField->button = actionButton;
     // todo connect actionField return key to actionButton click, clear actionField upon click
-    qhl->addWidget(actionField);
-    qhl->addWidget(actionButton);
-    qhw->setLayout(qhl);
-    qhw->setFixedHeight(50);
-//    qhl->setFixedHeight(50);
-    qvl->addWidget(qhw);
+    qhl->addWidget(actionField); // left of hbox
+    qhl->addWidget(actionButton); // right of hbox
+    qhw->setLayout(qhl); // add hbox to hbox container widget
+    qhw->setFixedHeight(50); // height of hbox container widget
+    qvl->addWidget(qhw); // add hbox container widget to vbox
     showShellButton = new QPushButton("Show Shell");
     qvl->addWidget(showShellButton);
-    containerVE->setLayout(qvl);
+    containerVE->setLayout(qvl); // vbox is top level layout for central widget in main window
     setCentralWidget(containerVE);
-    // check focused painter key event calls this->keyPressEvent()
-    // ditto for propViewer
+
+    // connect signals & slots
     connect(actionButton, &QPushButton::clicked, this, &VisualExplorer::handleAct);
     connect(showShellButton, &QPushButton::clicked, this, &VisualExplorer::showShell);
     connect(this, &VisualExplorer::newPropText, propViewer, &ListenTextEdit::addText);
 
-    painter->repaint();
+    // init drawing, set logical connections
+    painter->update();
     painter->updateState(env->currentObservation());
     painter->clickFocusWidget = this;
-
     updatePropTextArea(env->currentObservation());
+
+    // create hidden 'shell' window
     consoleWindow = new QMainWindow();
     consoleWindow->resize(canvas_width, canvas_height);
     stateConsole = new ShiftFocusTextEdit();
@@ -191,24 +190,21 @@ void VisualExplorer::initGUI() {
     tstreams->setLockPointers(&(shell->m_is), &(shell->cv_is));
     auto vso = vector<ShellObserver *>();
     vso.push_back(this);
-
     shell->addObservers(vso);
     shell->setVisualizer(painter);
-
 //    shell->addCommand(new LivePollCommand());
-
 //    shell->thread_start();
-
     consoleCommand->setFixedHeight(30);
     cvbl->addWidget(consoleCommand);
     auto * containerVEC = new QWidget(consoleWindow);
     consoleWindow->setCentralWidget(containerVEC);
     containerVEC->setLayout(cvbl);
     consoleWindow->setVisible(false);
+
     setWindowTitle("FastRL Visual Interface");
 //    cout << "set window title" << endl;
     show();
-    painter->repaint();
+    painter->update();
     painter->updateState(env->currentObservation());
 //    cout << "interface show" << endl;
 //    consoleWindow->show();
